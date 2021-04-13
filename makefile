@@ -27,7 +27,7 @@ build/libdb.a: lib/db.h build/db.o | build
 build/test.o: test/main.c | build
 	gcc -Wall -Werror -pedantic --debug -c test/main.c -I ./lib -o build/test.o
 
-build/test: build/test.o build/libdb.a | build
+build/test: build/test.o build/libvector.a build/libdb.a | build
 	gcc build/test.o -L build -l vector -l db -o build/test
 
 # Programme de l'application
