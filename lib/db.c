@@ -8,10 +8,10 @@
 #include <string.h>
 
 
-vector lecture_table(
+/* vector lecture_table(
     FILE* file)
 {
-    vector vect = make_vector(sizeof(docteur), 0, 2.);
+    vector vect = make_vector(sizeof(client), 0, 2.);
     // buffer et séparateurs pour split la chaine
     char string[1024], del[] = ",";
     while(fgets(string, 1024, file))
@@ -73,4 +73,4 @@ bool est_generaliste(
         return true;
 
     return false;
-}
+} */
