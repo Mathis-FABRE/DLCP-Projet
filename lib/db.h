@@ -9,6 +9,14 @@
 #define TAILLE_CHAMP_NOM 36
 #define TAILLE_CHAMP_TEL 14
 
+enum specialite_t
+{
+    RESTAURANT,
+    MENU,
+    LIVREUR,
+    CLIENT,
+};
+
 typedef struct restaurant
 {
     size_t id; // Clé primaire.
@@ -47,8 +55,7 @@ typedef struct client
     float solde;
 }
 
-vector
-lecture_table(
+vector lecture_table(
     FILE *fichier);
 
 void ecriture_table(
