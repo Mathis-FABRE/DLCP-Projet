@@ -9,13 +9,13 @@
 #define TAILLE_CHAMP_NOM 36
 #define TAILLE_CHAMP_TEL 14
 
-enum specialite_t
+typedef enum categorie
 {
     RESTAURANT,
     MENU,
     LIVREUR,
     CLIENT,
-};
+} CATEGORIE;
 
 typedef struct restaurant
 {
@@ -26,7 +26,7 @@ typedef struct restaurant
     char type[TAILLE_CHAMP_NOM];
     vector menu;
     float solde;
-} restaurant;
+} Restaurant;
 
 typedef struct menu
 {
@@ -34,7 +34,7 @@ typedef struct menu
     char nom[TAILLE_CHAMP_NOM];
     vector ingredients;
     float prix;
-} menu;
+} Menu;
 
 typedef struct livreur
 {
@@ -44,7 +44,7 @@ typedef struct livreur
     vector deplacements; // Liste de code_postal
     size_t restaurant;
     float solde;
-} livreur;
+} Livreur;
 
 typedef struct client
 {
@@ -53,7 +53,7 @@ typedef struct client
     int code_postal;
     char telephone[TAILLE_CHAMP_TEL];
     float solde;
-}
+} Client;
 
 vector lecture_table(
     FILE *fichier);
