@@ -23,12 +23,19 @@ build/db.o : lib/db.c lib/db.h | build
 build/libdb.a: lib/db.h build/db.o | build
 	ar crs build/libdb.a build/db.o
 
+#librairie gestion de fichiers
+build/gestionfichier.o : lib/gestionfichier.c lib/gestionfichier.h | build
+	gcc -Wall -Werror -pedantic --debug -c lib/gestionfichier.c -I ./lib -o build/gestionfichier.o
+
+build/libgestionfichier.a: lib/gestionfichier.h build/gestionfichier.o | build
+	ar crs build/libgestionfichier.a build/gestionfichier.o
+
 # Programme de test
 build/test.o: test/main.c | build
 	gcc -Wall -Werror -pedantic --debug -c test/main.c -I ./lib -o build/test.o
 
-build/test: build/test.o build/libvector.a build/libdb.a | build
-	gcc build/test.o -L build -l vector -l db -o build/test
+build/test: build/test.o build/libvector.a build/libdb.a build/libgestionfichier.a | build
+	gcc build/test.o -L build -l vector -l db -l gestionfichier -o build/test
 
 # Programme de l'application
 build/appli.o: appli/main.c | build
