@@ -1,3 +1,5 @@
+#include "gestionfichier.h"
+
 #include "test_harness/test_harness.h"
 
 #include <stdbool.h>
@@ -11,5 +13,6 @@ int const tests_total = 0;
 
 int main()
 {
+    check();
     return tests_executed - tests_successful;
 }
