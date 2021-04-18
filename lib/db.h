@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define TAILLE_CHAMP_NOM 36
+#define TAILLE_CHAMP_NOM 39
 #define TAILLE_CHAMP_TEL 14
 
 typedef enum categorie
