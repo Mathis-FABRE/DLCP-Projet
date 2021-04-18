@@ -10,3 +10,7 @@ vector lecture_client();
 void separateur_chaine(vector* v, char * chaine);
 
 vector lecture_restaurant();
+
+vector lecture_livreur();
+
+vector lecture_menu();

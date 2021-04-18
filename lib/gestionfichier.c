@@ -71,23 +71,71 @@ vector lecture_client()
 void separateur_chaine(vector* v, char * chaine)
 {
     char buffer[100];
-    size_t id;
-
-    if(sscanf(chaine, "%zu;%s", &id, buffer)==2)
+    
+    switch (v->element_size)
     {
-        push_back(v,&id);
-        while(sscanf(buffer, "%zu;%s", &id, buffer)==2)
+    case sizeof(size_t): ;
+        size_t id;
+
+        if(sscanf(chaine, "%zu;%s", &id, buffer)==2)
         {
             push_back(v,&id);
+            while(sscanf(buffer, "%zu;%s", &id, buffer)==2)
+            {
+                push_back(v,&id);
+            }
+            sscanf(buffer, "%zu", &id);
+            push_back(v,&id);
         }
-        sscanf(buffer, "%zu", &id);
-        push_back(v,&id);
-    }
 
-    else
-    {
-        sscanf(chaine, "%zu", &id);
-        push_back(v,&id);
+        else
+        {
+            sscanf(chaine, "%zu", &id);
+            push_back(v,&id);
+        }
+        break;
+    
+    case sizeof(int): ;
+        int code;
+
+        if(sscanf(chaine, "%d;%s", &code, buffer)==2)
+        {
+            push_back(v,&code);
+            while(sscanf(buffer, "%d;%s", &code, buffer)==2)
+            {
+                push_back(v,&code);
+            }
+            sscanf(buffer, "%d", &code);
+            push_back(v,&code);
+        }
+
+        else
+        {
+            sscanf(chaine, "%d", &code);
+            push_back(v,&code);
+        }
+        break;
+
+    case 40: ;
+        char ingredient[40];
+
+        if(sscanf(chaine, "%39[^;];%s", ingredient, buffer)==2)
+        {
+            push_back(v,ingredient);
+            while(sscanf(buffer, "%39[^;];%s", ingredient, buffer)==2)
+            {
+                push_back(v,ingredient);
+            }
+            sscanf(buffer, "%39[^;]", ingredient);
+            push_back(v,ingredient);
+        }
+
+        else
+        {
+            sscanf(chaine, "%39[^;]", ingredient);
+            push_back(v,ingredient);
+        }
+        break;
     }
 
     return;
@@ -113,4 +161,48 @@ vector lecture_restaurant()
     fclose(db_resto);
 
     return restos;
+}
+
+vector lecture_livreur()
+{
+    vector livreurs=make_vector(sizeof(Livreur),0,2.);
+
+    FILE* db_livreur=fopen("db_livreurs.csv", "r");
+
+    Livreur livreur;
+
+    char restos[100];
+
+    while(fscanf(db_livreur, "%zu,%39[^,],%14[^,],%[^,],%zu,%f", &livreur.id, livreur.nom, livreur.telephone, restos, &livreur.restaurant, &livreur.solde)==6)
+    {
+        livreur.deplacements=make_vector(sizeof(int), 0, 2.);
+        separateur_chaine(&livreur.deplacements, restos);
+        push_back(&livreurs, &livreur);
+    }
+
+    fclose(db_livreur);
+
+    return livreurs;
+}
+
+vector lecture_menu()
+{
+    vector menus=make_vector(sizeof(Menu), 0, 2.);
+
+    FILE* db_menu=fopen("db_menus.csv","r");
+
+    Menu menu;
+
+    char ingredients[136];
+
+    while(fscanf(db_menu, "%zu,%39[^,],%[^,],%f", &menu.id, menu.nom, ingredients, &menu.prix)==4)
+    {
+        menu.ingredients=make_vector(sizeof(menu.nom), 0, 2.);
+        separateur_chaine(&menu.ingredients, ingredients);
+        push_back(&menus, &menu);
+    }
+
+    fclose(db_menu);
+
+    return menus;
 }

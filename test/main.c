@@ -10,7 +10,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 21;
+int const tests_total = 36;
 
 int const test_column_width = 80;
 
@@ -68,6 +68,39 @@ int main()
     TEST(c->solde==44.);
 
     destroy(&restos);
+
+    vector livreurs=lecture_livreur();
+
+    TEST(size(livreurs)==3);
+
+    Livreur const* d=(Livreur*)(begin(&livreurs).element);
+
+    TEST(d->id==1);
+    TEST(strcmp(d->nom,"Francois Pignon")==0);
+    TEST(strcmp(d->telephone,"06 00 00 00 00")==0);
+    TEST(size(d->deplacements)==3);
+    TEST(d->restaurant==1);
+    TEST(d->solde==20.);
+
+    int * deplacement=(int*)(at(&d->deplacements,0).element);
+    TEST(*deplacement==13001);
+    deplacement=(int*)(at(&d->deplacements,1).element);
+    TEST(*deplacement==13002);
+    deplacement=(int*)(at(&d->deplacements,2).element);
+    TEST(*deplacement==13003);
+
+    destroy(&livreurs);
+
+    vector dbmenus=lecture_menu();
+
+    TEST(size(dbmenus)==7);
+
+    Menu const* item=(Menu*)(begin(&dbmenus).element);
+
+    TEST(item->id==1);
+    TEST(strcmp(item->nom, "bouillabaise")==0);
+    TEST(size(item->ingredients)==2);
+    TEST(item->prix==25.);
 
     return tests_executed - tests_successful;
 }
