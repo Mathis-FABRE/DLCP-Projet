@@ -14,11 +14,11 @@
 // Réf. : https://fr.cppreference.com/w/cpp/container/vector
 typedef struct vector
 {
-    size_t const element_size;
+    size_t  element_size;
     size_t size;
     size_t capacity;
     void *data;
-    float const growth_factor;
+    float  growth_factor;
 
     // D'autre membres peuvent être ajoutés, si nécessaire.
 } vector;
