@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "vector.h"
+#include "db.h"
+
 void check()
 {
     FILE* out;
@@ -45,4 +48,20 @@ void check()
         fprintf(out, "%s", "id,nom,code postal,telephone,type,menu,solde\n");
     }
     fclose(out);
+}
+
+void lecture_client(vector * clients)
+{
+    FILE* db_clients=fopen("db_clients.csv", "r");
+
+    Client client;
+
+    while (fscanf(db_clients, "%zu,%36[^,],%d,%14[^,],%f", &client.id, client.nom, &client.code_postal, client.telephone, &client.solde)==5)
+    {
+        push_back(clients, &client);
+    }
+
+    fclose(db_clients);
+
+    return;    
 }
