@@ -6,3 +6,7 @@
 void check();
 
 vector lecture_client();
+
+void separateur_chaine(vector* v, char * chaine);
+
+vector lecture_restaurant();

@@ -58,7 +58,7 @@ vector lecture_client()
 
     Client client;
 
-    while (fscanf(db_clients, "%zu,%36[^,],%d,%14[^,],%f", &client.id, client.nom, &client.code_postal, client.telephone, &client.solde)==5)
+    while (fscanf(db_clients, "%zu,%39[^,],%d,%14[^,],%f", &client.id, client.nom, &client.code_postal, client.telephone, &client.solde)==5)
     {
         push_back(&clients, &client);
     }
@@ -66,4 +66,51 @@ vector lecture_client()
     fclose(db_clients);
 
     return clients;    
+}
+
+void separateur_chaine(vector* v, char * chaine)
+{
+    char buffer[100];
+    size_t id;
+
+    if(sscanf(chaine, "%zu;%s", &id, buffer)==2)
+    {
+        push_back(v,&id);
+        while(sscanf(buffer, "%zu;%s", &id, buffer)==2)
+        {
+            push_back(v,&id);
+        }
+        sscanf(buffer, "%zu", &id);
+        push_back(v,&id);
+    }
+
+    else
+    {
+        sscanf(chaine, "%zu", &id);
+        push_back(v,&id);
+    }
+
+    return;
+}
+
+vector lecture_restaurant()
+{
+    vector restos=make_vector(sizeof(Restaurant), 0, 2.);
+
+    FILE* db_resto=fopen("db_restaurants.csv", "r");
+
+    Restaurant resto;
+
+    char menus[50];
+
+    while(fscanf(db_resto, "%zu,%39[^,],%d,%14[^,],%39[^,],%[^,],%f", &resto.id, resto.nom, &resto.code_postal, resto.telephone, resto.type, menus, &resto.solde)==7)
+    {
+        resto.menu=make_vector(sizeof(size_t),0,2.);
+        separateur_chaine(&resto.menu, menus);
+        push_back(&restos, &resto);
+    }
+
+    fclose(db_resto);
+
+    return restos;
 }
