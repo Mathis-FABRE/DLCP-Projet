@@ -20,87 +20,104 @@ int main()
 
     check();
 
-    vector clients=lecture_client();
-
-    TEST(size(clients)==3);
-
-    Client const* a=(Client*)(begin(&clients).element);
-    TEST(a->id==1);
-    TEST(strcmp(a->nom,"Francoise Perrin")==0);
-    TEST(a->code_postal==13005);
-    TEST(strcmp(a->telephone,"04 10 20 30 40")==0);
-    TEST(a->solde==0.);
-
-    for(int id=1; id<=3; id++)
+    // test de lecture_client()
     {
-        Client const* b=(Client*)(at(&clients, id-1).element);
-        TEST(b->id==id);
+        vector clients=lecture_client();
+
+        TEST(size(clients)==3);
+
+        Client const* a=(Client*)(begin(&clients).element);
+        TEST(a->id==1);
+        TEST(strcmp(a->nom,"Francoise Perrin")==0);
+        TEST(a->code_postal==13005);
+        TEST(strcmp(a->telephone,"04 10 20 30 40")==0);
+        TEST(a->solde==0.);
+
+        for(int id=1; id<=3; id++)
+        {
+            Client const* b=(Client*)(at(&clients, id-1).element);
+            TEST(b->id==id);
+        }
+
+        destroy(&clients);
     }
 
-    destroy(&clients);
-
-    vector menus=make_vector(sizeof(size_t),0,growth_factor);
-
-    separateur_chaine(&menus, "1;2;3");
-
-    TEST(size(menus)==3);
-
-    for (size_t i = 0; i < 3; i++)
+    // test de separateur_chaine()
     {
-        size_t const* id=(size_t*)(at(&menus, i).element);
-        TEST(*id==i+1);
-    }
+        vector menus=make_vector(sizeof(size_t),0,growth_factor);
 
-    destroy(&menus);
+        separateur_chaine(&menus, "1;2;3");
+
+        TEST(size(menus)==3);
+
+        for (size_t i = 0; i < 3; i++)
+        {
+            size_t const* id=(size_t*)(at(&menus, i).element);
+            TEST(*id==i+1);
+        }
+
+        destroy(&menus);
+    }
     
-    vector restos=lecture_restaurant();
+    // test lecture_restaurant()
+    {
+        vector restos=lecture_restaurant();
 
-    TEST(size(restos)==3);
+        TEST(size(restos)==3);
 
-    Restaurant const* c=(Restaurant*)(at(&restos, 2).element);
+        Restaurant const* c=(Restaurant*)(at(&restos, 2).element);
 
-    TEST(c->id==3);
-    TEST(strcmp(c->nom, "Joe's International House of Pancakes")==0);
-    TEST(c->code_postal==13010);
-    TEST(strcmp(c->telephone, "04 22 33 44 55")==0);
-    TEST(strcmp(c->type, "Americain")==0);
-    TEST(size(c->menu)==2);
-    TEST(c->solde==44.);
+        TEST(c->id==3);
+        TEST(strcmp(c->nom, "Joe's International House of Pancakes")==0);
+        TEST(c->code_postal==13010);
+        TEST(strcmp(c->telephone, "04 22 33 44 55")==0);
+        TEST(strcmp(c->type, "Americain")==0);
+        TEST(size(c->menu)==2);
+        TEST(c->solde==44.);
 
-    destroy(&restos);
+        destroy(&restos);
+    }
 
-    vector livreurs=lecture_livreur();
+    // test lecture_livreur()
+    {
+        vector livreurs=lecture_livreur();
 
-    TEST(size(livreurs)==3);
+        TEST(size(livreurs)==3);
 
-    Livreur const* d=(Livreur*)(begin(&livreurs).element);
+        Livreur const* d=(Livreur*)(begin(&livreurs).element);
 
-    TEST(d->id==1);
-    TEST(strcmp(d->nom,"Francois Pignon")==0);
-    TEST(strcmp(d->telephone,"06 00 00 00 00")==0);
-    TEST(size(d->deplacements)==3);
-    TEST(d->restaurant==1);
-    TEST(d->solde==20.);
+        TEST(d->id==1);
+        TEST(strcmp(d->nom,"Francois Pignon")==0);
+        TEST(strcmp(d->telephone,"06 00 00 00 00")==0);
+        TEST(size(d->deplacements)==3);
+        TEST(d->restaurant==1);
+        TEST(d->solde==20.);
 
-    int * deplacement=(int*)(at(&d->deplacements,0).element);
-    TEST(*deplacement==13001);
-    deplacement=(int*)(at(&d->deplacements,1).element);
-    TEST(*deplacement==13002);
-    deplacement=(int*)(at(&d->deplacements,2).element);
-    TEST(*deplacement==13003);
+        int * deplacement=(int*)(at(&d->deplacements,0).element);
+        TEST(*deplacement==13001);
+        deplacement=(int*)(at(&d->deplacements,1).element);
+        TEST(*deplacement==13002);
+        deplacement=(int*)(at(&d->deplacements,2).element);
+        TEST(*deplacement==13003);
 
-    destroy(&livreurs);
+        destroy(&livreurs);
+    }
 
-    vector dbmenus=lecture_menu();
+    // test lecture_menu()
+    {
+        vector dbmenus=lecture_menu();
 
-    TEST(size(dbmenus)==7);
+        TEST(size(dbmenus)==7);
 
-    Menu const* item=(Menu*)(begin(&dbmenus).element);
+        Menu const* item=(Menu*)(begin(&dbmenus).element);
 
-    TEST(item->id==1);
-    TEST(strcmp(item->nom, "bouillabaise")==0);
-    TEST(size(item->ingredients)==2);
-    TEST(item->prix==25.);
+        TEST(item->id==1);
+        TEST(strcmp(item->nom, "bouillabaise")==0);
+        TEST(size(item->ingredients)==2);
+        TEST(item->prix==25.);
+
+        destroy(&dbmenus);
+    }
 
     return tests_executed - tests_successful;
 }
