@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define TAILLE_CHAMP_NOM 36
+#define TAILLE_CHAMP_NOM 39
 #define TAILLE_CHAMP_TEL 14
 
 typedef enum categorie
@@ -20,10 +20,10 @@ typedef enum categorie
 typedef struct restaurant
 {
     size_t id; // Clé primaire.
-    char nom[TAILLE_CHAMP_NOM];
+    char nom[TAILLE_CHAMP_NOM+1];
     int code_postal;
-    char telephone[TAILLE_CHAMP_TEL];
-    char type[TAILLE_CHAMP_NOM];
+    char telephone[TAILLE_CHAMP_TEL+1];
+    char type[TAILLE_CHAMP_NOM+1];
     vector menu;
     float solde;
 } Restaurant;
@@ -31,7 +31,7 @@ typedef struct restaurant
 typedef struct menu
 {
     size_t id; // Clé primaire.
-    char nom[TAILLE_CHAMP_NOM];
+    char nom[TAILLE_CHAMP_NOM+1];
     vector ingredients;
     float prix;
 } Menu;
@@ -39,8 +39,8 @@ typedef struct menu
 typedef struct livreur
 {
     size_t id; // Clé primaire.
-    char nom[TAILLE_CHAMP_NOM];
-    char telephone[TAILLE_CHAMP_TEL];
+    char nom[TAILLE_CHAMP_NOM+1];
+    char telephone[TAILLE_CHAMP_TEL+1];
     vector deplacements; // Liste de code_postal
     size_t restaurant;
     float solde;
@@ -49,9 +49,9 @@ typedef struct livreur
 typedef struct client
 {
     size_t id; // Clé primaire.
-    char nom[TAILLE_CHAMP_NOM];
+    char nom[TAILLE_CHAMP_NOM+1];
     int code_postal;
-    char telephone[TAILLE_CHAMP_TEL];
+    char telephone[TAILLE_CHAMP_TEL+1];
     float solde;
 } Client;
 
