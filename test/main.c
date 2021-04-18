@@ -16,12 +16,11 @@ int const test_column_width = 80;
 
 int main()
 {
-    float const growth_factor=2.;
+    // float const growth_factor=2.;
 
     check();
 
-    vector clients=make_vector(sizeof(Client), 0, growth_factor);
-    lecture_client(&clients);
+    vector clients=lecture_client();
 
     TEST(size(clients)==3);
 

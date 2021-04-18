@@ -50,18 +50,20 @@ void check()
     fclose(out);
 }
 
-void lecture_client(vector * clients)
+vector lecture_client()
 {
+    vector clients=make_vector(sizeof(Client), 0, 2.);
+
     FILE* db_clients=fopen("db_clients.csv", "r");
 
     Client client;
 
     while (fscanf(db_clients, "%zu,%36[^,],%d,%14[^,],%f", &client.id, client.nom, &client.code_postal, client.telephone, &client.solde)==5)
     {
-        push_back(clients, &client);
+        push_back(&clients, &client);
     }
 
     fclose(db_clients);
 
-    return;    
+    return clients;    
 }

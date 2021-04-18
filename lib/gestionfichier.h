@@ -5,4 +5,4 @@
 // les créer si nécessaire
 void check();
 
-void lecture_client(vector * clients);
+vector lecture_client();
