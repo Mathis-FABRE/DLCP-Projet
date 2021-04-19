@@ -5,7 +5,7 @@
 // les créer si nécessaire
 void check();
 
-// fonction lisant le fichier db_clients.csv
+// fonction lisant le fichier file
 // met les données dans un vecteur
 vector lecture_client(const char * file);
 
@@ -14,14 +14,14 @@ vector lecture_client(const char * file);
 // stock les donnée dans le vecteur v
 void separateur_chaine(vector* v, char * chaine);
 
-// fonction lisant le fichier db_restaunts.csv
+// fonction lisant le fichier file
 // met les données dans un vecteur
 vector lecture_restaurant(const char * file);
 
-// fonction lisant le fichier db_livreurs.csv
+// fonction lisant le fichier file
 // met les données dans un vecteu
 vector lecture_livreur(const char * file);
 
-// fonction lisant le fichier db_menus.csv
+// fonction lisant le fichier file
 // met les données dans un vecteu
 vector lecture_menu(const char * file);
