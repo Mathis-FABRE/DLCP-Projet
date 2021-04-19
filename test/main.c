@@ -18,7 +18,7 @@ int main()
 {
     float const growth_factor=2.;
 
-    check();
+    check(1);
 
     // test de lecture_client()
     {

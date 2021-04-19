@@ -3,7 +3,8 @@
 
 // vérifie l'existence des fichiers nécéssaire à la bd
 // les créer si nécessaire
-void check();
+// si choix == 0 db appli sinon db test
+void check(int choix);
 
 // fonction lisant le fichier file
 // met les données dans un vecteur

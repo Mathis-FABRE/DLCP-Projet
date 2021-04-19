@@ -5,45 +5,87 @@
 #include "vector.h"
 #include "db.h"
 
-void check()
+void check(int choix)
 {
     FILE* out;
 
-    // tente d'ouvrir le fichier en lecture
-    out=fopen("db_clients.csv", "r");
-    if(!out)
+    if(choix==0)
     {
-        // s'il n'existe pas
-        out=fopen("db_clients.csv", "w");
-    }
-    fclose(out);
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("db_clients.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("db_clients.csv", "w");
+        }
+        fclose(out);
 
-    // tente d'ouvrir le fichier en lecture
-    out=fopen("db_livreurs.csv", "r");
-    if(!out)
-    {
-        // s'il n'existe pas
-        out=fopen("db_livreurs.csv", "w");
-    }
-    fclose(out);
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("db_livreurs.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("db_livreurs.csv", "w");
+        }
+        fclose(out);
 
-    // tente d'ouvrir le fichier en lecture
-    out=fopen("db_menus.csv", "r");
-    if(!out)
-    {
-        // s'il n'existe pas
-        out=fopen("db_menus.csv", "w");
-    }
-    fclose(out);
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("db_menus.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("db_menus.csv", "w");
+        }
+        fclose(out);
 
-    // tente d'ouvrir le fichier en lecture
-    out=fopen("db_restaurants.csv", "r");
-    if(!out)
-    {
-        // s'il n'existe pas
-        out=fopen("db_restaurants.csv", "w");
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("db_restaurants.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("db_restaurants.csv", "w");
+        }
+        fclose(out);
     }
-    fclose(out);
+
+    else
+    {
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("test/db_clients.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("test/db_clients.csv", "w");
+        }
+        fclose(out);
+
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("test/db_livreurs.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("test/db_livreurs.csv", "w");
+        }
+        fclose(out);
+
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("test/db_menus.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("test/db_menus.csv", "w");
+        }
+        fclose(out);
+
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("test/db_menus.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("test/db_menus.csv", "w");
+        }
+        fclose(out);
+    }
 }
 
 vector lecture_client(const char * file)
