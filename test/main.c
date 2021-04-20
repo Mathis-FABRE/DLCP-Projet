@@ -18,11 +18,11 @@ int main()
 {
     float const growth_factor=2.;
 
-    check();
+    check(1);
 
     // test de lecture_client()
     {
-        vector clients=lecture_client();
+        vector clients=lecture_client("test/db_clients.csv");
 
         TEST(size(clients)==3);
 
@@ -61,7 +61,7 @@ int main()
     
     // test lecture_restaurant()
     {
-        vector restos=lecture_restaurant();
+        vector restos=lecture_restaurant("test/db_restaurants.csv");
 
         TEST(size(restos)==3);
 
@@ -80,7 +80,7 @@ int main()
 
     // test lecture_livreur()
     {
-        vector livreurs=lecture_livreur();
+        vector livreurs=lecture_livreur("test/db_livreurs.csv");
 
         TEST(size(livreurs)==3);
 
@@ -105,7 +105,7 @@ int main()
 
     // test lecture_menu()
     {
-        vector dbmenus=lecture_menu();
+        vector dbmenus=lecture_menu("test/db_menus.csv");
 
         TEST(size(dbmenus)==7);
 

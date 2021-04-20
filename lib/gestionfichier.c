@@ -5,52 +5,94 @@
 #include "vector.h"
 #include "db.h"
 
-void check()
+void check(int choix)
 {
     FILE* out;
 
-    // tente d'ouvrir le fichier en lecture
-    out=fopen("db_clients.csv", "r");
-    if(!out)
+    if(choix==0)
     {
-        // s'il n'existe pas
-        out=fopen("db_clients.csv", "w");
-    }
-    fclose(out);
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("db_clients.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("db_clients.csv", "w");
+        }
+        fclose(out);
 
-    // tente d'ouvrir le fichier en lecture
-    out=fopen("db_livreurs.csv", "r");
-    if(!out)
-    {
-        // s'il n'existe pas
-        out=fopen("db_livreurs.csv", "w");
-    }
-    fclose(out);
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("db_livreurs.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("db_livreurs.csv", "w");
+        }
+        fclose(out);
 
-    // tente d'ouvrir le fichier en lecture
-    out=fopen("db_menus.csv", "r");
-    if(!out)
-    {
-        // s'il n'existe pas
-        out=fopen("db_menus.csv", "w");
-    }
-    fclose(out);
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("db_menus.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("db_menus.csv", "w");
+        }
+        fclose(out);
 
-    // tente d'ouvrir le fichier en lecture
-    out=fopen("db_restaurants.csv", "r");
-    if(!out)
-    {
-        // s'il n'existe pas
-        out=fopen("db_restaurants.csv", "w");
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("db_restaurants.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("db_restaurants.csv", "w");
+        }
+        fclose(out);
     }
-    fclose(out);
+
+    else
+    {
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("test/db_clients.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("test/db_clients.csv", "w");
+        }
+        fclose(out);
+
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("test/db_livreurs.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("test/db_livreurs.csv", "w");
+        }
+        fclose(out);
+
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("test/db_menus.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("test/db_menus.csv", "w");
+        }
+        fclose(out);
+
+        // tente d'ouvrir le fichier en lecture
+        out=fopen("test/db_menus.csv", "r");
+        if(!out)
+        {
+            // s'il n'existe pas
+            out=fopen("test/db_menus.csv", "w");
+        }
+        fclose(out);
+    }
 }
 
-vector lecture_client()
+vector lecture_client(const char * file)
 {
     vector clients=make_vector(sizeof(Client), 0, 2.);
 
-    FILE* db_clients=fopen("db_clients.csv", "r");
+    FILE* db_clients=fopen(file, "r");
 
     Client client;
 
@@ -137,11 +179,11 @@ void separateur_chaine(vector* v, char * chaine)
     return;
 }
 
-vector lecture_restaurant()
+vector lecture_restaurant(const char * file)
 {
     vector restos=make_vector(sizeof(Restaurant), 0, 2.);
 
-    FILE* db_resto=fopen("db_restaurants.csv", "r");
+    FILE* db_resto=fopen(file, "r");
 
     Restaurant resto;
 
@@ -159,11 +201,11 @@ vector lecture_restaurant()
     return restos;
 }
 
-vector lecture_livreur()
+vector lecture_livreur(const char * file)
 {
     vector livreurs=make_vector(sizeof(Livreur),0,2.);
 
-    FILE* db_livreur=fopen("db_livreurs.csv", "r");
+    FILE* db_livreur=fopen(file, "r");
 
     Livreur livreur;
 
@@ -181,11 +223,11 @@ vector lecture_livreur()
     return livreurs;
 }
 
-vector lecture_menu()
+vector lecture_menu(const char * file)
 {
     vector menus=make_vector(sizeof(Menu), 0, 2.);
 
-    FILE* db_menu=fopen("db_menus.csv","r");
+    FILE* db_menu=fopen(file,"r");
 
     Menu menu;
 
