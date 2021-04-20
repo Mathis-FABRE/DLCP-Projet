@@ -10,7 +10,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 38;
+int const tests_total = 39;
 
 int const test_column_width = 80;
 
@@ -107,6 +107,9 @@ int main()
         TEST(*deplacement==13002);
         deplacement=(int*)(at(&d->deplacements,2).element);
         TEST(*deplacement==13003);
+
+        sauvegarde_livreurs(begin(&livreurs), end(&livreurs));
+        TEST_FILE("db_livreurs.csv", "test/db_livreurs.csv");
 
         destroy(&livreurs);
     }
