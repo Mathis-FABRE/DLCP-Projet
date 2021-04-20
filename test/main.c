@@ -10,7 +10,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 36;
+int const tests_total = 37;
 
 int const test_column_width = 80;
 
@@ -38,6 +38,10 @@ int main()
             Client const* b=(Client*)(at(&clients, id-1).element);
             TEST(b->id==id);
         }
+
+        sauvegarde_clients(begin(&clients), end(&clients));
+
+        TEST_FILE("db_clients.csv","test/db_clients.csv")
 
         destroy(&clients);
     }

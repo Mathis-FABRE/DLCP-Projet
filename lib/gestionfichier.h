@@ -20,9 +20,11 @@ void separateur_chaine(vector* v, char * chaine);
 vector lecture_restaurant(const char * file);
 
 // fonction lisant le fichier file
-// met les données dans un vecteu
+// met les données dans un vecteur
 vector lecture_livreur(const char * file);
 
 // fonction lisant le fichier file
-// met les données dans un vecteu
+// met les données dans un vecteur
 vector lecture_menu(const char * file);
+
+void sauvegarde_clients(iterator first, iterator last);

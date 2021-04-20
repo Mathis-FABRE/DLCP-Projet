@@ -244,3 +244,18 @@ vector lecture_menu(const char * file)
 
     return menus;
 }
+
+void sauvegarde_clients(iterator first, iterator last)
+{
+    FILE* db_client=fopen("db_clients.csv", "w");
+
+    for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
+    {
+        Client * client=(Client*)(b.element);
+        fprintf(db_client, "%zu,%s,%d,%14s,%.0f\n", client->id, client->nom, client->code_postal, client->telephone, client->solde);
+    }
+
+    fclose(db_client);
+
+    return;
+}
