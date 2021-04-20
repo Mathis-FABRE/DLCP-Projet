@@ -259,3 +259,36 @@ void sauvegarde_clients(iterator first, iterator last)
 
     return;
 }
+
+void sauvegarde_liste(FILE* file, iterator first, iterator last)
+{
+    if(first.element_size==sizeof(size_t))
+    {
+        iterator e=last;
+        decrement(&e,1);
+        for(iterator b=first; compare(b,e)!=0; increment(&b,1))
+        {
+            size_t * id=(size_t*)(b.element);
+            fprintf(file, "%zu;", *id);
+        }
+        size_t * id=(size_t*)(e.element);
+        fprintf(file, "%zu", *id);
+    }
+}
+
+void sauvegarde_resto(iterator first, iterator last)
+{
+    FILE* db_resto=fopen("db_restaurants.csv", "w");
+
+    for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
+    {
+        Restaurant * resto=(Restaurant*)(b.element);
+        fprintf(db_resto, "%zu,%s,%d,%14s,%s,", resto->id, resto->nom, resto->code_postal, resto->telephone, resto->type);
+        sauvegarde_liste(db_resto, begin(&resto->menu), end(&resto->menu));
+        fprintf(db_resto, ",%.0f\n", resto->solde);
+    }
+
+    fclose(db_resto);
+
+    return;
+}

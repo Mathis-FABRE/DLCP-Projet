@@ -10,7 +10,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 37;
+int const tests_total = 38;
 
 int const test_column_width = 80;
 
@@ -78,6 +78,10 @@ int main()
         TEST(strcmp(c->type, "Americain")==0);
         TEST(size(c->menu)==2);
         TEST(c->solde==44.);
+
+        sauvegarde_resto(begin(&restos), end(&restos));
+
+        TEST_FILE("db_restaurants.csv", "test/db_restaurants.csv");
 
         destroy(&restos);
     }

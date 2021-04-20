@@ -28,3 +28,7 @@ vector lecture_livreur(const char * file);
 vector lecture_menu(const char * file);
 
 void sauvegarde_clients(iterator first, iterator last);
+
+void sauvegarde_liste(FILE* file, iterator first, iterator last);
+
+void sauvegarde_resto(iterator first, iterator last);
