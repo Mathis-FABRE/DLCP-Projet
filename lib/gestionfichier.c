@@ -17,6 +17,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("db_clients.csv", "w");
+            fprintf(out, "id,nom,code postal,telephone,solde\n");
         }
         fclose(out);
 
@@ -26,6 +27,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("db_livreurs.csv", "w");
+            fprintf(out, "id,nom,telephone,deplacements,restaurant,solde\n");
         }
         fclose(out);
 
@@ -35,6 +37,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("db_menus.csv", "w");
+            fprintf(out, "id,nom,ingredients,prix\n");
         }
         fclose(out);
 
@@ -44,6 +47,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("db_restaurants.csv", "w");
+            fprintf(out, "id,nom,code postal,telephone,type,menu,solde\n");
         }
         fclose(out);
     }
@@ -56,6 +60,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("test/db_clients.csv", "w");
+            fprintf(out, "id,nom,code postal,telephone,solde\n");
         }
         fclose(out);
 
@@ -65,6 +70,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("test/db_livreurs.csv", "w");
+            fprintf(out, "id,nom,telephone,deplacements,restaurant,solde\n");
         }
         fclose(out);
 
@@ -74,15 +80,17 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("test/db_menus.csv", "w");
+            fprintf(out, "id,nom,ingredients,prix\n");
         }
         fclose(out);
 
         // tente d'ouvrir le fichier en lecture
-        out=fopen("test/db_menus.csv", "r");
+        out=fopen("test/db_restaurants.csv", "r");
         if(!out)
         {
             // s'il n'existe pas
-            out=fopen("test/db_menus.csv", "w");
+            out=fopen("test/db_restaurants.csv", "w");
+            fprintf(out, "id,nom,code postal,telephone,type,menu,solde\n");
         }
         fclose(out);
     }
@@ -93,6 +101,10 @@ vector lecture_client(const char * file)
     vector clients=make_vector(sizeof(Client), 0, 2.);
 
     FILE* db_clients=fopen(file, "r");
+
+    // ignore première ligne
+    char ignore[100];
+    fgets(ignore,100,db_clients);
 
     Client client;
 
@@ -185,6 +197,10 @@ vector lecture_restaurant(const char * file)
 
     FILE* db_resto=fopen(file, "r");
 
+    // ignore première ligne
+    char ignore[100];
+    fgets(ignore,100,db_resto);
+
     Restaurant resto;
 
     char menus[50];
@@ -206,6 +222,10 @@ vector lecture_livreur(const char * file)
     vector livreurs=make_vector(sizeof(Livreur),0,2.);
 
     FILE* db_livreur=fopen(file, "r");
+
+    // ignore première ligne
+    char ignore[100];
+    fgets(ignore,100,db_livreur);
 
     Livreur livreur;
 
@@ -229,6 +249,10 @@ vector lecture_menu(const char * file)
 
     FILE* db_menu=fopen(file,"r");
 
+    // ignore première ligne
+    char ignore[100];
+    fgets(ignore,100,db_menu);
+
     Menu menu;
 
     char ingredients[136];
@@ -248,6 +272,8 @@ vector lecture_menu(const char * file)
 void sauvegarde_clients(iterator first, iterator last)
 {
     FILE* db_client=fopen("db_clients.csv", "w");
+
+    fprintf(db_client, "id,nom,code postal,telephone,solde\n");
 
     for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
     {
@@ -306,6 +332,8 @@ void sauvegarde_resto(iterator first, iterator last)
 {
     FILE* db_resto=fopen("db_restaurants.csv", "w");
 
+    fprintf(db_resto, "id,nom,code postal,telephone,type,menu,solde\n");
+
     for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
     {
         Restaurant * resto=(Restaurant*)(b.element);
@@ -323,6 +351,8 @@ void sauvegarde_livreurs(iterator first, iterator last)
 {
     FILE* db_livreur=fopen("db_livreurs.csv", "w");
 
+    fprintf(db_livreur, "id,nom,telephone,deplacements,restaurant,solde\n");
+
     for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
     {
         Livreur * livreur=(Livreur*)(b.element);
@@ -339,6 +369,8 @@ void sauvegarde_livreurs(iterator first, iterator last)
 void sauvegarde_menus(iterator first, iterator last)
 {
     FILE* db_menu=fopen("db_menus.csv", "w");
+
+    fprintf(db_menu, "id,nom,ingredients,prix\n");
 
     for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
     {
