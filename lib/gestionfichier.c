@@ -157,10 +157,10 @@ void separateur_chaine(vector* v, char * chaine)
     case 40: ;
         char ingredient[40];
 
-        if(sscanf(chaine, "%39[^;];%s", ingredient, buffer)==2)
+        if(sscanf(chaine, "%39[^;];%[^,]", ingredient, buffer)==2)
         {
             push_back(v,ingredient);
-            while(sscanf(buffer, "%39[^;];%s", ingredient, buffer)==2)
+            while(sscanf(buffer, "%39[^;];%[^,]", ingredient, buffer)==2)
             {
                 push_back(v,ingredient);
             }
