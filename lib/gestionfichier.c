@@ -157,10 +157,10 @@ void separateur_chaine(vector* v, char * chaine)
     case 40: ;
         char ingredient[40];
 
-        if(sscanf(chaine, "%39[^;];%s", ingredient, buffer)==2)
+        if(sscanf(chaine, "%39[^;];%[^,]", ingredient, buffer)==2)
         {
             push_back(v,ingredient);
-            while(sscanf(buffer, "%39[^;];%s", ingredient, buffer)==2)
+            while(sscanf(buffer, "%39[^;];%[^,]", ingredient, buffer)==2)
             {
                 push_back(v,ingredient);
             }
@@ -243,4 +243,112 @@ vector lecture_menu(const char * file)
     fclose(db_menu);
 
     return menus;
+}
+
+void sauvegarde_clients(iterator first, iterator last)
+{
+    FILE* db_client=fopen("db_clients.csv", "w");
+
+    for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
+    {
+        Client * client=(Client*)(b.element);
+        fprintf(db_client, "%zu,%s,%d,%14s,%.0f\n", client->id, client->nom, client->code_postal, client->telephone, client->solde);
+    }
+
+    fclose(db_client);
+
+    return;
+}
+
+void sauvegarde_liste(FILE* file, iterator first, iterator last)
+{
+    if(first.element_size==sizeof(size_t))
+    {
+        iterator e=last;
+        decrement(&e,1);
+        for(iterator b=first; compare(b,e)!=0; increment(&b,1))
+        {
+            size_t * id=(size_t*)(b.element);
+            fprintf(file, "%zu;", *id);
+        }
+        size_t * id=(size_t*)(e.element);
+        fprintf(file, "%zu", *id);
+    }
+
+    else if(first.element_size==sizeof(int))
+    {
+        iterator e=last;
+        decrement(&e,1);
+        for(iterator b=first; compare(b,e)!=0; increment(&b,1))
+        {
+            int * id=(int*)(b.element);
+            fprintf(file, "%d;", *id);
+        }
+        int * id=(int*)(e.element);
+        fprintf(file, "%d", *id);
+    }
+
+    else
+    {
+        iterator e=last;
+        decrement(&e,1);
+        for(iterator b=first; compare(b,e)!=0; increment(&b,1))
+        {
+            char * nom=(char*)(b.element);
+            fprintf(file, "%s;", nom);
+        }
+        char * nom=(char*)(e.element);
+        fprintf(file, "%s", nom);
+    }
+}
+
+void sauvegarde_resto(iterator first, iterator last)
+{
+    FILE* db_resto=fopen("db_restaurants.csv", "w");
+
+    for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
+    {
+        Restaurant * resto=(Restaurant*)(b.element);
+        fprintf(db_resto, "%zu,%s,%d,%14s,%s,", resto->id, resto->nom, resto->code_postal, resto->telephone, resto->type);
+        sauvegarde_liste(db_resto, begin(&resto->menu), end(&resto->menu));
+        fprintf(db_resto, ",%.0f\n", resto->solde);
+    }
+
+    fclose(db_resto);
+
+    return;
+}
+
+void sauvegarde_livreurs(iterator first, iterator last)
+{
+    FILE* db_livreur=fopen("db_livreurs.csv", "w");
+
+    for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
+    {
+        Livreur * livreur=(Livreur*)(b.element);
+        fprintf(db_livreur, "%zu,%s,%14s,", livreur->id, livreur->nom, livreur->telephone);
+        sauvegarde_liste(db_livreur, begin(&livreur->deplacements), end(&livreur->deplacements));
+        fprintf(db_livreur, ",%zu,%.0f\n", livreur->restaurant, livreur->solde);
+    }
+
+    fclose(db_livreur);
+
+    return;
+}
+
+void sauvegarde_menus(iterator first, iterator last)
+{
+    FILE* db_menu=fopen("db_menus.csv", "w");
+
+    for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
+    {
+        Menu * menu=(Menu*)(b.element);
+        fprintf(db_menu, "%zu,%s,", menu->id, menu->nom);
+        sauvegarde_liste(db_menu, begin(&menu->ingredients), end(&menu->ingredients));
+        fprintf(db_menu, ",%0.f\n", menu->prix);
+    }
+
+    fclose(db_menu);
+
+    return;
 }
