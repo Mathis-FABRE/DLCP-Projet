@@ -17,6 +17,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("db_clients.csv", "w");
+            fprintf(out, "id,nom,code postal,telephone,solde");
         }
         fclose(out);
 
@@ -26,6 +27,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("db_livreurs.csv", "w");
+            fprintf(out, "id,nom,telephone,deplacements,restaurant,solde");
         }
         fclose(out);
 
@@ -35,6 +37,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("db_menus.csv", "w");
+            fprintf(out, "id,nom,ingredients,prix");
         }
         fclose(out);
 
@@ -44,6 +47,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("db_restaurants.csv", "w");
+            fprintf(out, "id,nom,code postal,telephone,type,menu,solde");
         }
         fclose(out);
     }
@@ -56,6 +60,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("test/db_clients.csv", "w");
+            fprintf(out, "id,nom,code postal,telephone,solde");
         }
         fclose(out);
 
@@ -65,6 +70,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("test/db_livreurs.csv", "w");
+            fprintf(out, "id,nom,telephone,deplacements,restaurant,solde");
         }
         fclose(out);
 
@@ -74,6 +80,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("test/db_menus.csv", "w");
+            fprintf(out, "id,nom,ingredients,prix");
         }
         fclose(out);
 
@@ -83,6 +90,7 @@ void check(int choix)
         {
             // s'il n'existe pas
             out=fopen("test/db_menus.csv", "w");
+            fprintf(out, "id,nom,code postal,telephone,type,menu,solde");
         }
         fclose(out);
     }
