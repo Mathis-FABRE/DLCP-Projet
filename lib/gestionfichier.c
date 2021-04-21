@@ -102,6 +102,10 @@ vector lecture_client(const char * file)
 
     FILE* db_clients=fopen(file, "r");
 
+    // ignore première ligne
+    char ignore[100];
+    fgets(ignore,100,db_clients);
+
     Client client;
 
     while (fscanf(db_clients, "%zu,%39[^,],%d,%14[^,],%f", &client.id, client.nom, &client.code_postal, client.telephone, &client.solde)==5)
@@ -193,6 +197,10 @@ vector lecture_restaurant(const char * file)
 
     FILE* db_resto=fopen(file, "r");
 
+    // ignore première ligne
+    char ignore[100];
+    fgets(ignore,100,db_resto);
+
     Restaurant resto;
 
     char menus[50];
@@ -215,6 +223,10 @@ vector lecture_livreur(const char * file)
 
     FILE* db_livreur=fopen(file, "r");
 
+    // ignore première ligne
+    char ignore[100];
+    fgets(ignore,100,db_livreur);
+
     Livreur livreur;
 
     char restos[100];
@@ -236,6 +248,10 @@ vector lecture_menu(const char * file)
     vector menus=make_vector(sizeof(Menu), 0, 2.);
 
     FILE* db_menu=fopen(file,"r");
+
+    // ignore première ligne
+    char ignore[100];
+    fgets(ignore,100,db_menu);
 
     Menu menu;
 
