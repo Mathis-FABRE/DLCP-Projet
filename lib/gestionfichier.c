@@ -287,6 +287,19 @@ void sauvegarde_liste(FILE* file, iterator first, iterator last)
         int * id=(int*)(e.element);
         fprintf(file, "%d", *id);
     }
+
+    else
+    {
+        iterator e=last;
+        decrement(&e,1);
+        for(iterator b=first; compare(b,e)!=0; increment(&b,1))
+        {
+            char * nom=(char*)(b.element);
+            fprintf(file, "%s;", nom);
+        }
+        char * nom=(char*)(e.element);
+        fprintf(file, "%s", nom);
+    }
 }
 
 void sauvegarde_resto(iterator first, iterator last)
@@ -319,6 +332,23 @@ void sauvegarde_livreurs(iterator first, iterator last)
     }
 
     fclose(db_livreur);
+
+    return;
+}
+
+void sauvegarde_menus(iterator first, iterator last)
+{
+    FILE* db_menu=fopen("db_menus.csv", "w");
+
+    for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
+    {
+        Menu * menu=(Menu*)(b.element);
+        fprintf(db_menu, "%zu,%s,", menu->id, menu->nom);
+        sauvegarde_liste(db_menu, begin(&menu->ingredients), end(&menu->ingredients));
+        fprintf(db_menu, ",%0.f\n", menu->prix);
+    }
+
+    fclose(db_menu);
 
     return;
 }

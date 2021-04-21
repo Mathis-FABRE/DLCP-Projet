@@ -34,3 +34,5 @@ void sauvegarde_liste(FILE* file, iterator first, iterator last);
 void sauvegarde_resto(iterator first, iterator last);
 
 void sauvegarde_livreurs(iterator first, iterator last);
+
+void sauvegarde_menus(iterator first, iterator last);
