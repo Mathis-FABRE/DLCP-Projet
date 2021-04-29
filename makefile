@@ -16,6 +16,12 @@ build/vector_api.o: lib/vector_api.c lib/vector_api.h lib/vector_types.h | build
 build/libvector.a: lib/vector.h build/vector_api.o | build
 	ar crs build/libvector.a build/vector_api.o
 
+build/algorithm.o: lib/algorithm.c lib/algorithm.h | build
+	gcc -Wall -Werror -pedantic --debug -Wno-pointer-arith -c lib/algorithm.c -I ./lib -o build/algorithm.o
+
+build/libalgorithm.a: lib/algorithm.h build/algorithm.o | build
+	ar crs build/libalgorithm.a build/algorithm.o
+
 # Librairie pour le traitement des db
 build/db.o : lib/db.c lib/db.h | build
 	gcc -Wall -Werror -pedantic --debug -c lib/db.c -I ./lib -o build/db.o
@@ -34,8 +40,8 @@ build/libgestionfichier.a: lib/gestionfichier.h build/gestionfichier.o | build
 build/test.o: test/main.c | build
 	gcc -Wall -Werror -pedantic --debug -c test/main.c -I ./lib -o build/test.o
 
-build/test: build/test.o build/libvector.a build/libdb.a build/libgestionfichier.a | build
-	gcc build/test.o -L build -l vector -l db -l gestionfichier -o build/test
+build/test: build/test.o build/libvector.a build/libdb.a build/libalgorithm.a | build
+	gcc build/test.o -L build -l vector -l gestionfichier -l algorithm -l db -o build/test
 
 # Programme de l'application
 build/appli.o: appli/main.c | build
