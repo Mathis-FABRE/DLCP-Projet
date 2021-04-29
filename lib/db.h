@@ -65,3 +65,5 @@ void ecriture_table(
 // Renvoie 'vrai' si le docteur compte 'MEDECINE_GENERALE' parmi ses spécialités.
 bool est_generaliste(
     void const *d);
+
+int ajout_resto(char * nom, int code, char * telephone, char * type, vector * restos);

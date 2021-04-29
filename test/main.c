@@ -11,7 +11,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 44;
+int const tests_total = 46;
 
 int const test_column_width = 80;
 
@@ -85,6 +85,10 @@ int main()
             TEST(c->solde==44.);
 
             TEST(get_first_id(begin(&restos), end(&restos)) == 4);
+
+            TEST(ajout_resto("empburger", 82517, "06 53 12 89 75", "fast food", &restos) == 4);
+
+            TEST(size(restos) == 5);
 
             sauvegarde_resto(begin(&restos), end(&restos));
 
