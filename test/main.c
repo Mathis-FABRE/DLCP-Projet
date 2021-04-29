@@ -1,5 +1,6 @@
 #include "gestionfichier.h"
 #include "db.h"
+#include "algorithm.h"
 
 #include "test_harness/test_harness.h"
 
@@ -10,7 +11,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 40;
+int const tests_total = 42;
 
 int const test_column_width = 80;
 
@@ -41,6 +42,8 @@ int main()
                 TEST(b->id==id);
             }
 
+            TEST(get_first_id(&clients) == 4);
+
             sauvegarde_clients(begin(&clients), end(&clients));
 
             TEST_FILE("db_clients.csv","test/db_clients.csv")
@@ -69,7 +72,7 @@ int main()
         {
             vector restos=lecture_restaurant("test/db_restaurants.csv");
 
-            TEST(size(restos)==3);
+            TEST(size(restos)==4);
 
             Restaurant const* c=(Restaurant*)(at(&restos, 2).element);
 
@@ -80,6 +83,8 @@ int main()
             TEST(strcmp(c->type, "Americain")==0);
             TEST(size(c->menu)==2);
             TEST(c->solde==44.);
+
+            TEST(get_first_id(&restos) == 4);
 
             sauvegarde_resto(begin(&restos), end(&restos));
 
@@ -120,7 +125,7 @@ int main()
         {
             vector dbmenus=lecture_menu("test/db_menus.csv");
 
-            TEST(size(dbmenus)==7);
+            TEST(size(dbmenus)==8);
 
             Menu const* item=(Menu*)(begin(&dbmenus).element);
 
