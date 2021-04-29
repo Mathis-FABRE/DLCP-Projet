@@ -3,17 +3,11 @@
 #include "vector_api.h"
 #include "vector_types.h"
 #include "algorithm.h"
+#include "functions.h"
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-
-//     char nom[TAILLE_CHAMP_NOM+1];
-//     int code_postal;
-//     char telephone[TAILLE_CHAMP_TEL+1];
-//     char type[TAILLE_CHAMP_NOM+1];
-//     vector menu;
-//     float solde;
 
 int ajout_resto(char * nom, int code, char * telephone, char * type, vector * restos)
 {
@@ -28,8 +22,9 @@ int ajout_resto(char * nom, int code, char * telephone, char * type, vector * re
     new.menu = make_vector(sizeof(size_t), 0, 2.);
     new.solde = 0.;
 
-
     push_back(restos, &new);
+
+    sort_by(begin(restos), end(restos), idresto_compare);
 
     return id;
 }
