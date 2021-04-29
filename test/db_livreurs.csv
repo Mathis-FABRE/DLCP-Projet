@@ -1,0 +1,4 @@
+id,nom,telephone,deplacements,restaurant,solde
+1,Francois Pignon,06 00 00 00 00,13001;13002;13003,1,20
+2,Donald Duck,06 01 02 03 04,13001;13004;13005;13006;13009;13010,0,25
+3,Mickey Mouse,06 11 22 33 44,13008;13009;13010;13011,0,0
