@@ -1,4 +1,5 @@
 #include "algorithm.h"
+#include "db.h"
 
 #include "vector_api.h"
 #include "vector_types.h"
@@ -544,3 +545,20 @@ iterator set_intersection(
     
     return destination; // renvoyé destination
 }
+
+int get_first_id(vector * v)
+{
+    // on rajoute le client au premier id disponible
+    iterator i = begin(v), e = end(v);
+    Client *user = i.element;
+    int id = 0;
+    while(compare(i, e) && user->id == id + 1)
+    {
+        increment(&i, 1);
+        user = i.element;
+        id++;
+    }
+
+    return id + 1;
+}
+ 
