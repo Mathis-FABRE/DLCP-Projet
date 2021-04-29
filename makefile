@@ -40,7 +40,7 @@ build/libgestionfichier.a: lib/gestionfichier.h build/gestionfichier.o | build
 build/test.o: test/main.c | build
 	gcc -Wall -Werror -pedantic --debug -c test/main.c -I ./lib -o build/test.o
 
-build/test: build/test.o build/libvector.a build/libdb.a build/libalgorithm.a | build
+build/test: build/test.o build/libvector.a build/libdb.a build/libgestionfichier.a build/libalgorithm.a | build 
 	gcc build/test.o -L build -l vector -l gestionfichier -l algorithm -l db -o build/test
 
 # Programme de l'application
