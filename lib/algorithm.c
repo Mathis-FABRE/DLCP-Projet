@@ -546,17 +546,54 @@ iterator set_intersection(
     return destination; // renvoyé destination
 }
 
-int get_first_id(vector * v)
+int get_first_id(iterator first, iterator last)
 {
     // on rajoute le client au premier id disponible
-    iterator i = begin(v), e = end(v);
-    Client *user = i.element;
+    iterator i = first, e = last;
+    
     int id = 0;
-    while(compare(i, e) && user->id == id + 1)
+    if(i.element_size==sizeof(Client))
     {
-        increment(&i, 1);
-        user = i.element;
-        id++;
+        Client *user = (Client*)(i.element);
+        while(compare(i, e) && user->id == id + 1)
+        {
+            increment(&i, 1);
+            user = (Client*)(i.element);
+            id++;
+        }
+    }
+
+    else if(i.element_size==sizeof(Restaurant))
+    {
+        Restaurant *user = (Restaurant*)(i.element);
+        while(compare(i, e) && user->id == id + 1)
+        {
+            increment(&i, 1);
+            user = (Restaurant*)(i.element);
+            id++;
+        }
+    }
+
+    else if(i.element_size==sizeof(Menu))
+    {
+        Menu *user = (Menu*)(i.element);
+        while(compare(i, e) && user->id == id + 1)
+        {
+            increment(&i, 1);
+            user = (Menu*)(i.element);
+            id++;
+        }
+    }
+
+    else if(i.element_size==sizeof(Livreur))
+    {
+        Livreur *user = (Livreur*)(i.element);
+        while(compare(i, e) && user->id == id + 1)
+        {
+            increment(&i, 1);
+            user = (Livreur*)(i.element);
+            id++;
+        }
     }
 
     return id + 1;

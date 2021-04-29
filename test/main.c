@@ -11,7 +11,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 42;
+int const tests_total = 44;
 
 int const test_column_width = 80;
 
@@ -42,7 +42,7 @@ int main()
                 TEST(b->id==id);
             }
 
-            TEST(get_first_id(&clients) == 4);
+            TEST(get_first_id(begin(&clients), end(&clients)) == 4);
 
             sauvegarde_clients(begin(&clients), end(&clients));
 
@@ -53,19 +53,19 @@ int main()
 
         // test de separateur_chaine()
         {
-            vector menus=make_vector(sizeof(size_t),0,growth_factor);
+            vector dbmenus=make_vector(sizeof(size_t),0,growth_factor);
 
-            separateur_chaine(&menus, "1;2;3");
+            separateur_chaine(&dbmenus, "1;2;3");
 
-            TEST(size(menus)==3);
+            TEST(size(dbmenus)==3);
 
             for (size_t i = 0; i < 3; i++)
             {
-                size_t const* id=(size_t*)(at(&menus, i).element);
+                size_t const* id=(size_t*)(at(&dbmenus, i).element);
                 TEST(*id==i+1);
             }
 
-            destroy(&menus);
+            destroy(&dbmenus);
         }
         
         // test lecture_restaurant() + sauvegarde_resto()
@@ -84,7 +84,7 @@ int main()
             TEST(size(c->menu)==2);
             TEST(c->solde==44.);
 
-            TEST(get_first_id(&restos) == 4);
+            TEST(get_first_id(begin(&restos), end(&restos)) == 4);
 
             sauvegarde_resto(begin(&restos), end(&restos));
 
@@ -115,6 +115,8 @@ int main()
             deplacement=(int*)(at(&d->deplacements,2).element);
             TEST(*deplacement==13003);
 
+            TEST(get_first_id(begin(&livreurs), end(&livreurs)) == 4);
+
             sauvegarde_livreurs(begin(&livreurs), end(&livreurs));
             TEST_FILE("db_livreurs.csv", "test/db_livreurs.csv");
 
@@ -123,21 +125,23 @@ int main()
 
         // test lecture_menu() + sauvegarde_menus()
         {
-            vector dbmenus=lecture_menu("test/db_menus.csv");
+            vector menus=lecture_menu("test/db_menus.csv");
 
-            TEST(size(dbmenus)==8);
+            TEST(size(menus)==8);
 
-            Menu const* item=(Menu*)(begin(&dbmenus).element);
+            Menu const* item=(Menu*)(begin(&menus).element);
 
             TEST(item->id==1);
             TEST(strcmp(item->nom, "bouillabaise")==0);
             TEST(size(item->ingredients)==2);
             TEST(item->prix==25.);
 
-            sauvegarde_menus(begin(&dbmenus), end(&dbmenus));
+            TEST(get_first_id(begin(&menus), end(&menus)) == 9);
+
+            sauvegarde_menus(begin(&menus), end(&menus));
             TEST_FILE("db_menus.csv", "test/db_menus.csv");
 
-            destroy(&dbmenus);
+            destroy(&menus);
         }
     }
 
