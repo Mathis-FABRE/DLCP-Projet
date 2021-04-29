@@ -288,6 +288,11 @@ void sauvegarde_clients(iterator first, iterator last)
 
 void sauvegarde_liste(FILE* file, iterator first, iterator last)
 {
+    if(compare(first,last)==0)
+    {
+        return;
+    }
+    
     if(first.element_size==sizeof(size_t))
     {
         iterator e=last;

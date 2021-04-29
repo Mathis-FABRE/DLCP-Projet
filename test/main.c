@@ -86,7 +86,7 @@ int main()
 
             TEST(get_first_id(begin(&restos), end(&restos)) == 4);
 
-            TEST(ajout_resto("empburger", 82517, "06 53 12 89 75", "fast food", &restos) == 4);
+            TEST(ajout_resto("empburger", 82517, "06 53 12 89 75", "Fast Food", &restos) == 4);
 
             TEST(size(restos) == 5);
 
