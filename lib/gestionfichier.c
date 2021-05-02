@@ -120,7 +120,7 @@ vector lecture_client(const char * file)
 
 void separateur_chaine(vector* v, char * chaine)
 {
-    char buffer[100];
+    char buffer[256];
     
     switch (v->element_size)
     {
