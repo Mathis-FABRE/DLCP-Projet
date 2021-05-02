@@ -15,10 +15,24 @@ int ajout_resto(char * nom, int code, char * telephone, char * type, vector * re
 
     Restaurant new;
     new.id = id;
-    strcpy(new.nom, nom);
+
+    if(isunder39(nom))
+        strcpy(new.nom, nom);
+    else
+        return -1;
+    
     new.code_postal = code;
-    strcpy(new.telephone, telephone);
-    strcpy(new.type, type);
+
+    if(istel(telephone))
+        strcpy(new.telephone, telephone);
+    else
+        return -2;
+    
+    if(isnom(type))
+        strcpy(new.type, type);
+    else
+        return -3;    
+
     new.menu = make_vector(sizeof(size_t), 0, 2.);
     new.solde = 0.;
 

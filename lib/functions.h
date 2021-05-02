@@ -61,3 +61,21 @@ int lexicographical_compare(
 int idresto_compare(
     void const* a,
     void const* b);
+
+// regarde si une chaine de caractères
+// est en dessous de 39 caractères
+// si oui retourne 1
+// si non retourne 0
+int isunder39(char * string);
+
+// regarde si une chaine de caractères
+// est un téléphone
+// si oui retourne 1
+// si non retourne 0
+int istel(char * string);
+
+// regarde si une chaine de caractères
+// est un nom
+// si oui retourne 1
+// si non retourne 0
+int isnom(char * string);

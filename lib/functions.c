@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <ctype.h>
+#include <string.h>
 
 bool is_even(
     void const* data)
@@ -142,4 +143,74 @@ int idresto_compare(
     void const* b)
 {
     return ((Restaurant*)a)->id - ((Restaurant*)b)->id;
+}
+
+int isunder39(char * string)
+{
+    if(strlen(string)<=39)
+        return 1;
+    
+    else
+        return 0;
+}
+
+int isnom(char * string)
+{
+    int len=strlen(string);
+    if(len>39 || len==0)
+        return 0;
+    
+    else
+    {
+        int space=0;
+        for(int i=0; i<len; i++)
+        {
+            if((string[i]<'a' || string[i]>'z') && (string[i]<'A' || string[i]>'Z') && (string[i]!=' '))
+                return 0;
+            
+            if(string[i]==' ')
+            {
+                if(space==0)
+                    space=1;
+                
+                else
+                    return 0;
+            }
+
+            else
+            {
+                space=0;
+            }
+            
+        }
+
+        return 1;
+    }
+}
+
+int istel(char * string)
+{
+    if(strlen(string)==14)
+    {
+        for(int i=0; i<14; i++)
+        {
+            if((i+1)%3==0)
+            {
+                if(string[i]!=' ')
+                    return 0;
+            }
+            else
+            {
+                if(string[i]<'0' || string[i]>'9')
+                    return 0;
+            }
+        }
+
+        return 1;
+    }
+
+    else
+    {
+        return 0;
+    } 
 }
