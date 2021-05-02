@@ -71,3 +71,5 @@ int ajout_resto(char * nom, int code, char * telephone, char * type, vector * re
 int ajout_ingredients(char * ingredients, vector * v);
 
 int ajout_menu(char * nom, char * ingredients, float prix, vector * menus);
+
+int menu_resto(size_t id, Restaurant * resto, vector const menus);

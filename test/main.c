@@ -12,7 +12,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 84;
+int const tests_total = 92;
 
 int const test_column_width = 80;
 
@@ -194,6 +194,24 @@ int main()
         TEST(istel("@& _è *µ ^¨ çà")==0);
         TEST(istel("14 25 36 87 69 ")==0);
         TEST(istel("01 23 45 67 8")==0);
+    }
+
+    // test relation menu_resto
+    {
+        vector restos=lecture_restaurant("db_restaurants.csv");
+        vector menus=lecture_menu("db_menus.csv");
+
+        TEST(menu_resto(8, (Restaurant*)(at(&restos, 3).element), menus)==1);
+        TEST(menu_resto(9, (Restaurant*)(at(&restos, 3).element), menus)==1);
+        TEST(menu_resto(13, (Restaurant*)(at(&restos, 3).element), menus)==0);
+        TEST(menu_resto(36, (Restaurant*)(at(&restos, 3).element), menus)==0);
+
+        Restaurant * resto =(Restaurant*)(at(&restos, 3).element);
+        TEST(resto->id==4);
+        TEST(size(resto->menu)==2);
+      
+        TEST(*((size_t*)(at(&(resto->menu), 0).element))==8);
+        TEST(*((size_t*)(at(&(resto->menu), 1).element))==9);
     }
 
     return tests_executed - tests_successful;
