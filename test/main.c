@@ -12,7 +12,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 77;
+int const tests_total = 84;
 
 int const test_column_width = 80;
 
@@ -146,6 +146,15 @@ int main()
             TEST(item->prix==25.);
 
             TEST(get_first_id(begin(&menus), end(&menus)) == 9);
+
+            TEST(ajout_menu("chicken nuggets", "poulet;farine;huile", 2.5, &menus)==9);
+            TEST(ajout_menu("salade de fruits", "fruits mixtes", 3.5, &menus)==10);
+            TEST(ajout_menu("nothing", "", 100, &menus)==-2);
+            TEST(ajout_menu("free stuff", "free;peanut", 0., &menus)==11);
+            TEST(ajout_menu("something", "aze;dza", -1., &menus)==-3);
+            TEST(ajout_menu("le 13", "leza;le12",-2., &menus)==-2);
+
+            TEST(size(menus)==11);
 
             sauvegarde_menus(begin(&menus), end(&menus));
             TEST_FILE("db_menus.csv", "test/db_menus.csv");
