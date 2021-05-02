@@ -140,8 +140,11 @@ void separateur_chaine(vector* v, char * chaine)
 
         else
         {
-            sscanf(chaine, "%zu", &id);
-            push_back(v,&id);
+            if(strcmp(chaine, "  ")!=0)
+            {
+                sscanf(chaine, "%zu", &id);
+                push_back(v,&id);
+            }
         }
         break;
     
@@ -290,6 +293,7 @@ void sauvegarde_liste(FILE* file, iterator first, iterator last)
 {
     if(compare(first,last)==0)
     {
+        fprintf(file, "  ");
         return;
     }
     
