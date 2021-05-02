@@ -22,6 +22,12 @@ build/algorithm.o: lib/algorithm.c lib/algorithm.h | build
 build/libalgorithm.a: lib/algorithm.h build/algorithm.o | build
 	ar crs build/libalgorithm.a build/algorithm.o
 
+build/functions.o : lib/functions.c lib/functions.h | build
+	gcc -Wall -Werror -pedantic --debug -c lib/functions.c -I ./lib -o build/functions.o
+
+build/libfunctions.a: lib/functions.h build/functions.o | build
+	ar crs build/libfunctions.a build/functions.o
+
 # Librairie pour le traitement des db
 build/db.o : lib/db.c lib/db.h | build
 	gcc -Wall -Werror -pedantic --debug -c lib/db.c -I ./lib -o build/db.o
@@ -40,8 +46,8 @@ build/libgestionfichier.a: lib/gestionfichier.h build/gestionfichier.o | build
 build/test.o: test/main.c | build
 	gcc -Wall -Werror -pedantic --debug -c test/main.c -I ./lib -o build/test.o
 
-build/test: build/test.o build/libvector.a build/libdb.a build/libgestionfichier.a build/libalgorithm.a | build 
-	gcc build/test.o -L build -l vector -l gestionfichier -l algorithm -l db -o build/test
+build/test: build/test.o build/libvector.a build/libdb.a build/libgestionfichier.a build/libalgorithm.a build/libfunctions.a | build 
+	gcc build/test.o -L build -l vector -l gestionfichier -l algorithm -l db -l functions -o build/test
 
 # Programme de l'application
 build/appli.o: appli/main.c | build
