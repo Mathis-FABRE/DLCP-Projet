@@ -67,3 +67,7 @@ bool est_generaliste(
     void const *d);
 
 int ajout_resto(char * nom, int code, char * telephone, char * type, vector * restos);
+
+int ajout_ingredients(char * ingredients, vector * v);
+
+int ajout_menu(char * nom, char * ingredients, float prix, vector * menus);

@@ -42,3 +42,73 @@ int ajout_resto(char * nom, int code, char * telephone, char * type, vector * re
 
     return id;
 }
+
+int ajout_ingredients(char * ingredients, vector * v)
+{
+    char buffer[256];
+
+    char ingredient[40];
+
+    if(sscanf(ingredients, "%39[^;];%[^,]", ingredient, buffer)==2)
+    {
+        if(isnom(ingredient))
+            push_back(v,ingredient);
+        else
+            return 0;
+        
+        while(sscanf(buffer, "%39[^;];%[^,]", ingredient, buffer)==2)
+        {
+            if(isnom(ingredient))
+                push_back(v,ingredient);
+            else
+                return 0;
+        }
+        sscanf(buffer, "%39[^;]", ingredient);
+        if(isnom(ingredient))
+            push_back(v,ingredient);
+        else
+            return 0;
+    }
+
+    else if(sscanf(ingredients, "%39[^;]", ingredient)==1)
+    {
+        if(isnom(ingredient))
+            push_back(v,ingredient);
+        else
+            return 0;
+    }
+
+    else
+        return 0;
+
+    return 1;
+}
+
+int ajout_menu(char * nom, char * ingredients, float prix, vector * menus)
+{
+    int id = get_first_id(begin(menus), end(menus));
+
+    Menu new;
+
+    new.id=id;
+
+    if(isunder39(nom))
+        strcpy(new.nom, nom);
+    else
+        return -1;
+
+    new.ingredients=make_vector(40, 0, 2.);
+    if(!ajout_ingredients(ingredients, &new.ingredients))
+        return -2;
+
+    if(prix>=0.)
+        new.prix=prix;
+    else
+        return -3;
+
+    push_back(menus, &new);
+
+    sort_by(begin(menus), end(menus), idmenu_compare);
+
+    return id;
+}
