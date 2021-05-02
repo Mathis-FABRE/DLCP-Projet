@@ -97,7 +97,7 @@ int main()
 
             sauvegarde_resto(begin(&restos), end(&restos));
 
-            TEST_FILE("db_restaurants.csv", "test/db_restaurants.csv");
+            TEST_FILE("db_restaurants.csv", "test/db_resto_final.csv");
 
             destroy(&restos);
         }
@@ -157,7 +157,7 @@ int main()
             TEST(size(menus)==11);
 
             sauvegarde_menus(begin(&menus), end(&menus));
-            TEST_FILE("db_menus.csv", "test/db_menus.csv");
+            TEST_FILE("db_menus.csv", "test/db_menu_final.csv");
 
             destroy(&menus);
         }
