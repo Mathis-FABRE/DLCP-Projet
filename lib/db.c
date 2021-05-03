@@ -2,75 +2,128 @@
 
 #include "vector_api.h"
 #include "vector_types.h"
+#include "algorithm.h"
+#include "functions.h"
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
-
-/* vector lecture_table(
-    FILE* file)
+int ajout_resto(char * nom, int code, char * telephone, char * type, vector * restos)
 {
-    vector vect = make_vector(sizeof(client), 0, 2.);
-    // buffer et séparateurs pour split la chaine
-    char string[1024], del[] = ",";
-    while(fgets(string, 1024, file))
+    int id=get_first_id(begin(restos), end(restos));
+
+    Restaurant new;
+    new.id = id;
+
+    if(isunder39(nom))
+        strcpy(new.nom, nom);
+    else
+        return -1;
+    
+    new.code_postal = code;
+
+    if(istel(telephone))
+        strcpy(new.telephone, telephone);
+    else
+        return -2;
+    
+    if(isnom(type))
+        strcpy(new.type, type);
+    else
+        return -3;    
+
+    new.menu = make_vector(sizeof(size_t), 0, 2.);
+    new.solde = 0.;
+
+    push_back(restos, &new);
+
+    sort_by(begin(restos), end(restos), idresto_compare);
+
+    return id;
+}
+
+int ajout_ingredients(char * ingredients, vector * v)
+{
+    char buffer[256];
+
+    char ingredient[40];
+
+    if(sscanf(ingredients, "%39[^;];%[^,]", ingredient, buffer)==2)
     {
-        // on coupe la chaine au premier délimiteur rencontré avec strtok
-        char *index_s = strtok(string, del);
-
-        // on transforme la chaine obtenue en size_t 
-        size_t index;
-        sscanf(index_s, "%zu" ,&index);
-
-        // on split au prochain del
-        // note: on part de NULL car strtok place un NULL après chaque délimiteur lorsqu'il coupe la chaine
-        char * temp = strtok(NULL, del);
-
-        // on coupe puis on sauvegarde en tant qu'entier
-        char *spe_s = strtok(NULL, del);
-        int spe;
-        sscanf(spe_s, "%d" ,&spe);
-
-        // on coupe puis on sauvegarde en tant que size_t
-        char *index_hopital_s= strtok(NULL, del);
-        size_t index_hopital;
-        sscanf(index_hopital_s, "%zu" ,&index_hopital);
+        if(isnom(ingredient))
+            push_back(v,ingredient);
+        else
+            return 0;
         
-        // création du docteur
-        docteur doct = (docteur){
-            .index = index,
-            .specialites = spe,
-            .index_hopital = index_hopital
-        };
-        strcpy(doct.nom, temp);
-
-        // on le range dans le vecteur
-        push_back(&vect, &doct);
+        while(sscanf(buffer, "%39[^;];%[^,]", ingredient, buffer)==2)
+        {
+            if(isnom(ingredient))
+                push_back(v,ingredient);
+            else
+                return 0;
+        }
+        sscanf(buffer, "%39[^;]", ingredient);
+        if(isnom(ingredient))
+            push_back(v,ingredient);
+        else
+            return 0;
     }
 
-    return vect;
-}
-
-void ecriture_table(
-    FILE* file,
-    vector const* db)
-{
-     for (iterator i = begin(db), e = end(db); compare(i, e) != 0; increment(&i, 1))
+    else if(sscanf(ingredients, "%39[^;]", ingredient)==1)
     {
-        docteur *doc = i.element;
-        fprintf(file, "%zu,%s,%d,%zu\n", doc->index, doc->nom, doc->specialites, doc->index_hopital);
+        if(isnom(ingredient))
+            push_back(v,ingredient);
+        else
+            return 0;
     }
+
+    else
+        return 0;
+
+    return 1;
 }
 
-bool est_generaliste(
-    void const* d)
+int ajout_menu(char * nom, char * ingredients, float prix, vector * menus)
 {
-    docteur *doc = (docteur *) d;
-    // Lien utile pour le test : https://www.oreilly.com/library/view/c-cookbook/0596003390/ch04s06.html
-    enum specialite_t specialite = doc->specialites;
-    if ((specialite & MEDECINE_GENERALE) == MEDECINE_GENERALE)    
-        return true;
+    int id = get_first_id(begin(menus), end(menus));
 
-    return false;
-} */
+    Menu new;
+
+    new.id=id;
+
+    if(isunder39(nom))
+        strcpy(new.nom, nom);
+    else
+        return -1;
+
+    new.ingredients=make_vector(40, 0, 2.);
+    if(!ajout_ingredients(ingredients, &new.ingredients))
+        return -2;
+
+    if(prix>=0.)
+        new.prix=prix;
+    else
+        return -3;
+
+    push_back(menus, &new);
+
+    sort_by(begin(menus), end(menus), idmenu_compare);
+
+    return id;
+}
+
+int menu_resto(size_t id, Restaurant * resto, vector const menus)
+{
+    Menu compare;
+    compare.id=id;
+
+    if(binary_search(begin(&menus), end(&menus), &compare, idmenu_compare))
+    {
+        push_back(&resto->menu, &id);
+        return 1;
+    }
+
+    else
+        return 0;    
+}

@@ -194,5 +194,6 @@ iterator set_intersection(
     int (*comparator)(void const* a, void const* b));
 
 // Récupère le premier id disponible dans la liste donnée
-// Prend le vector contenant la liste 
-int get_first_id(vector * v);
+// Prend le premier et dernier iterateur d'un vecteur
+// Supposé trié de db
+int get_first_id(iterator first, iterator last);

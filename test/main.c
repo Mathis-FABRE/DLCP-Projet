@@ -1,6 +1,7 @@
 #include "gestionfichier.h"
 #include "db.h"
 #include "algorithm.h"
+#include "functions.h"
 
 #include "test_harness/test_harness.h"
 
@@ -11,7 +12,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 42;
+int const tests_total = 92;
 
 int const test_column_width = 80;
 
@@ -42,7 +43,7 @@ int main()
                 TEST(b->id==id);
             }
 
-            TEST(get_first_id(&clients) == 4);
+            TEST(get_first_id(begin(&clients), end(&clients)) == 4);
 
             sauvegarde_clients(begin(&clients), end(&clients));
 
@@ -53,19 +54,19 @@ int main()
 
         // test de separateur_chaine()
         {
-            vector menus=make_vector(sizeof(size_t),0,growth_factor);
+            vector dbmenus=make_vector(sizeof(size_t),0,growth_factor);
 
-            separateur_chaine(&menus, "1;2;3");
+            separateur_chaine(&dbmenus, "1;2;3");
 
-            TEST(size(menus)==3);
+            TEST(size(dbmenus)==3);
 
             for (size_t i = 0; i < 3; i++)
             {
-                size_t const* id=(size_t*)(at(&menus, i).element);
+                size_t const* id=(size_t*)(at(&dbmenus, i).element);
                 TEST(*id==i+1);
             }
 
-            destroy(&menus);
+            destroy(&dbmenus);
         }
         
         // test lecture_restaurant() + sauvegarde_resto()
@@ -84,11 +85,19 @@ int main()
             TEST(size(c->menu)==2);
             TEST(c->solde==44.);
 
-            TEST(get_first_id(&restos) == 4);
+            TEST(get_first_id(begin(&restos), end(&restos)) == 4);
+
+            TEST(ajout_resto("empburger", 82517, "06 53 12 89 75", "Fast Food", &restos) == 4);
+            TEST(ajout_resto("ALEXA donne un nom à mon resto jsp n'importe quoi", 83962, "06 89 48 35 36", "Italien", &restos) == -1);
+            TEST(ajout_resto("l'erreur du midi", 65471, "07 53 20 45 A6", "Bistro", &restos) == -2);
+            TEST(ajout_resto("japan service", 75000, "06 46 21 47 00", "B@r m@aid", &restos) == -3);
+            TEST(ajout_resto("suspect", 99254, "06 44 25 01 47 12", "Detective", &restos) == -2);
+
+            TEST(size(restos) == 5);
 
             sauvegarde_resto(begin(&restos), end(&restos));
 
-            TEST_FILE("db_restaurants.csv", "test/db_restaurants.csv");
+            TEST_FILE("db_restaurants.csv", "test/db_resto_final.csv");
 
             destroy(&restos);
         }
@@ -115,6 +124,8 @@ int main()
             deplacement=(int*)(at(&d->deplacements,2).element);
             TEST(*deplacement==13003);
 
+            TEST(get_first_id(begin(&livreurs), end(&livreurs)) == 4);
+
             sauvegarde_livreurs(begin(&livreurs), end(&livreurs));
             TEST_FILE("db_livreurs.csv", "test/db_livreurs.csv");
 
@@ -123,22 +134,84 @@ int main()
 
         // test lecture_menu() + sauvegarde_menus()
         {
-            vector dbmenus=lecture_menu("test/db_menus.csv");
+            vector menus=lecture_menu("test/db_menus.csv");
 
-            TEST(size(dbmenus)==8);
+            TEST(size(menus)==8);
 
-            Menu const* item=(Menu*)(begin(&dbmenus).element);
+            Menu const* item=(Menu*)(begin(&menus).element);
 
             TEST(item->id==1);
             TEST(strcmp(item->nom, "bouillabaise")==0);
             TEST(size(item->ingredients)==2);
             TEST(item->prix==25.);
 
-            sauvegarde_menus(begin(&dbmenus), end(&dbmenus));
-            TEST_FILE("db_menus.csv", "test/db_menus.csv");
+            TEST(get_first_id(begin(&menus), end(&menus)) == 9);
 
-            destroy(&dbmenus);
+            TEST(ajout_menu("chicken nuggets", "poulet;farine;huile", 2.5, &menus)==9);
+            TEST(ajout_menu("salade de fruits", "fruits mixtes", 3.5, &menus)==10);
+            TEST(ajout_menu("nothing", "", 100, &menus)==-2);
+            TEST(ajout_menu("free stuff", "free;peanut", 0., &menus)==11);
+            TEST(ajout_menu("something", "aze;dza", -1., &menus)==-3);
+            TEST(ajout_menu("le 13", "leza;le12",-2., &menus)==-2);
+
+            TEST(size(menus)==11);
+
+            sauvegarde_menus(begin(&menus), end(&menus));
+            TEST_FILE("db_menus.csv", "test/db_menu_final.csv");
+
+            destroy(&menus);
         }
+    }
+
+    // test functions
+    {
+        TEST(isnom("Bar maid")==1);
+        TEST(isnom("")==0);
+        TEST(isnom("      ")==0);
+        TEST(isnom("AS  S")==0);
+        TEST(isnom("A S S")==1);
+        TEST(isnom("Sushi")==1);
+        TEST(isnom("pIzZA")==1);
+        TEST(isnom("poids chiche")==1);
+        TEST(isnom("B@r")==0);
+        TEST(isnom("P3t1t")==0);
+        TEST(isnom("yamana113")==0); // :(
+        TEST(isnom("l'entièreté des bouquin d'Harry Potter parcequ'ils sont trop longs")==0);
+        TEST(isnom("Joe s International House of Pancakes")==1);
+
+        TEST(isunder39("Joe's International House of Pancakes")==1);
+        TEST(isunder39("Jonny's International House of Pancakes")==1);
+        TEST(isunder39("Jonnathan's International House of Pancakes")==0);
+
+        TEST(istel("10 02 52 66 45")==1);
+        TEST(istel("07 52 14 89 63")==1);
+        TEST(istel("28 71 1 78 28 ")==0);
+        TEST(istel("18 174 15 01 4")==0);
+        TEST(istel("")==0);
+        TEST(istel("1")==0);
+        TEST(istel("dz ap os ke is")==0);
+        TEST(istel("14 55 01 4a 04")==0);
+        TEST(istel("@& _è *µ ^¨ çà")==0);
+        TEST(istel("14 25 36 87 69 ")==0);
+        TEST(istel("01 23 45 67 8")==0);
+    }
+
+    // test relation menu_resto
+    {
+        vector restos=lecture_restaurant("db_restaurants.csv");
+        vector menus=lecture_menu("db_menus.csv");
+
+        TEST(menu_resto(8, (Restaurant*)(at(&restos, 3).element), menus)==1);
+        TEST(menu_resto(9, (Restaurant*)(at(&restos, 3).element), menus)==1);
+        TEST(menu_resto(13, (Restaurant*)(at(&restos, 3).element), menus)==0);
+        TEST(menu_resto(36, (Restaurant*)(at(&restos, 3).element), menus)==0);
+
+        Restaurant * resto =(Restaurant*)(at(&restos, 3).element);
+        TEST(resto->id==4);
+        TEST(size(resto->menu)==2);
+      
+        TEST(*((size_t*)(at(&(resto->menu), 0).element))==8);
+        TEST(*((size_t*)(at(&(resto->menu), 1).element))==9);
     }
 
     return tests_executed - tests_successful;

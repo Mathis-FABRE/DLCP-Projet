@@ -120,7 +120,7 @@ vector lecture_client(const char * file)
 
 void separateur_chaine(vector* v, char * chaine)
 {
-    char buffer[100];
+    char buffer[256];
     
     switch (v->element_size)
     {
@@ -140,8 +140,11 @@ void separateur_chaine(vector* v, char * chaine)
 
         else
         {
-            sscanf(chaine, "%zu", &id);
-            push_back(v,&id);
+            if(strcmp(chaine, "  ")!=0)
+            {
+                sscanf(chaine, "%zu", &id);
+                push_back(v,&id);
+            }
         }
         break;
     
@@ -288,6 +291,12 @@ void sauvegarde_clients(iterator first, iterator last)
 
 void sauvegarde_liste(FILE* file, iterator first, iterator last)
 {
+    if(compare(first,last)==0)
+    {
+        fprintf(file, "  ");
+        return;
+    }
+    
     if(first.element_size==sizeof(size_t))
     {
         iterator e=last;
