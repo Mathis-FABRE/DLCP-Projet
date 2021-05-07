@@ -98,3 +98,7 @@ int ajout_menu(char * nom, char * ingredients, float prix, vector * menus);
 // 1 : menu existe et rajouter correctement
 // 0 : id menu inexistant
 int menu_resto(size_t id, Restaurant * resto, vector const menus);
+
+int ajout_code(char * deplacements, vector * v);
+
+int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector * livreurs);
