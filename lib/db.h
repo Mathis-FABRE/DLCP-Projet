@@ -101,4 +101,4 @@ int menu_resto(size_t id, Restaurant * resto, vector const menus);
 
 int ajout_code(char * deplacements, vector * v);
 
-int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector * livreurs);
+int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs);

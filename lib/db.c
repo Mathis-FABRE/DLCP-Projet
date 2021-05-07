@@ -169,7 +169,7 @@ int ajout_code(char * deplacements, vector * v)
     return 1;
 }
 
-int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector * livreurs)
+int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs)
 {
     int id = get_first_id(begin(livreurs), end(livreurs));
 
@@ -191,7 +191,9 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
     if(!ajout_code(deplacement, &new.deplacements))
         return -3;
 
-    if(resto>=0)
+    Restaurant compare;
+    compare.id = resto;
+    if(resto==0 || binary_search(begin(&restos), end(&restos), &compare, idresto_compare))
         new.restaurant=resto;
     else
         return -4;
