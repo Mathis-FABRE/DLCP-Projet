@@ -148,9 +148,14 @@ int ajout_code(char * deplacements, vector * v)
             else
                 return 0;
         }
-        sscanf(buffer, "%d", &code);
-        if(code>0)
-            push_back(v,&code);
+
+        if(sscanf(buffer, "%d", &code)==1)
+        {
+            if(code>0)
+                push_back(v,&code);
+            else
+                return 0;
+        }
         else
             return 0;
     }
@@ -191,12 +196,27 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
     if(!ajout_code(deplacement, &new.deplacements))
         return -3;
 
-    Restaurant compare;
-    compare.id = resto;
-    if(resto==0 || binary_search(begin(&restos), end(&restos), &compare, idresto_compare))
+    Restaurant comp1;
+    comp1.id = resto;
+    int presence=id_search(begin(&restos), end(&restos), &comp1, idresto_compare);
+    if(resto==0 || presence)
         new.restaurant=resto;
     else
         return -4;
+
+    if(resto!=0)
+    {
+        int test=0;
+        Restaurant const* comp=(Restaurant*)(at(&restos, presence-1).element);
+        for(iterator b=begin(&new.deplacements), e=end(&new.deplacements); compare(b,e) && !test; increment(&b, 1))
+        {
+            if(*(int*)(b.element)==comp->code_postal)
+                test=1;
+        }
+
+        if(!test)
+            return -5;
+    }
 
     new.solde=0.;
 
