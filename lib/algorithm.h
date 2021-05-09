@@ -148,6 +148,12 @@ bool binary_search(
     void const* value,
     int (*comparator)(void const* a, void const* b));
 
+int id_search(
+    iterator first,
+    iterator last,
+    void const *value,
+    int (*id_comp)(void const *a, void const *b));
+
 // Type utilisé pour la fonction 'equal_range'.
 typedef struct iterator_interval
 {

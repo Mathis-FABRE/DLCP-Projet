@@ -421,6 +421,31 @@ bool binary_search(
     return false;
 }
 
+int id_search(
+    iterator first,
+    iterator last,
+    void const *value,
+    int (*id_comp)(void const *a, void const *b))
+{
+    // iterateur de test
+    iterator test=first;
+
+    int place=1;
+    // pour tous les el de l'intervalle
+    while (compare(test, last)<0)
+    {
+        // si egal à value
+        if(id_comp(test.element, value)==0)
+            // renvoie vrai
+            return place;
+        increment(&test, 1);
+        place++;
+    }
+    
+    // sinon faux
+    return 0;
+}
+
 iterator_interval equal_range(
     iterator first,
     iterator last,
