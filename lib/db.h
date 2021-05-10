@@ -98,3 +98,21 @@ int ajout_menu(char * nom, char * ingredients, float prix, vector * menus);
 // 1 : menu existe et rajouter correctement
 // 0 : id menu inexistant
 int menu_resto(size_t id, Restaurant * resto, vector const menus);
+
+// ajoute les code postaux dans ajout_livreur
+// prend "code1;code2;..." et le vecteur à changer
+// renvoie 1 si la fonction marche
+// sinon 0
+int ajout_code(char * deplacements, vector * v);
+
+// fonction ajoutant un livreur dans le vecteur livreurs
+// le vecteur est supposé trié en entrant et sortant
+// si la fonction marche correctement return > 0
+// return == id nouvel item
+// sinon return < 0
+// -1 : nom invalide
+// -2 : telephone invalide
+// -3 : déplacements invalides
+// -4 : resto n'existe pas
+// -5 : peut se déplacer dans le resto exclusif
+int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs);

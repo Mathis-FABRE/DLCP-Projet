@@ -70,6 +70,14 @@ int idmenu_compare(
     void const* a,
     void const* b);
 
+// Présume que 'a' et 'b' contiennent des 'Livreur'.
+// Renvoie un nombre négatif si id de 'a' précède id de 'b' dans l'ordre numérique.
+// Renvoie un nombre positif si id de 'b' précède id de 'a' dans l'ordre numérique.
+// Renvoie zéro si id de 'a' et id de 'b' sont égaux.
+int idlivreur_compare(
+    void const* a,
+    void const* b);
+
 // regarde si une chaine de caractères
 // est en dessous de 39 caractères
 // si oui retourne 1

@@ -127,3 +127,102 @@ int menu_resto(size_t id, Restaurant * resto, vector const menus)
     else
         return 0;    
 }
+
+int ajout_code(char * deplacements, vector * v)
+{
+    char buffer[256];
+
+    int code;
+
+    if(sscanf(deplacements, "%d;%s", &code, buffer)==2)
+    {
+        if(code>0)
+            push_back(v,&code);
+        else
+            return 0;
+        
+        while(sscanf(buffer, "%d;%s", &code, buffer)==2)
+        {
+            if(code>0)
+                push_back(v,&code);
+            else
+                return 0;
+        }
+
+        if(sscanf(buffer, "%d", &code)==1)
+        {
+            if(code>0)
+                push_back(v,&code);
+            else
+                return 0;
+        }
+        else
+            return 0;
+    }
+
+    else if(sscanf(deplacements, "%d", &code)==1)
+    {
+        if(code>0)
+            push_back(v,&code);
+        else
+            return 0;
+    }
+
+    else
+        return 0;
+    
+    return 1;
+}
+
+int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs)
+{
+    int id = get_first_id(begin(livreurs), end(livreurs));
+
+    Livreur new;
+
+    new.id = id;
+
+    if(isnom(nom))
+        strcpy(new.nom, nom);
+    else
+        return -1;
+    
+    if(istel(tel))
+        strcpy(new.telephone, tel);
+    else
+        return -2;
+
+    new.deplacements=make_vector(sizeof(int), 0, 2.);
+    if(!ajout_code(deplacement, &new.deplacements))
+        return -3;
+
+    Restaurant comp1;
+    comp1.id = resto;
+    int presence=id_search(begin(&restos), end(&restos), &comp1, idresto_compare);
+    if(resto==0 || presence)
+        new.restaurant=resto;
+    else
+        return -4;
+
+    if(resto!=0)
+    {
+        int test=0;
+        Restaurant const* comp=(Restaurant*)(at(&restos, presence-1).element);
+        for(iterator b=begin(&new.deplacements), e=end(&new.deplacements); compare(b,e) && !test; increment(&b, 1))
+        {
+            if(*(int*)(b.element)==comp->code_postal)
+                test=1;
+        }
+
+        if(!test)
+            return -5;
+    }
+
+    new.solde=0.;
+
+    push_back(livreurs, &new);
+
+    sort_by(begin(livreurs), end(livreurs), idlivreur_compare);
+
+    return id;
+}

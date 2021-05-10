@@ -152,6 +152,13 @@ int idmenu_compare(
     return ((Menu*)a)->id - ((Menu*)b)->id;
 }
 
+int idlivreur_compare(
+    void const* a,
+    void const* b)
+{
+    return ((Livreur*)a)->id - ((Livreur*)b)->id;
+}
+
 
 int isunder39(char * string)
 {

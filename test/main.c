@@ -12,7 +12,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 92;
+int const tests_total = 117;
 
 int const test_column_width = 80;
 
@@ -126,8 +126,21 @@ int main()
 
             TEST(get_first_id(begin(&livreurs), end(&livreurs)) == 4);
 
+            vector restos = lecture_restaurant("db_restaurants.csv");
+
+            TEST(ajout_livreur("Jean Frederic", "06 82 26 72 34", "65408;12300;20145", 0, restos, &livreurs)==4);
+            TEST(ajout_livreur("Johnny Hardbook", "07 08 86 14 89", "82517;83560", 4, restos, &livreurs)==5);
+            TEST(ajout_livreur("Charlie", "07 06 05 04 03", "80456", 6, restos, &livreurs)==-4);
+            TEST(ajout_livreur("Charlie", "07 06 05 04 03", "80456", -1, restos, &livreurs)==-4);
+            TEST(ajout_livreur("Aribiek@ zarbie", "07 39 18 20 48", "89470", 3, restos, &livreurs)==-1);
+            TEST(ajout_livreur("Juju", "06 72 9a 74 95", "98107;18206;17820;39504", 0, restos, &livreurs)==-2);
+            TEST(ajout_livreur("Mr Nowhere", "05 40 93 04 59", "", 0, restos, &livreurs)==-3);
+            TEST(ajout_livreur("Mr Worldwide", "17 28 39 46 05", "theworld", 0, restos, &livreurs)==-3);
+            TEST(ajout_livreur("Mr Worldwide", "17 28 39 46 05", "83740;theworld", 0, restos, &livreurs)==-3);
+            TEST(ajout_livreur("ajin", "93 64 28 57 01", "18257", 3, restos, &livreurs)==-5);
+
             sauvegarde_livreurs(begin(&livreurs), end(&livreurs));
-            TEST_FILE("db_livreurs.csv", "test/db_livreurs.csv");
+            TEST_FILE("db_livreurs.csv", "test/db_livreur_final.csv");
 
             destroy(&livreurs);
         }
@@ -212,6 +225,58 @@ int main()
       
         TEST(*((size_t*)(at(&(resto->menu), 0).element))==8);
         TEST(*((size_t*)(at(&(resto->menu), 1).element))==9);
+
+        destroy(&restos);
+        destroy(&menus);
+    }
+
+    //test id_search
+    {
+        vector restos=lecture_restaurant("test/db_restaurants.csv");
+
+        Restaurant comp_resto;
+        comp_resto.id=1;
+        TEST(id_search(begin(&restos), end(&restos), &comp_resto, idresto_compare));
+        comp_resto.id=2;
+        TEST(id_search(begin(&restos), end(&restos), &comp_resto, idresto_compare)==2);
+        comp_resto.id=5;
+        TEST(id_search(begin(&restos), end(&restos), &comp_resto, idresto_compare)==4);
+        comp_resto.id=4;
+        TEST(!id_search(begin(&restos), end(&restos), &comp_resto, idresto_compare));
+
+        destroy(&restos);
+        
+        vector menus=lecture_menu("test/db_menu_final.csv");
+        Menu comp_menu;
+        comp_menu.id=9;
+        TEST(id_search(begin(&menus), end(&menus), &comp_menu, idmenu_compare)==9);
+        comp_menu.id=10;
+        TEST(id_search(begin(&menus), end(&menus), &comp_menu, idmenu_compare)==10);
+        comp_menu.id=11;
+        TEST(id_search(begin(&menus), end(&menus), &comp_menu, idmenu_compare)==11);
+        comp_menu.id=12;
+        TEST(id_search(begin(&menus), end(&menus), &comp_menu, idmenu_compare)==0);
+        comp_menu.id=-12;
+        TEST(!id_search(begin(&menus), end(&menus), &comp_menu, idmenu_compare));
+
+        destroy(&menus);
+
+        vector livreurs=lecture_livreur("test/db_livreurs.csv");
+        Livreur comp_livreur;
+        comp_livreur.id=1;
+        TEST(id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare)==1);
+        comp_livreur.id=2;
+        TEST(id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare)==2);
+        comp_livreur.id=3;
+        TEST(id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare)==3);
+        comp_livreur.id=135;
+        TEST(id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare)==0);
+        comp_livreur.id=0;
+        TEST(id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare)==0);
+        comp_livreur.id=-1;
+        TEST(id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare)==0);
+
+        destroy(&livreurs);
     }
 
     return tests_executed - tests_successful;
