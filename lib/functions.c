@@ -237,14 +237,7 @@ int istel(char * string)
     } 
 }
 
-int iscode(int code)
+int iscode(char* scode)
 {
-    int digits = 0;
-
-    while (code != 0) {
-        n = n / 10;     
-        ++digits;
-    }
-
-    return (digits == 5);
+    return (strlen(scode) == 5);
 }

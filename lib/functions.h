@@ -103,3 +103,9 @@ int istel(char * string);
 // si oui retourne 1
 // si non retourne 0
 int isnom(char * string);
+
+// regarde la chaine passée
+// est un code et contient 5 chiffres exactement
+// si oui retourne 1
+// si non retourne 0
+int iscode(char* code);
