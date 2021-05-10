@@ -148,6 +148,12 @@ bool binary_search(
     void const* value,
     int (*comparator)(void const* a, void const* b));
 
+// renvoie > 0 si id entre first et last
+// correspond indice + 1
+// sinon renvoie 0
+// "id_comp" compare les id de deux itérateurs
+// renvoie un nombre positif si 'b' précède 'a' et renvoie zéro si 'a' égale 'b'.
+// Les éléments entre 'first' et 'last' sont triés
 int id_search(
     iterator first,
     iterator last,
