@@ -237,7 +237,16 @@ int istel(char * string)
     } 
 }
 
+int digits_only(const char *s)
+{
+    while (*s) {
+        if (isdigit(*s++) == 0) return 0;
+    }
+
+    return 1;
+}
+
 int iscode(char* scode)
 {
-    return (strlen(scode) == 5);
+    return (strlen(scode) == 5 && digits_only(scode));
 }
