@@ -226,3 +226,37 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
 
     return id;
 }
+
+int ajout_client(char * nom, char* code, char * telephone, float solde, vector * clients)
+{
+    int id=get_first_id(begin(clients), end(clients));
+
+    Client new;
+    new.id = id;
+
+    if(isnom(nom))
+        strcpy(new.nom, nom);
+    else
+        return -1;
+
+    if (iscode(code))
+    {
+        int int_code;
+        sscanf(code, "%d", &int_code);
+        new.code_postal = int_code;
+    }
+    else return -2;
+
+    if(istel(telephone))
+        strcpy(new.telephone, telephone);
+    else
+        return -3;
+
+    new.solde = solde;
+
+    push_back(clients, &new);
+
+    sort_by(begin(clients), end(clients), idclient_compare);
+
+    return id;
+}

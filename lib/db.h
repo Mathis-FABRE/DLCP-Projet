@@ -116,3 +116,14 @@ int ajout_code(char * deplacements, vector * v);
 // -4 : resto n'existe pas
 // -5 : peut se déplacer dans le resto exclusif
 int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs);
+
+
+// Fontion ajoutant un client dans le vecteur clients
+// le vecteur est supposé trié en entrant et sortant
+// si la fonction marche correctement return > 0
+// return l'id du nouvel item
+// sinon return < 0
+// -1 : nom invalide
+// -2 : code postal invalide
+// -3 : telephone invalide
+int ajout_client(char * nom, char* code, char * telephone, float solde, vector * clients);
