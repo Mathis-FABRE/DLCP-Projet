@@ -159,6 +159,13 @@ int idlivreur_compare(
     return ((Livreur*)a)->id - ((Livreur*)b)->id;
 }
 
+int idclient_compare(
+    void const* a,
+    void const*b)
+{
+    return ((Client*)a)->id - ((Client*)b)->id;
+}
+
 
 int isunder39(char * string)
 {
@@ -228,4 +235,16 @@ int istel(char * string)
     {
         return 0;
     } 
+}
+
+int iscode(int code)
+{
+    int digits = 0;
+
+    while (code != 0) {
+        n = n / 10;     
+        ++digits;
+    }
+
+    return (digits == 5);
 }
