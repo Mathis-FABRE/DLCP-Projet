@@ -207,6 +207,11 @@ int main()
         TEST(istel("@& _è *µ ^¨ çà")==0);
         TEST(istel("14 25 36 87 69 ")==0);
         TEST(istel("01 23 45 67 8")==0);
+
+        TEST(iscode(08957)  == 1);
+        TEST(iscode(00000)  == 1);
+        TEST(iscode(289047) == 0);
+        TEST(iscode(9635)   == 0);
     }
 
     // test relation menu_resto
