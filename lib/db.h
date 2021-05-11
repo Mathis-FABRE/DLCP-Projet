@@ -137,3 +137,5 @@ int modif_livreur_delcode(iterator livreur, size_t pos, vector restos);
 // -1 : code invalide
 // -2 : peut déjà se déplacer là
 int modif_livreur_addcode(iterator livreur, int code);
+
+int modif_livreur_tel(iterator livreur, char * tel);

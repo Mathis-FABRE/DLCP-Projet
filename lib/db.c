@@ -297,3 +297,15 @@ int modif_livreur_addcode(iterator livreur, int code)
 
     return 1;
 }
+
+int modif_livreur_tel(iterator livreur, char * tel)
+{
+    Livreur * modif=(Livreur*)(livreur.element);
+
+    if(!istel(tel))
+        return -1;
+
+    strcpy(modif->telephone, tel);
+
+    return 1;
+}
