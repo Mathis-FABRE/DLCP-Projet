@@ -12,7 +12,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 223;
+int const tests_total = 232;
 
 int const test_column_width = 80;
 
@@ -493,6 +493,25 @@ int main()
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 4);
         TEST(test->restaurant == 5);
+
+        // modif_livreur_tel
+        comp_livreur.id = 5;
+        TEST(modif_livreur_tel(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "07 09 63 85 49") == 1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 5);
+        TEST(strcmp(test->telephone, "07 09 63 85 49") == 0);
+
+        comp_livreur.id = 1;
+        TEST(modif_livreur_tel(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "07 08 74 62 10") == 1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 1);
+        TEST(strcmp(test->telephone, "07 08 74 62 10") == 0);
+
+        comp_livreur.id = 2;
+        TEST(modif_livreur_tel(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "07 08 74 62 1") == -1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 2);
+        TEST(strcmp(test->telephone, "06 01 02 03 04") == 0);
     }
 
     return tests_executed - tests_successful;
