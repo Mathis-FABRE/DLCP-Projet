@@ -278,3 +278,22 @@ int modif_livreur_delcode(iterator livreur, size_t pos, vector restos)
 
     return 1;
 }
+
+int modif_livreur_addcode(iterator livreur, int code)
+{
+    Livreur * modif=(Livreur*)(livreur.element);
+
+    if(code < 9999 || code > 99999)
+        return -1;
+    
+    for(iterator b=begin(&modif->deplacements), e=end(&modif->deplacements); compare(b, e); increment(&b, 1))
+    {
+        int * comp = (int*)(b.element);
+        if(*comp == code)
+            return -2;
+    }
+
+    push_back(&modif->deplacements, &code);
+
+    return 1;
+}

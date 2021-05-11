@@ -120,3 +120,5 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
 int modif_livreur_resto(iterator livreur, size_t resto, vector restos);
 
 int modif_livreur_delcode(iterator livreur, size_t pos, vector restos);
+
+int modif_livreur_addcode(iterator livreur, int code);
