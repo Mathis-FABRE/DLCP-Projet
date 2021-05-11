@@ -227,6 +227,7 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
     return id;
 }
 
+
 void del_livreur(vector * livreurs, iterator livreur)
 {
     Livreur * suppr = (Livreur*)(livreur.element);
@@ -234,4 +235,87 @@ void del_livreur(vector * livreurs, iterator livreur)
     destroy(&suppr->deplacements);
 
     erase(livreurs, livreur);
+}
+
+int modif_livreur_resto(iterator livreur, size_t resto, vector restos)
+{
+    Livreur * modif=(Livreur*)(livreur.element);
+
+    if(resto!=0)
+    {
+        Restaurant comp;
+        comp.id=resto;
+        int posresto=id_search(begin(&restos), end(&restos), &comp, idresto_compare);
+        if(!posresto)
+            return -1;
+
+        int test=0;
+            Restaurant const* compd=(Restaurant*)(at(&restos, posresto-1).element);
+            for(iterator b=begin(&modif->deplacements), e=end(&modif->deplacements); compare(b,e) && !test; increment(&b, 1))
+            {
+                if(*(int*)(b.element)==compd->code_postal)
+                    test=1;
+            }
+
+            if(!test)
+                return -2;
+    }
+
+    modif->restaurant=resto;
+    
+    return 1;
+}
+
+int modif_livreur_delcode(iterator livreur, size_t pos, vector restos)
+{
+    Livreur * modif=(Livreur*)(livreur.element);
+
+    int taille = size(modif->deplacements);
+    if(pos > taille || pos <= 0)
+        return -1;
+
+    if(modif->restaurant != 0)
+    {
+        int * code = (int*)(at(&modif->deplacements, pos-1).element);
+        Restaurant comp;
+        comp.id = modif->restaurant;
+        Restaurant * exclu = (Restaurant*)(at(&restos, id_search(begin(&restos), end(&restos), &comp, idresto_compare)-1).element);
+        if(*code == exclu->code_postal)
+            return -2;
+    }
+
+    erase(&modif->deplacements, at(&modif->deplacements, pos-1));
+
+    return 1;
+}
+
+int modif_livreur_addcode(iterator livreur, int code)
+{
+    Livreur * modif=(Livreur*)(livreur.element);
+
+    if(code < 9999 || code > 99999)
+        return -1;
+    
+    for(iterator b=begin(&modif->deplacements), e=end(&modif->deplacements); compare(b, e); increment(&b, 1))
+    {
+        int * comp = (int*)(b.element);
+        if(*comp == code)
+            return -2;
+    }
+
+    push_back(&modif->deplacements, &code);
+
+    return 1;
+}
+
+int modif_livreur_tel(iterator livreur, char * tel)
+{
+    Livreur * modif=(Livreur*)(livreur.element);
+
+    if(!istel(tel))
+        return -1;
+
+    strcpy(modif->telephone, tel);
+
+    return 1;
 }
