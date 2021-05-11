@@ -12,7 +12,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 117;
+int const tests_total = 147;
 
 int const test_column_width = 80;
 
@@ -277,6 +277,73 @@ int main()
         TEST(id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare)==0);
 
         destroy(&livreurs);
+    }
+
+    {
+        vector livreurs = lecture_livreur("db_livreurs.csv");
+        vector restos = lecture_restaurant("db_restaurants.csv");
+
+        Livreur comp_livreur;
+
+        comp_livreur.id = 2;
+        TEST(modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 3, restos) == 1);
+        Livreur * test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 2);
+        TEST(test->restaurant == 3);
+
+        TEST(ajout_resto("la nouvelle cuisine", 13011, "08 07 05 04 03", "Gastronomique", &restos) == 6);
+        TEST(size(restos) == 6);
+        Restaurant comp_resto;
+        comp_resto.id = 6;
+        TEST(id_search(begin(&restos), end(&restos), &comp_resto, idresto_compare) == 5+1);
+
+        comp_livreur.id = 3;
+        TEST(modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 6, restos) == 1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 3);
+        TEST(test->restaurant == 6);
+
+        comp_livreur.id = 1;
+        TEST(modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 5, restos) == -2);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 1);
+        TEST(test->restaurant == 1);
+
+        comp_livreur.id = 2;
+        TEST(modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 9, restos) == -1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 2);
+        TEST(test->restaurant == 3);
+
+        comp_livreur.id = 3;
+        TEST(modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), -1, restos) == -1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 3);
+        TEST(test->restaurant == 6);
+
+        comp_livreur.id = 3;
+        TEST(modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 3, restos) == 1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 3);
+        TEST(test->restaurant == 3);
+
+        comp_livreur.id = 3;
+        TEST(modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 6, restos) == 1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 3);
+        TEST(test->restaurant == 6);
+
+        comp_livreur.id = 5;
+        TEST(modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 0, restos) == 1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 5);
+        TEST(test->restaurant == 0);
+
+        comp_livreur.id = 1;
+        TEST(modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 0, restos) == 1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 1);
+        TEST(test->restaurant == 0);
     }
 
     return tests_executed - tests_successful;
