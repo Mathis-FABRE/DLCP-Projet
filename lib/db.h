@@ -117,6 +117,7 @@ int ajout_code(char * deplacements, vector * v);
 // -5 : peut se déplacer dans le resto exclusif
 int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs);
 
+
 // Fontion ajoutant un client dans le vecteur clients
 // le vecteur est supposé trié en entrant et sortant
 // si la fonction marche correctement return > 0
@@ -126,6 +127,10 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
 // -2 : code postal invalide
 // -3 : telephone invalide
 int ajout_client(char * nom, char* code, char * telephone, float solde, vector * clients);
+
+// fonction supprimant un certain iterateur de livreurs
+// considère que l'itérateur est un Livreur
+void del_livreur(vector * livreurs, iterator livreur);
 
 // fonction modifiant le restaurant exclusif d'un livreur
 // l'itarateur d'un livreur à modifier

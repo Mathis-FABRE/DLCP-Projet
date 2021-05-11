@@ -227,6 +227,7 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
     return id;
 }
 
+
 int ajout_client(char * nom, char* code, char * telephone, float solde, vector * clients)
 {
     int id=get_first_id(begin(clients), end(clients));
@@ -259,6 +260,16 @@ int ajout_client(char * nom, char* code, char * telephone, float solde, vector *
     sort_by(begin(clients), end(clients), idclient_compare);
 
     return id;
+
+
+void del_livreur(vector * livreurs, iterator livreur)
+{
+    Livreur * suppr = (Livreur*)(livreur.element);
+
+    destroy(&suppr->deplacements);
+
+    erase(livreurs, livreur);
+
 }
 
 int modif_livreur_resto(iterator livreur, size_t resto, vector restos)
