@@ -116,3 +116,5 @@ int ajout_code(char * deplacements, vector * v);
 // -4 : resto n'existe pas
 // -5 : peut se déplacer dans le resto exclusif
 int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs);
+
+int modif_livreur_resto(iterator livreur, size_t resto, vector restos);

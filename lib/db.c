@@ -226,3 +226,32 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
 
     return id;
 }
+
+int modif_livreur_resto(iterator livreur, size_t resto, vector restos)
+{
+    Livreur * modif=(Livreur*)(livreur.element);
+
+    if(resto!=0)
+    {
+        Restaurant comp;
+        comp.id=resto;
+        int posresto=id_search(begin(&restos), end(&restos), &comp, idresto_compare);
+        if(!posresto)
+            return -1;
+
+        int test=0;
+            Restaurant const* compd=(Restaurant*)(at(&restos, posresto-1).element);
+            for(iterator b=begin(&modif->deplacements), e=end(&modif->deplacements); compare(b,e) && !test; increment(&b, 1))
+            {
+                if(*(int*)(b.element)==compd->code_postal)
+                    test=1;
+            }
+
+            if(!test)
+                return -2;
+    }
+
+    modif->restaurant=resto;
+    
+    return 1;
+}
