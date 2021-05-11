@@ -12,7 +12,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 232;
+int const tests_total = 242;
 
 int const test_column_width = 80;
 
@@ -277,6 +277,39 @@ int main()
         TEST(id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare)==0);
 
         destroy(&livreurs);
+    }
+
+
+    // test del_livreur
+    {
+        vector livreurs = lecture_livreur("db_livreurs.csv");
+
+        Livreur comp_livreur;
+        comp_livreur.id=1;
+        del_livreur(&livreurs, at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare)-1));
+        TEST(size(livreurs) == 4);
+        TEST(get_first_id(begin(&livreurs), end(&livreurs)) == 1);
+
+        Livreur * test = (Livreur*)(at(&livreurs, 2).element);
+        TEST(test->id == 4);
+
+        comp_livreur.id=4;
+        del_livreur(&livreurs, at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare)-1));
+        TEST(size(livreurs) == 3);
+        TEST(id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) == 0);
+
+        test = (Livreur*)(at(&livreurs, 2).element);
+        TEST(test->id == 5);
+
+        comp_livreur.id=5;
+        del_livreur(&livreurs, at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare)-1));
+        TEST(size(livreurs) == 2);
+        TEST(id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) == 0);
+
+        test = (Livreur*)(at(&livreurs, 1).element);
+        TEST(test->id == 3);
+        test = (Livreur*)(at(&livreurs, 0).element);
+        TEST(test->id == 2);
     }
 
     // test modif_livreur

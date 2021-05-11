@@ -117,6 +117,11 @@ int ajout_code(char * deplacements, vector * v);
 // -5 : peut se déplacer dans le resto exclusif
 int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs);
 
+
+// fonction supprimant un certain iterateur de livreurs
+// considère que l'itérateur est un Livreur
+void del_livreur(vector * livreurs, iterator livreur);
+
 // fonction modifiant le restaurant exclusif d'un livreur
 // l'itarateur d'un livreur à modifier
 // renvoie 1 si marche correctement
@@ -147,3 +152,4 @@ int modif_livreur_addcode(iterator livreur, int code);
 // sinon renvoie < 0
 // -1 : tel invalide
 int modif_livreur_tel(iterator livreur, char * tel);
+
