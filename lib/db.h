@@ -126,7 +126,7 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
 // -2 : code postal invalide
 // -3 : telephone invalide
 int ajout_client(char * nom, char* code, char * telephone, float solde, vector * clients);
-=======
+
 // fonction modifiant le restaurant exclusif d'un livreur
 // l'itarateur d'un livreur à modifier
 // renvoie 1 si marche correctement

@@ -12,7 +12,6 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-
 int const tests_total = 232;
 
 int const test_column_width = 80;
@@ -46,16 +45,9 @@ int main()
 
             TEST(get_first_id(begin(&clients), end(&clients)) == 4);
 
-            TEST(ajout_client("Bob L'Eponge", "13009", "06 66 35 45 25", -10, &clients) == -1);
-            TEST(ajout_client("Brian May", "1309", "06 66 35 45 25", -10, &clients) == -2);
-            TEST(ajout_client("Brian May", "13009", "06 66 35 45 2", -10, &clients) == -3);
-            TEST(ajout_client("Brian May", "13009", "06 66 35 45 25", -10, &clients) == 4);
-           
-            TEST(size(clients) == 4);
-
             sauvegarde_clients(begin(&clients), end(&clients));
 
-            TEST_FILE("db_clients.csv","test/db_clients_final.csv")
+            TEST_FILE("db_clients.csv","test/db_clients.csv")
 
             destroy(&clients);
         }
@@ -215,13 +207,6 @@ int main()
         TEST(istel("@& _è *µ ^¨ çà")==0);
         TEST(istel("14 25 36 87 69 ")==0);
         TEST(istel("01 23 45 67 8")==0);
-
-        TEST(iscode("80957")  == 1);
-        TEST(iscode("00000")  == 1);
-        TEST(iscode("00001")  == 1);
-        TEST(iscode("289047") == 0);
-        TEST(iscode("9635")   == 0);
-        TEST(iscode("9635X")   == 0);
     }
 
     // test relation menu_resto
