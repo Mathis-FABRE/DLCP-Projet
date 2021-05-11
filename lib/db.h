@@ -116,3 +116,34 @@ int ajout_code(char * deplacements, vector * v);
 // -4 : resto n'existe pas
 // -5 : peut se déplacer dans le resto exclusif
 int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs);
+
+// fonction modifiant le restaurant exclusif d'un livreur
+// l'itarateur d'un livreur à modifier
+// renvoie 1 si marche correctement
+// sinon renvoie < 0
+// -1 : resto invalide
+// -2 : livreur peut pas se déplacer sur resto
+int modif_livreur_resto(iterator livreur, size_t resto, vector restos);
+
+// fonction retirant un deplacement possible d'un livreur
+// l'itarateur d'un livreur à modifier
+// renvoie 1 si marche correctement
+// sinon renvoie < 0
+// -1 : pos invalide
+// -2 : cause conflit avec restaurant exclusif
+int modif_livreur_delcode(iterator livreur, size_t pos, vector restos);
+
+// fonction ajoutant un deplacement possible d'un livreur
+// l'itarateur d'un livreur à modifier
+// renvoie 1 si marche correctement
+// sinon renvoie < 0
+// -1 : code invalide
+// -2 : peut déjà se déplacer là
+int modif_livreur_addcode(iterator livreur, int code);
+
+// fonction modifiant le telephone d'un livreur
+// l'itarateur d'un livreur à modifier
+// renvoie 1 si marche correctement
+// sinon renvoie < 0
+// -1 : tel invalide
+int modif_livreur_tel(iterator livreur, char * tel);
