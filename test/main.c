@@ -12,7 +12,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 147;
+int const tests_total = 186;
 
 int const test_column_width = 80;
 
@@ -339,11 +339,86 @@ int main()
         TEST(test->id == 5);
         TEST(test->restaurant == 0);
 
-        comp_livreur.id = 1;
+        comp_livreur.id = 5;
         TEST(modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 0, restos) == 1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
-        TEST(test->id == 1);
+        TEST(test->id == 5);
         TEST(test->restaurant == 0);
+
+        comp_livreur.id = 5;
+        TEST(modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 4, restos) == 1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 5);
+        TEST(test->restaurant == 4);
+
+        comp_livreur.id = 2;
+        TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 1, restos) == 1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 2);
+        TEST(size(test->deplacements) == 5);
+        TEST(*(int*)(at(&test->deplacements, 0).element) == 13004);
+
+        comp_livreur.id = 2;
+        TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 3, restos) == 1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 2);
+        TEST(size(test->deplacements) == 4);
+        TEST(*(int*)(at(&test->deplacements, 2).element) == 13009);
+
+        comp_livreur.id = 4;
+        TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 3, restos) == 1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 4);
+        TEST(size(test->deplacements) == 2);
+        TEST(*(int*)(at(&test->deplacements, 2 - 1).element) == 12300);
+
+        comp_livreur.id = 3;
+        TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 0, restos) == -1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 3);
+        TEST(size(test->deplacements) == 4);
+
+        comp_livreur.id = 3;
+        TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), -1, restos) == -1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 3);
+        TEST(size(test->deplacements) == 4);
+
+        comp_livreur.id = 3;
+        TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 10, restos) == -1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 3);
+        TEST(size(test->deplacements) == 4);
+
+        comp_livreur.id = 3;
+        TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 5, restos) == -1);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 3);
+        TEST(size(test->deplacements) == 4);
+
+        comp_livreur.id = 2;
+        TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 4, restos) == -2);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 2);
+        TEST(size(test->deplacements) == 4);
+
+        comp_livreur.id = 2;
+        TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 4, restos) == -2);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 2);
+        TEST(size(test->deplacements) == 4);
+
+        comp_livreur.id = 3;
+        TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 4, restos) == -2);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 3);
+        TEST(size(test->deplacements) == 4);
+
+        comp_livreur.id = 5;
+        TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 1, restos) == -2);
+        test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
+        TEST(test->id == 5);
+        TEST(size(test->deplacements) == 2);
     }
 
     return tests_executed - tests_successful;
