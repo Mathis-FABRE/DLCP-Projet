@@ -279,12 +279,14 @@ int main()
         destroy(&livreurs);
     }
 
+    // test modif_livreur
     {
         vector livreurs = lecture_livreur("db_livreurs.csv");
         vector restos = lecture_restaurant("db_restaurants.csv");
 
         Livreur comp_livreur;
 
+        // modif_livreur_resto
         comp_livreur.id = 2;
         TEST(modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 3, restos) == 1);
         Livreur * test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
@@ -351,6 +353,7 @@ int main()
         TEST(test->id == 5);
         TEST(test->restaurant == 4);
 
+        // modif_livreur_delcode
         comp_livreur.id = 2;
         TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 1, restos) == 1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
@@ -420,6 +423,7 @@ int main()
         TEST(test->id == 5);
         TEST(size(test->deplacements) == 2);
 
+        // modif_livreur_addcode
         comp_livreur.id = 1;
         TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 13009) == 1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
