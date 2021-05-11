@@ -255,3 +255,26 @@ int modif_livreur_resto(iterator livreur, size_t resto, vector restos)
     
     return 1;
 }
+
+int modif_livreur_delcode(iterator livreur, size_t pos, vector restos)
+{
+    Livreur * modif=(Livreur*)(livreur.element);
+
+    int taille = size(modif->deplacements);
+    if(pos > taille || pos <= 0)
+        return -1;
+
+    if(modif->restaurant != 0)
+    {
+        int * code = (int*)(at(&modif->deplacements, pos-1).element);
+        Restaurant comp;
+        comp.id = modif->restaurant;
+        Restaurant * exclu = (Restaurant*)(at(&restos, id_search(begin(&restos), end(&restos), &comp, idresto_compare)-1).element);
+        if(*code == exclu->code_postal)
+            return -2;
+    }
+
+    erase(&modif->deplacements, at(&modif->deplacements, pos-1));
+
+    return 1;
+}
