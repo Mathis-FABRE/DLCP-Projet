@@ -117,4 +117,6 @@ int ajout_code(char * deplacements, vector * v);
 // -5 : peut se déplacer dans le resto exclusif
 int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs);
 
+// fonction supprimant un certain iterateur de livreurs
+// considère que l'itérateur est un Livreur
 void del_livreur(vector * livreurs, iterator livreur);

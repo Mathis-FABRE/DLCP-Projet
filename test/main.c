@@ -279,6 +279,7 @@ int main()
         destroy(&livreurs);
     }
 
+    // test del_livreur
     {
         vector livreurs = lecture_livreur("db_livreurs.csv");
 
