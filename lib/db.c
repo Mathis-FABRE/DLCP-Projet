@@ -226,3 +226,12 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
 
     return id;
 }
+
+void del_livreur(vector * livreurs, iterator livreur)
+{
+    Livreur * suppr = (Livreur*)(livreur.element);
+
+    destroy(&suppr->deplacements);
+
+    erase(livreurs, livreur);
+}
