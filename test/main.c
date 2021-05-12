@@ -12,7 +12,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 242;
+int const tests_total = 250;
 
 int const test_column_width = 80;
 
@@ -209,15 +209,19 @@ int main()
         TEST(istel("01 23 45 67 8")==0);
     }
 
-    // test relation menu_resto
+    // test relation add_menu
     {
         vector restos=lecture_restaurant("db_restaurants.csv");
         vector menus=lecture_menu("db_menus.csv");
 
-        TEST(menu_resto(8, (Restaurant*)(at(&restos, 3).element), menus)==1);
-        TEST(menu_resto(9, (Restaurant*)(at(&restos, 3).element), menus)==1);
-        TEST(menu_resto(13, (Restaurant*)(at(&restos, 3).element), menus)==0);
-        TEST(menu_resto(36, (Restaurant*)(at(&restos, 3).element), menus)==0);
+        TEST(add_menu(9, (Restaurant*)(at(&restos, 3).element), menus) == 1);
+        TEST(add_menu(8, (Restaurant*)(at(&restos, 3).element), menus) == 1);
+        TEST(add_menu(13, (Restaurant*)(at(&restos, 3).element), menus) == -1);
+        TEST(add_menu(36, (Restaurant*)(at(&restos, 3).element), menus) == -1);
+        TEST(add_menu(-1, (Restaurant*)(at(&restos, 3).element), menus) == -1);
+        TEST(add_menu(9, (Restaurant*)(at(&restos, 3).element), menus) == -2);
+        TEST(add_menu(8, (Restaurant*)(at(&restos, 3).element), menus) == -2);
+        TEST(add_menu(7, (Restaurant*)(at(&restos, 2).element), menus) == -2);
 
         Restaurant * resto =(Restaurant*)(at(&restos, 3).element);
         TEST(resto->id==4);
@@ -225,6 +229,13 @@ int main()
       
         TEST(*((size_t*)(at(&(resto->menu), 0).element))==8);
         TEST(*((size_t*)(at(&(resto->menu), 1).element))==9);
+
+        resto =(Restaurant*)(at(&restos, 2).element);
+        TEST(resto->id==3);
+        TEST(size(resto->menu)==2);
+
+        TEST(*((size_t*)(at(&(resto->menu), 0).element))==6);
+        TEST(*((size_t*)(at(&(resto->menu), 1).element))==7);
 
         destroy(&restos);
         destroy(&menus);
