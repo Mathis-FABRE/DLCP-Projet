@@ -113,19 +113,22 @@ int ajout_menu(char * nom, char * ingredients, float prix, vector * menus)
     return id;
 }
 
-int menu_resto(size_t id, Restaurant * resto, vector const menus)
+int add_menu(size_t id, Restaurant * resto, vector const menus)
 {
     Menu compare;
     compare.id=id;
 
     if(binary_search(begin(&menus), end(&menus), &compare, idmenu_compare))
     {
+        if(binary_search(begin(&resto->menu), end(&resto->menu), &id, numerical_compare))
+            return -2;
         push_back(&resto->menu, &id);
+        sort_by(begin(&resto->menu), end(&resto->menu), numerical_compare);
         return 1;
     }
 
     else
-        return 0;    
+        return -1;    
 }
 
 int ajout_code(char * deplacements, vector * v)

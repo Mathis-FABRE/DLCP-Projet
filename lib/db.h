@@ -93,11 +93,13 @@ int ajout_ingredients(char * ingredients, vector * v);
 // -3 : prix < 0
 int ajout_menu(char * nom, char * ingredients, float prix, vector * menus);
 
-// fonction ajoutant un menu dans un resto
+// fonction ajoutant le menu avec id dans un resto
 // si la fonction marche correctement return > 0
 // 1 : menu existe et rajouter correctement
-// 0 : id menu inexistant
-int menu_resto(size_t id, Restaurant * resto, vector const menus);
+// -1 : id menu inexistant
+// -2 : menu déjà dans resto
+// menu trié en entré et sortie
+int add_menu(size_t id, Restaurant * resto, vector const menus);
 
 // ajoute les code postaux dans ajout_livreur
 // prend "code1;code2;..." et le vecteur à changer
