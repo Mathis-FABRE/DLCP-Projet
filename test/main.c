@@ -12,7 +12,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 271;
+int const tests_total = 288;
 
 int const test_column_width = 80;
 
@@ -593,6 +593,48 @@ int main()
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 2);
         TEST(strcmp(test->telephone, "06 01 02 03 04") == 0);
+    }
+
+    {
+        vector livreurs = lecture_livreur("db_livreurs.csv");
+        vector restos = lecture_restaurant("db_restaurants.csv");
+
+        Livreur comp_livreur;
+        comp_livreur.id = 3;
+        modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 13001);
+        modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 1, restos);
+
+        del_resto(&restos, at(&restos, 0), &livreurs);
+        TEST(size(restos) == 4);
+        TEST(size(livreurs) == 5);
+
+        TEST(get_first_id(begin(&restos), end(&restos)) == 1);
+
+        TEST(((Livreur*)(at(&livreurs, 0).element))->restaurant == 0);
+        TEST(((Livreur*)(at(&livreurs, 2).element))->restaurant == 0);
+
+        del_resto(&restos, at(&restos, 2), &livreurs);
+
+        TEST(((Restaurant*)(at(&restos, 2).element))->id == 5);
+
+        TEST(size(restos) == 3);
+        TEST(size(livreurs) == 5);
+
+        TEST(((Livreur*)(at(&livreurs, 0).element))->restaurant == 0);
+        TEST(((Livreur*)(at(&livreurs, 2).element))->restaurant == 0);
+        TEST(((Livreur*)(at(&livreurs, 4).element))->restaurant == 0);
+
+        modif_livreur_resto(at(&livreurs, 1), 2, restos);
+        
+        del_resto(&restos, at(&restos, 2), &livreurs);
+
+        TEST(size(restos) == 2);
+        TEST(size(livreurs) == 5);
+
+        TEST(((Livreur*)(at(&livreurs, 0).element))->restaurant == 0);
+        TEST(((Livreur*)(at(&livreurs, 1).element))->restaurant == 2);
+        TEST(((Livreur*)(at(&livreurs, 2).element))->restaurant == 0);
+        TEST(((Livreur*)(at(&livreurs, 4).element))->restaurant == 0);
     }
 
     return tests_executed - tests_successful;
