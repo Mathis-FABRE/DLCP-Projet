@@ -12,7 +12,8 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 288;
+
+int const tests_total = 299;
 
 int const test_column_width = 80;
 
@@ -45,9 +46,28 @@ int main()
 
             TEST(get_first_id(begin(&clients), end(&clients)) == 4);
 
+            // Test code erreur : -1
+            TEST(ajout_client("Bob L'Eponge", "13050", "04 10 20 30 40",-10, &clients) == -1);
+            TEST(ajout_client("Bob Le  Bricoleur", "13050", "04 10 20 30 40",-10, &clients) == -1);
+            TEST(ajout_client("Le meilleur restaurant au monde que vous n'avez jamais vu", "13050", "04 10 20 30 40",-10, &clients) == -1);
+
+            // // Test code erreur : -2
+            TEST(ajout_client("Chez Brian", "1305X", "04 10 20 30 40",-10, &clients) == -2);
+            TEST(ajout_client("Chez Brian", "130500", "04 10 20 30 40",-10, &clients) == -2);
+            TEST(ajout_client("Chez Brian", "1305", "04 10 20 30 40",-10, &clients) == -2);
+
+            // // Test code erreur : -3
+            TEST(ajout_client("Chez Brian", "13050", "04 10 20 30 4X",-10, &clients) == -3);
+            TEST(ajout_client("Chez Brian", "13050", "04 10 20 30",-10, &clients) == -3);
+            TEST(ajout_client("Chez Brian", "13050", "+334 10 20 30 41",-10, &clients) == -3);
+
+            TEST(ajout_client("Brian May","13009","06 66 35 45 25",-10, &clients) == 4);
+
+            TEST(size(clients) == 4);
+
             sauvegarde_clients(begin(&clients), end(&clients));
 
-            TEST_FILE("db_clients.csv","test/db_clients.csv")
+            TEST_FILE("db_clients.csv","test/db_clients_final.csv")
 
             destroy(&clients);
         }

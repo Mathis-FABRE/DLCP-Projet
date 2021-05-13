@@ -9,29 +9,29 @@
 #include <stdio.h>
 #include <string.h>
 
-int ajout_resto(char * nom, int code, char * telephone, char * type, vector * restos)
+int ajout_resto(char *nom, int code, char *telephone, char *type, vector *restos)
 {
-    int id=get_first_id(begin(restos), end(restos));
+    int id = get_first_id(begin(restos), end(restos));
 
     Restaurant new;
     new.id = id;
 
-    if(isunder39(nom))
+    if (isunder39(nom))
         strcpy(new.nom, nom);
     else
         return -1;
-    
+
     new.code_postal = code;
 
-    if(istel(telephone))
+    if (istel(telephone))
         strcpy(new.telephone, telephone);
     else
         return -2;
-    
-    if(isnom(type))
+
+    if (isnom(type))
         strcpy(new.type, type);
     else
-        return -3;    
+        return -3;
 
     new.menu = make_vector(sizeof(size_t), 0, 2.);
     new.solde = 0.;
@@ -43,37 +43,37 @@ int ajout_resto(char * nom, int code, char * telephone, char * type, vector * re
     return id;
 }
 
-int ajout_ingredients(char * ingredients, vector * v)
+int ajout_ingredients(char *ingredients, vector *v)
 {
     char buffer[256];
 
     char ingredient[40];
 
-    if(sscanf(ingredients, "%39[^;];%[^,]", ingredient, buffer)==2)
+    if (sscanf(ingredients, "%39[^;];%[^,]", ingredient, buffer) == 2)
     {
-        if(isnom(ingredient))
-            push_back(v,ingredient);
+        if (isnom(ingredient))
+            push_back(v, ingredient);
         else
             return 0;
-        
-        while(sscanf(buffer, "%39[^;];%[^,]", ingredient, buffer)==2)
+
+        while (sscanf(buffer, "%39[^;];%[^,]", ingredient, buffer) == 2)
         {
-            if(isnom(ingredient))
-                push_back(v,ingredient);
+            if (isnom(ingredient))
+                push_back(v, ingredient);
             else
                 return 0;
         }
         sscanf(buffer, "%39[^;]", ingredient);
-        if(isnom(ingredient))
-            push_back(v,ingredient);
+        if (isnom(ingredient))
+            push_back(v, ingredient);
         else
             return 0;
     }
 
-    else if(sscanf(ingredients, "%39[^;]", ingredient)==1)
+    else if (sscanf(ingredients, "%39[^;]", ingredient) == 1)
     {
-        if(isnom(ingredient))
-            push_back(v,ingredient);
+        if (isnom(ingredient))
+            push_back(v, ingredient);
         else
             return 0;
     }
@@ -84,25 +84,25 @@ int ajout_ingredients(char * ingredients, vector * v)
     return 1;
 }
 
-int ajout_menu(char * nom, char * ingredients, float prix, vector * menus)
+int ajout_menu(char *nom, char *ingredients, float prix, vector *menus)
 {
     int id = get_first_id(begin(menus), end(menus));
 
     Menu new;
 
-    new.id=id;
+    new.id = id;
 
-    if(isunder39(nom))
+    if (isunder39(nom))
         strcpy(new.nom, nom);
     else
         return -1;
 
-    new.ingredients=make_vector(40, 0, 2.);
-    if(!ajout_ingredients(ingredients, &new.ingredients))
+    new.ingredients = make_vector(40, 0, 2.);
+    if (!ajout_ingredients(ingredients, &new.ingredients))
         return -2;
 
-    if(prix>=0.)
-        new.prix=prix;
+    if (prix >= 0.)
+        new.prix = prix;
     else
         return -3;
 
@@ -114,11 +114,12 @@ int ajout_menu(char * nom, char * ingredients, float prix, vector * menus)
 }
 
 int add_menu(size_t id, Restaurant * resto, vector const menus)
+
 {
     Menu compare;
-    compare.id=id;
+    compare.id = id;
 
-    if(binary_search(begin(&menus), end(&menus), &compare, idmenu_compare))
+    if (binary_search(begin(&menus), end(&menus), &compare, idmenu_compare))
     {
         if(binary_search(begin(&resto->menu), end(&resto->menu), &id, numerical_compare))
             return -2;
@@ -165,31 +166,31 @@ void del_resto(vector * restos, iterator restaurant, vector * livreurs)
     erase(restos, restaurant);
 }
 
-int ajout_code(char * deplacements, vector * v)
+int ajout_code(char *deplacements, vector *v)
 {
     char buffer[256];
 
     int code;
 
-    if(sscanf(deplacements, "%d;%s", &code, buffer)==2)
+    if (sscanf(deplacements, "%d;%s", &code, buffer) == 2)
     {
-        if(code>0)
-            push_back(v,&code);
+        if (code > 0)
+            push_back(v, &code);
         else
             return 0;
-        
-        while(sscanf(buffer, "%d;%s", &code, buffer)==2)
+
+        while (sscanf(buffer, "%d;%s", &code, buffer) == 2)
         {
-            if(code>0)
-                push_back(v,&code);
+            if (code > 0)
+                push_back(v, &code);
             else
                 return 0;
         }
 
-        if(sscanf(buffer, "%d", &code)==1)
+        if (sscanf(buffer, "%d", &code) == 1)
         {
-            if(code>0)
-                push_back(v,&code);
+            if (code > 0)
+                push_back(v, &code);
             else
                 return 0;
         }
@@ -197,21 +198,21 @@ int ajout_code(char * deplacements, vector * v)
             return 0;
     }
 
-    else if(sscanf(deplacements, "%d", &code)==1)
+    else if (sscanf(deplacements, "%d", &code) == 1)
     {
-        if(code>0)
-            push_back(v,&code);
+        if (code > 0)
+            push_back(v, &code);
         else
             return 0;
     }
 
     else
         return 0;
-    
+
     return 1;
 }
 
-int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs)
+int ajout_livreur(char *nom, char *tel, char *deplacement, size_t resto, vector restos, vector *livreurs)
 {
     int id = get_first_id(begin(livreurs), end(livreurs));
 
@@ -219,43 +220,43 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
 
     new.id = id;
 
-    if(isnom(nom))
+    if (isnom(nom))
         strcpy(new.nom, nom);
     else
         return -1;
-    
-    if(istel(tel))
+
+    if (istel(tel))
         strcpy(new.telephone, tel);
     else
         return -2;
 
-    new.deplacements=make_vector(sizeof(int), 0, 2.);
-    if(!ajout_code(deplacement, &new.deplacements))
+    new.deplacements = make_vector(sizeof(int), 0, 2.);
+    if (!ajout_code(deplacement, &new.deplacements))
         return -3;
 
     Restaurant comp1;
     comp1.id = resto;
-    int presence=id_search(begin(&restos), end(&restos), &comp1, idresto_compare);
-    if(resto==0 || presence)
-        new.restaurant=resto;
+    int presence = id_search(begin(&restos), end(&restos), &comp1, idresto_compare);
+    if (resto == 0 || presence)
+        new.restaurant = resto;
     else
         return -4;
 
-    if(resto!=0)
+    if (resto != 0)
     {
-        int test=0;
-        Restaurant const* comp=(Restaurant*)(at(&restos, presence-1).element);
-        for(iterator b=begin(&new.deplacements), e=end(&new.deplacements); compare(b,e) && !test; increment(&b, 1))
+        int test = 0;
+        Restaurant const *comp = (Restaurant *)(at(&restos, presence - 1).element);
+        for (iterator b = begin(&new.deplacements), e = end(&new.deplacements); compare(b, e) && !test; increment(&b, 1))
         {
-            if(*(int*)(b.element)==comp->code_postal)
-                test=1;
+            if (*(int *)(b.element) == comp->code_postal)
+                test = 1;
         }
 
-        if(!test)
+        if (!test)
             return -5;
     }
 
-    new.solde=0.;
+    new.solde = 0.;
 
     push_back(livreurs, &new);
 
@@ -264,78 +265,114 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
     return id;
 }
 
+
 void del_livreur(vector * livreurs, iterator livreur)
 {
-    Livreur * suppr = (Livreur*)(livreur.element);
+    Livreur *suppr = (Livreur *)(livreur.element);
 
     destroy(&suppr->deplacements);
 
     erase(livreurs, livreur);
 }
 
+int ajout_client(char *nom, char *code, char *telephone, float solde, vector *clients)
+{
+    int id = get_first_id(begin(clients), end(clients));
+
+    Client new;
+    new.id = id;
+
+    if (isnom(nom))
+        strcpy(new.nom, nom);
+    else
+        return -1;
+
+    if (iscode(code))
+    {
+        int int_code;
+        sscanf(code, "%d", &int_code);
+        new.code_postal = int_code;
+    }
+    else
+        return -2;
+
+    if (istel(telephone))
+        strcpy(new.telephone, telephone);
+    else
+        return -3;
+
+    new.solde = solde;
+
+    push_back(clients, &new);
+
+    sort_by(begin(clients), end(clients), idclient_compare);
+
+    return id;
+}
+
 int modif_livreur_resto(iterator livreur, size_t resto, vector restos)
 {
-    Livreur * modif=(Livreur*)(livreur.element);
+    Livreur *modif = (Livreur *)(livreur.element);
 
-    if(resto!=0)
+    if (resto != 0)
     {
         Restaurant comp;
-        comp.id=resto;
-        int posresto=id_search(begin(&restos), end(&restos), &comp, idresto_compare);
-        if(!posresto)
+        comp.id = resto;
+        int posresto = id_search(begin(&restos), end(&restos), &comp, idresto_compare);
+        if (!posresto)
             return -1;
 
-        int test=0;
-            Restaurant const* compd=(Restaurant*)(at(&restos, posresto-1).element);
-            for(iterator b=begin(&modif->deplacements), e=end(&modif->deplacements); compare(b,e) && !test; increment(&b, 1))
-            {
-                if(*(int*)(b.element)==compd->code_postal)
-                    test=1;
-            }
+        int test = 0;
+        Restaurant const *compd = (Restaurant *)(at(&restos, posresto - 1).element);
+        for (iterator b = begin(&modif->deplacements), e = end(&modif->deplacements); compare(b, e) && !test; increment(&b, 1))
+        {
+            if (*(int *)(b.element) == compd->code_postal)
+                test = 1;
+        }
 
-            if(!test)
-                return -2;
+        if (!test)
+            return -2;
     }
 
-    modif->restaurant=resto;
-    
+    modif->restaurant = resto;
+
     return 1;
 }
 
 int modif_livreur_delcode(iterator livreur, size_t pos, vector restos)
 {
-    Livreur * modif=(Livreur*)(livreur.element);
+    Livreur *modif = (Livreur *)(livreur.element);
 
     int taille = size(modif->deplacements);
-    if(pos > taille || pos <= 0)
+    if (pos > taille || pos <= 0)
         return -1;
 
-    if(modif->restaurant != 0)
+    if (modif->restaurant != 0)
     {
-        int * code = (int*)(at(&modif->deplacements, pos-1).element);
+        int *code = (int *)(at(&modif->deplacements, pos - 1).element);
         Restaurant comp;
         comp.id = modif->restaurant;
-        Restaurant * exclu = (Restaurant*)(at(&restos, id_search(begin(&restos), end(&restos), &comp, idresto_compare)-1).element);
-        if(*code == exclu->code_postal)
+        Restaurant *exclu = (Restaurant *)(at(&restos, id_search(begin(&restos), end(&restos), &comp, idresto_compare) - 1).element);
+        if (*code == exclu->code_postal)
             return -2;
     }
 
-    erase(&modif->deplacements, at(&modif->deplacements, pos-1));
+    erase(&modif->deplacements, at(&modif->deplacements, pos - 1));
 
     return 1;
 }
 
 int modif_livreur_addcode(iterator livreur, int code)
 {
-    Livreur * modif=(Livreur*)(livreur.element);
+    Livreur *modif = (Livreur *)(livreur.element);
 
-    if(code < 9999 || code > 99999)
+    if (code < 9999 || code > 99999)
         return -1;
-    
-    for(iterator b=begin(&modif->deplacements), e=end(&modif->deplacements); compare(b, e); increment(&b, 1))
+
+    for (iterator b = begin(&modif->deplacements), e = end(&modif->deplacements); compare(b, e); increment(&b, 1))
     {
-        int * comp = (int*)(b.element);
-        if(*comp == code)
+        int *comp = (int *)(b.element);
+        if (*comp == code)
             return -2;
     }
 
@@ -344,11 +381,11 @@ int modif_livreur_addcode(iterator livreur, int code)
     return 1;
 }
 
-int modif_livreur_tel(iterator livreur, char * tel)
+int modif_livreur_tel(iterator livreur, char *tel)
 {
-    Livreur * modif=(Livreur*)(livreur.element);
+    Livreur *modif = (Livreur *)(livreur.element);
 
-    if(!istel(tel))
+    if (!istel(tel))
         return -1;
 
     strcpy(modif->telephone, tel);
