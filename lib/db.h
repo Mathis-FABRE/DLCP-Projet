@@ -103,6 +103,8 @@ int add_menu(size_t id, Restaurant * resto, vector const menus);
 
 int del_menu(iterator restaurant, size_t id);
 
+void del_resto(vector * restos, iterator restaurant, vector * livreurs);
+
 // ajoute les code postaux dans ajout_livreur
 // prend "code1;code2;..." et le vecteur à changer
 // renvoie 1 si la fonction marche

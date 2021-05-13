@@ -149,6 +149,22 @@ int del_menu(iterator restaurant, size_t id)
     return 0;
 }
 
+void del_resto(vector * restos, iterator restaurant, vector * livreurs)
+{
+    Restaurant * suppr = (Restaurant*)(restaurant.element);
+    destroy(&suppr->menu);
+
+    for(iterator b=begin(livreurs), e=end(livreurs); compare(b,e); increment(&b, 1))
+    {
+        Livreur * test = (Livreur*)(b.element);
+
+        if(suppr->id == test->restaurant)
+            modif_livreur_resto(b, 0, *restos);
+    }
+
+    erase(restos, restaurant);
+}
+
 int ajout_code(char * deplacements, vector * v)
 {
     char buffer[256];
@@ -247,7 +263,6 @@ int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vect
 
     return id;
 }
-
 
 void del_livreur(vector * livreurs, iterator livreur)
 {
