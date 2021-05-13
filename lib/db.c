@@ -131,6 +131,24 @@ int add_menu(size_t id, Restaurant * resto, vector const menus)
         return -1;    
 }
 
+int del_menu(iterator restaurant, size_t id)
+{
+    Restaurant * modif = (Restaurant*)(restaurant.element);
+    
+    int search = 0;
+    for(iterator b=begin(&modif->menu), e=end(&modif->menu); compare(b,e) && search <=0; increment(&b, 1))
+    {
+        search = *(int*)(b.element) - id;
+        if(search == 0)
+        {
+            erase(&modif->menu, b);
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 int ajout_code(char * deplacements, vector * v)
 {
     char buffer[256];

@@ -101,6 +101,8 @@ int ajout_menu(char * nom, char * ingredients, float prix, vector * menus);
 // menu trié en entré et sortie
 int add_menu(size_t id, Restaurant * resto, vector const menus);
 
+int del_menu(iterator restaurant, size_t id);
+
 // ajoute les code postaux dans ajout_livreur
 // prend "code1;code2;..." et le vecteur à changer
 // renvoie 1 si la fonction marche
