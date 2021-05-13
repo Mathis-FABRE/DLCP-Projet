@@ -595,6 +595,7 @@ int main()
         TEST(strcmp(test->telephone, "06 01 02 03 04") == 0);
     }
 
+    // test del_resto
     {
         vector livreurs = lecture_livreur("db_livreurs.csv");
         vector restos = lecture_restaurant("db_restaurants.csv");

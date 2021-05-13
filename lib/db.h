@@ -101,8 +101,19 @@ int ajout_menu(char * nom, char * ingredients, float prix, vector * menus);
 // menu trié en entré et sortie
 int add_menu(size_t id, Restaurant * resto, vector const menus);
 
+// supprime un item du menu de l'iterateur
+// supposer contenir un Restaurant
+// id est l'id de l'item à retirer
+// renvoie
+// 1 : marche correctement
+// 0 : item non présent dans le menu
 int del_menu(iterator restaurant, size_t id);
 
+// supprime l'iterateur restaurant de restos
+// restaurant contient un Restaurant
+// livreurs contient des Livreur
+// les references à restaurant dans livreurs
+// sont remplacées par 0
 void del_resto(vector * restos, iterator restaurant, vector * livreurs);
 
 // ajoute les code postaux dans ajout_livreur
