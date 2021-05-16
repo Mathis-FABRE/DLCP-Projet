@@ -406,7 +406,7 @@ bool binary_search(
 {
     iterator test;
 
-    for(iterator b=first, e=last; compare(b,e); test.element = (b.element+e.element)/2)
+    for(iterator b=first, e=last; compare(b,e); test.element = b.element+(b.element-e.element)/2)
     {
         int res=comparator(test.element, value);
         if(res == 0)
