@@ -113,19 +113,57 @@ int ajout_menu(char *nom, char *ingredients, float prix, vector *menus)
     return id;
 }
 
-int menu_resto(size_t id, Restaurant *resto, vector const menus)
+int add_menu(size_t id, Restaurant * resto, vector const menus)
+
 {
     Menu compare;
     compare.id = id;
 
     if (binary_search(begin(&menus), end(&menus), &compare, idmenu_compare))
     {
+        if(binary_search(begin(&resto->menu), end(&resto->menu), &id, numerical_compare))
+            return -2;
         push_back(&resto->menu, &id);
+        sort_by(begin(&resto->menu), end(&resto->menu), numerical_compare);
         return 1;
     }
 
     else
-        return 0;
+        return -1;    
+}
+
+int del_menu(iterator restaurant, size_t id)
+{
+    Restaurant * modif = (Restaurant*)(restaurant.element);
+    
+    int search = 0;
+    for(iterator b=begin(&modif->menu), e=end(&modif->menu); compare(b,e) && search <=0; increment(&b, 1))
+    {
+        search = *(int*)(b.element) - id;
+        if(search == 0)
+        {
+            erase(&modif->menu, b);
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+void del_resto(vector * restos, iterator restaurant, vector * livreurs)
+{
+    Restaurant * suppr = (Restaurant*)(restaurant.element);
+    destroy(&suppr->menu);
+
+    for(iterator b=begin(livreurs), e=end(livreurs); compare(b,e); increment(&b, 1))
+    {
+        Livreur * test = (Livreur*)(b.element);
+
+        if(suppr->id == test->restaurant)
+            modif_livreur_resto(b, 0, *restos);
+    }
+
+    erase(restos, restaurant);
 }
 
 int ajout_code(char *deplacements, vector *v)
@@ -227,6 +265,16 @@ int ajout_livreur(char *nom, char *tel, char *deplacement, size_t resto, vector 
     return id;
 }
 
+
+void del_livreur(vector * livreurs, iterator livreur)
+{
+    Livreur *suppr = (Livreur *)(livreur.element);
+
+    destroy(&suppr->deplacements);
+
+    erase(livreurs, livreur);
+}
+
 int ajout_client(char *nom, char *code, char *telephone, float solde, vector *clients)
 {
     int id = get_first_id(begin(clients), end(clients));
@@ -260,14 +308,6 @@ int ajout_client(char *nom, char *code, char *telephone, float solde, vector *cl
     sort_by(begin(clients), end(clients), idclient_compare);
 
     return id;
-}
-void del_livreur(vector *livreurs, iterator livreur)
-{
-    Livreur *suppr = (Livreur *)(livreur.element);
-
-    destroy(&suppr->deplacements);
-
-    erase(livreurs, livreur);
 }
 
 int modif_livreur_resto(iterator livreur, size_t resto, vector restos)
