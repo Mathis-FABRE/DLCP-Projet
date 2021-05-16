@@ -406,11 +406,14 @@ bool binary_search(
 {
     iterator b = first, e = last;
 
-    while((e.element-b.element)/(2*b.element_size))
+    int endcond = 0;
+    while(compare(b,e) < 0 && !endcond)
     {
         iterator test = b;
         increment(&test, (e.element-b.element)/(2*b.element_size));
         int res=comparator(test.element, value);
+        if((e.element-b.element)/(2*b.element_size) == 0)
+            endcond = 1;
         if(res == 0)
             return true;
         else if(res > 0)
