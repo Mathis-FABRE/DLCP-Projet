@@ -404,10 +404,12 @@ bool binary_search(
     void const *value,
     int (*comparator)(void const *a, void const *b))
 {
-    iterator test;
+    iterator b = first, e = last;
 
-    for(iterator b=first, e=last; compare(b,e); test.element = b.element+(b.element-e.element)/2)
+    while((e.element-b.element)/(2*b.element_size))
     {
+        iterator test = b;
+        increment(&test, (e.element-b.element)/(2*b.element_size));
         int res=comparator(test.element, value);
         if(res == 0)
             return true;
