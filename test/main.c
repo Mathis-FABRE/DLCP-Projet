@@ -12,7 +12,7 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 253;
+int const tests_total = 268;
 
 int const test_column_width = 80;
 
