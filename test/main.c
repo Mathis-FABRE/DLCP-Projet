@@ -298,6 +298,67 @@ int main()
         destroy(&livreurs);
     }
 
+    // test del_client
+    {
+        vector clients = lecture_client("test/db_clients.csv");
+
+        Client comp_client;
+
+        comp_client.id = 1;
+
+        del_client(&clients, at(&clients, id_search(begin(&clients), end(&clients), &comp_client, idclient_compare) - 1));
+
+        TEST(size(clients) == 2);
+        TEST(get_first_id(begin(&clients), end(&clients)) == 1);
+
+        Client *test = (Client *)(at(&clients, 2).element);
+        TEST(test->id == 3);
+
+        destroy(&clients);
+    }
+
+    // test modif_client
+    {
+        vector clients = lecture_client("test/db_clients.csv");
+
+        Client comp_client;
+
+        comp_client.id = 1;
+
+        TEST(modif_client_code(at(&clients, id_search(begin(&clients), end(&clients), &comp_client, idclient_compare) - 1), "13009") == 1);
+
+        TEST(modif_client_code(at(&clients, id_search(begin(&clients), end(&clients), &comp_client, idclient_compare) - 1), "130X9") == -1);
+
+        Client *test = (Client *)(at(&clients, id_search(begin(&clients), end(&clients), &comp_client, idclient_compare) - 1).element);
+
+        TEST(test->id == 1);
+        TEST(test->code_postal == 13009);
+
+        comp_client.id = 3;
+
+        TEST(modif_client_tel(at(&clients, id_search(begin(&clients), end(&clients), &comp_client, idclient_compare) - 1), "07 06 05 04 03") == 1);
+
+        TEST(modif_client_tel(at(&clients, id_search(begin(&clients), end(&clients), &comp_client, idclient_compare) - 1), "07 06 05 04") == -1);
+
+        test = (Client *)(at(&clients, id_search(begin(&clients), end(&clients), &comp_client, idclient_compare) - 1).element);
+
+        TEST(test->id == 3);
+        TEST(strcmp(test->telephone, "07 06 05 04 03") == 0);
+
+        comp_client.id = 1;
+
+        TEST(client_credit_solde(at(&clients, id_search(begin(&clients), end(&clients), &comp_client, idclient_compare) - 1), 50) == 1);
+
+        TEST(client_credit_solde(at(&clients, id_search(begin(&clients), end(&clients), &comp_client, idclient_compare) - 1), -50) == -1);
+
+        test = (Client *)(at(&clients, id_search(begin(&clients), end(&clients), &comp_client, idclient_compare) - 1).element);
+
+        TEST(test->id == 1);
+        TEST(test->solde == 50.);
+
+
+        destroy(&clients);
+    }
 
     // test del_livreur
     {
