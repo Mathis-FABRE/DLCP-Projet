@@ -352,3 +352,46 @@ int modif_livreur_tel(iterator livreur, char *tel)
 
     return 1;
 }
+
+void del_client(vector *clients, iterator client)
+{
+    erase(clients, client);
+}
+
+int modif_client_code(iterator client, char * code)
+{
+    Client *modif = (Client *)(client.element);
+
+    if (!iscode(code))
+        return -1;
+
+    int int_code;
+    sscanf(code, "%d", &int_code);
+    modif->code_postal = int_code;
+
+    return 1;
+}
+
+int modif_client_tel(iterator client, char * tel)
+{
+    Client *modif = (Client *)(client.element);
+
+    if (!istel(tel))
+        return -1;
+
+    strcpy(modif->telephone, tel);
+
+    return 1;
+}
+
+int client_credit_solde(iterator client, float amount)
+{
+    Client *modif = (Client *)(client.element);
+
+    if (amount <= 0)
+        return -1;
+        
+    modif->solde += amount;
+
+    return 1;
+}

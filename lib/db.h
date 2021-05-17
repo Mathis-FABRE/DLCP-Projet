@@ -163,3 +163,25 @@ int modif_livreur_addcode(iterator livreur, int code);
 // -1 : tel invalide
 int modif_livreur_tel(iterator livreur, char * tel);
 
+void del_client(vector *clients, iterator client);
+
+// fonction modifiant le code postal d'un client
+// l'itarateur d'un client à modifier
+// renvoie 1 si marche correctement
+// sinon renvoie < 0
+// -1 : tel invalide
+int modif_client_code(iterator client, char * code);
+
+// fonction modifiant le # de tel d'un client
+// l'itarateur d'un client à modifier
+// renvoie 1 si marche correctement
+// sinon renvoie < 0
+// -1 : tel invalide
+int modif_client_tel(iterator client, char * tel);
+
+// fonction permettant de créditer un solde
+// l'itarateur d'un client à modifier
+// renvoie 1 si marche correctement
+// sinon renvoie < 0
+// -1 : tel invalide
+int client_credit_solde(iterator client, float amount);
