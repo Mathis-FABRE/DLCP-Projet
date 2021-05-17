@@ -227,6 +227,21 @@ int main()
         TEST(istel("@& _è *µ ^¨ çà")==0);
         TEST(istel("14 25 36 87 69 ")==0);
         TEST(istel("01 23 45 67 8")==0);
+
+        TEST(iscode("")      == 0);
+        TEST(iscode("1")     == 0);
+        TEST(iscode("11")    == 0);
+        TEST(iscode("111")   == 0);
+        TEST(iscode("1111")  == 0);
+        TEST(iscode("X1111") == 0);
+        TEST(iscode("XXXXX") == 0);
+        TEST(iscode("1111X") == 0);
+        TEST(iscode("0x110") == 0);
+        TEST(iscode("Marseille") == 0);
+        TEST(iscode("Paris" == 0))
+
+        TEST(iscode("11111") == 1);
+        TEST(iscode("13009") == 1);
     }
 
     // test relation add_menu del_menu
