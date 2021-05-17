@@ -12,7 +12,9 @@
 
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
-int const tests_total = 268;
+
+int const tests_total = 321;
+
 
 int const test_column_width = 80;
 
@@ -228,15 +230,19 @@ int main()
         TEST(istel("01 23 45 67 8")==0);
     }
 
-    // test relation menu_resto
+    // test relation add_menu del_menu
     {
         vector restos=lecture_restaurant("db_restaurants.csv");
         vector menus=lecture_menu("db_menus.csv");
 
-        TEST(menu_resto(8, (Restaurant*)(at(&restos, 3).element), menus)==1);
-        TEST(menu_resto(9, (Restaurant*)(at(&restos, 3).element), menus)==1);
-        TEST(menu_resto(13, (Restaurant*)(at(&restos, 3).element), menus)==0);
-        TEST(menu_resto(36, (Restaurant*)(at(&restos, 3).element), menus)==0);
+        TEST(add_menu(9, (Restaurant*)(at(&restos, 3).element), menus) == 1);
+        TEST(add_menu(8, (Restaurant*)(at(&restos, 3).element), menus) == 1);
+        TEST(add_menu(13, (Restaurant*)(at(&restos, 3).element), menus) == -1);
+        TEST(add_menu(36, (Restaurant*)(at(&restos, 3).element), menus) == -1);
+        TEST(add_menu(-1, (Restaurant*)(at(&restos, 3).element), menus) == -1);
+        TEST(add_menu(9, (Restaurant*)(at(&restos, 3).element), menus) == -2);
+        TEST(add_menu(8, (Restaurant*)(at(&restos, 3).element), menus) == -2);
+        TEST(add_menu(7, (Restaurant*)(at(&restos, 2).element), menus) == -2);
 
         Restaurant * resto =(Restaurant*)(at(&restos, 3).element);
         TEST(resto->id==4);
@@ -244,6 +250,50 @@ int main()
       
         TEST(*((size_t*)(at(&(resto->menu), 0).element))==8);
         TEST(*((size_t*)(at(&(resto->menu), 1).element))==9);
+
+        resto =(Restaurant*)(at(&restos, 2).element);
+        TEST(resto->id==3);
+        TEST(size(resto->menu)==2);
+
+        TEST(*((size_t*)(at(&(resto->menu), 0).element))==6);
+        TEST(*((size_t*)(at(&(resto->menu), 1).element))==7);
+
+        TEST(del_menu(at(&restos, 3), 8) == 1);
+
+        resto =(Restaurant*)(at(&restos, 3).element);
+
+        TEST(resto->id == 4);
+        TEST(size(resto->menu)==1);
+        TEST(*((size_t*)(at(&resto->menu, 0).element)) == 9);
+
+        TEST(del_menu(at(&restos, 3), 9) == 1);
+
+        TEST(size(resto->menu)==0);
+
+        TEST(del_menu(at(&restos, 2), 7) == 1);
+
+        resto =(Restaurant*)(at(&restos, 2).element);
+
+        TEST(resto->id == 3);
+        TEST(size(resto->menu)==1);
+        TEST(*((size_t*)(at(&resto->menu, 0).element)) == 6);
+
+        TEST(del_menu(at(&restos, 2), -6) == 0);
+        TEST(del_menu(at(&restos, 2), 0) == 0);
+        TEST(del_menu(at(&restos, 2), 9) == 0);
+        TEST(del_menu(at(&restos, 2), 1) == 0);
+
+        TEST(size(resto->menu) == 1);
+
+        TEST(del_menu(at(&restos, 3), 0) == 0);
+        TEST(del_menu(at(&restos, 3), -9) == 0);
+        TEST(del_menu(at(&restos, 3), 1) == 0);
+        TEST(del_menu(at(&restos, 3), 8) == 0);
+        TEST(del_menu(at(&restos, 3), 9) == 0);
+
+        resto =(Restaurant*)(at(&restos, 3).element);
+
+        TEST(size(resto->menu) == 0);
 
         destroy(&restos);
         destroy(&menus);
@@ -625,6 +675,82 @@ int main()
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 2);
         TEST(strcmp(test->telephone, "06 01 02 03 04") == 0);
+    }
+
+    // test del_resto
+    {
+        vector livreurs = lecture_livreur("db_livreurs.csv");
+        vector restos = lecture_restaurant("db_restaurants.csv");
+
+        Livreur comp_livreur;
+        comp_livreur.id = 3;
+        modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 13001);
+        modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 1, restos);
+
+        del_resto(&restos, at(&restos, 0), &livreurs);
+        TEST(size(restos) == 4);
+        TEST(size(livreurs) == 5);
+
+        TEST(get_first_id(begin(&restos), end(&restos)) == 1);
+
+        TEST(((Livreur*)(at(&livreurs, 0).element))->restaurant == 0);
+        TEST(((Livreur*)(at(&livreurs, 2).element))->restaurant == 0);
+
+        del_resto(&restos, at(&restos, 2), &livreurs);
+
+        TEST(((Restaurant*)(at(&restos, 2).element))->id == 5);
+
+        TEST(size(restos) == 3);
+        TEST(size(livreurs) == 5);
+
+        TEST(((Livreur*)(at(&livreurs, 0).element))->restaurant == 0);
+        TEST(((Livreur*)(at(&livreurs, 2).element))->restaurant == 0);
+        TEST(((Livreur*)(at(&livreurs, 4).element))->restaurant == 0);
+
+        modif_livreur_resto(at(&livreurs, 1), 2, restos);
+        
+        del_resto(&restos, at(&restos, 2), &livreurs);
+
+        TEST(size(restos) == 2);
+        TEST(size(livreurs) == 5);
+
+        TEST(((Livreur*)(at(&livreurs, 0).element))->restaurant == 0);
+        TEST(((Livreur*)(at(&livreurs, 1).element))->restaurant == 2);
+        TEST(((Livreur*)(at(&livreurs, 2).element))->restaurant == 0);
+        TEST(((Livreur*)(at(&livreurs, 4).element))->restaurant == 0);
+    }
+
+    // test binary_search
+    {
+        vector numbers = make_vector(sizeof(int), 0, 2.);
+
+        int n = 1;
+        push_back(&numbers, &n);
+        push_back(&numbers, &n);
+        push_back(&numbers, &n);
+        n = 22;
+        push_back(&numbers, &n);
+        push_back(&numbers, &n);
+        n = 99;
+        push_back(&numbers, &n);
+
+        iterator const b = begin(&numbers), e = end(&numbers);
+        n = 1;
+        TEST(binary_search(b, e, &n, numerical_compare) == true);
+        n = 22;
+        TEST(binary_search(b, e, &n, numerical_compare) == true);
+        n = 99;
+        TEST(binary_search(b, e, &n, numerical_compare) == true);
+        n = 0;
+        TEST(binary_search(b, e, &n, numerical_compare) == false);
+        n = 100;
+        TEST(binary_search(b, e, &n, numerical_compare) == false);
+
+        iterator fourth = at(&numbers, 3);
+        n = 1;
+        TEST(binary_search(fourth, e, &n, numerical_compare) == false);
+        n = 22;
+        TEST(binary_search(b, fourth, &n, numerical_compare) == false);
     }
 
     return tests_executed - tests_successful;

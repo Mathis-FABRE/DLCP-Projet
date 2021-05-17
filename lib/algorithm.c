@@ -404,20 +404,24 @@ bool binary_search(
     void const *value,
     int (*comparator)(void const *a, void const *b))
 {
-    // iterateur de test
-    iterator test=first;
+    iterator b = first, e = last;
 
-    // pour tous les el de l'intervalle
-    while (compare(test, last)<0)
+    int endcond = 0;
+    while(compare(b,e) < 0 && !endcond)
     {
-        // si egal à value
-        if(comparator(test.element, value)==0)
-            // renvoie vrai
+        iterator test = b;
+        increment(&test, (e.element-b.element)/(2*b.element_size));
+        int res=comparator(test.element, value);
+        if((e.element-b.element)/(2*b.element_size) == 0)
+            endcond = 1;
+        if(res == 0)
             return true;
-        increment(&test, 1);
+        else if(res > 0)
+            e = test;
+        else
+            b = test;
     }
-    
-    // sinon faux
+
     return false;
 }
 
