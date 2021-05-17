@@ -13,7 +13,7 @@
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
 
-int const tests_total = 299;
+int const tests_total = 306;
 
 int const test_column_width = 80;
 
@@ -656,6 +656,39 @@ int main()
         TEST(((Livreur*)(at(&livreurs, 1).element))->restaurant == 2);
         TEST(((Livreur*)(at(&livreurs, 2).element))->restaurant == 0);
         TEST(((Livreur*)(at(&livreurs, 4).element))->restaurant == 0);
+    }
+
+    // test binary_search
+    {
+        vector numbers = make_vector(sizeof(int), 0, 2.);
+
+        int n = 1;
+        push_back(&numbers, &n);
+        push_back(&numbers, &n);
+        push_back(&numbers, &n);
+        n = 22;
+        push_back(&numbers, &n);
+        push_back(&numbers, &n);
+        n = 99;
+        push_back(&numbers, &n);
+
+        iterator const b = begin(&numbers), e = end(&numbers);
+        n = 1;
+        TEST(binary_search(b, e, &n, numerical_compare) == true);
+        n = 22;
+        TEST(binary_search(b, e, &n, numerical_compare) == true);
+        n = 99;
+        TEST(binary_search(b, e, &n, numerical_compare) == true);
+        n = 0;
+        TEST(binary_search(b, e, &n, numerical_compare) == false);
+        n = 100;
+        TEST(binary_search(b, e, &n, numerical_compare) == false);
+
+        iterator fourth = at(&numbers, 3);
+        n = 1;
+        TEST(binary_search(fourth, e, &n, numerical_compare) == false);
+        n = 22;
+        TEST(binary_search(b, fourth, &n, numerical_compare) == false);
     }
 
     return tests_executed - tests_successful;
