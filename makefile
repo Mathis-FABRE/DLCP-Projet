@@ -42,6 +42,13 @@ build/gestionfichier.o : lib/gestionfichier.c lib/gestionfichier.h | build
 build/libgestionfichier.a: lib/gestionfichier.h build/gestionfichier.o | build
 	ar crs build/libgestionfichier.a build/gestionfichier.o
 
+#librairie Menu
+build/menu.o : lib/menu.c lib/menu.h | build
+	gcc -Wall -Werror -pedantic --debug -c lib/menu.c -I ./lib -o build/menu.o
+
+build/libmenu.a: lib/menu.h build/menu.o | build
+	ar crs build/libmenu.a build/menu.o
+
 # Programme de test
 build/test.o: test/main.c | build
 	gcc -Wall -Werror -pedantic --debug -c test/main.c -I ./lib -o build/test.o
@@ -53,8 +60,8 @@ build/test: build/test.o build/libvector.a build/libdb.a build/libgestionfichier
 build/appli.o: appli/main.c | build
 	gcc -Wall -Werror -pedantic --debug -c appli/main.c -I ./lib -o build/appli.o
 
-build/appli: build/appli.o build/libvector.a build/libdb.a build/libgestionfichier.a build/libalgorithm.a build/libfunctions.a | build 
-	gcc build/appli.o -L build -l vector -l gestionfichier -l algorithm -l db -l functions -o build/appli
+build/appli: build/appli.o build/libvector.a build/libdb.a build/libgestionfichier.a build/libalgorithm.a build/libfunctions.a build/libmenu.a| build 
+	gcc build/appli.o -L build -l vector -l gestionfichier -l algorithm -l db -l functions -l menu -o build/appli
 
 # S'assure de l'existence tout les programmes finaux (application, test, etc.)
 # Par exemple : all: build/test build/appli
