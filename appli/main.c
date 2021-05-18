@@ -2,6 +2,7 @@
 #include "db.h"
 #include "algorithm.h"
 #include "functions.h"
+#include "menu.h"
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -32,6 +33,23 @@ int main()
             printf("choix invalide veuillez réessayer: ");
     }while(choice!='1' && choice!='2' && choice!='3' && choice!='q');
 
+    switch (choice)
+    {
+    case '1':
+        menu_resto();
+        break;
+
+    case '2':
+        menu_livreur();
+        break;
+
+    case '3':
+        menu_client();
+        break;
+    
+    default:
+        break;
+    }
     printf("\n");
 
     return 0;
