@@ -24,7 +24,13 @@ int main()
     printf("2/ Un.e Livreur.se\n");
     printf("3/ Un.e Client.e\n");
     printf("\n");
-    printf("Votre choix : ");
+    printf("Votre choix (q pour quitter): ");
+    char choice;
+    do{
+        scanf("%c", &choice);
+        if(choice!='1' && choice!='2' && choice!='3' && choice!='q')
+            printf("choix invalide veuillez réessayer: ");
+    }while(choice!='1' && choice!='2' && choice!='3' && choice!='q');
 
     printf("\n");
 
