@@ -18,7 +18,7 @@ void menu_client()
     printf("1/ Consulter votre solde\n");
     printf("2/ Modifier votre profil\n");
     printf("3/ Voir la liste des restaurants\n");
-    printf("4/ Passer une commande\n")
+    printf("4/ Passer une commande\n");
     printf("\n");
     printf("Votre choix (q pour quitter, r pour retour): ");
 }
