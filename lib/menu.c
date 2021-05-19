@@ -3,6 +3,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void menu_principal()
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("             Menu Principal            \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Vous êtes ?\n");
+    printf("1/ Un.e Restaurateur.tice\n");
+    printf("2/ Un.e Livreur.se\n");
+    printf("3/ Un.e Client.e\n");
+    printf("\n");
+    printf("Votre choix (q pour quitter): ");
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='1' && choice!='2' && choice!='3' && choice!='q')
+            printf("choix invalide veuillez réessayer: ");
+    }while(choice!='1' && choice!='2' && choice!='3' && choice!='q');
+
+    switch (choice)
+    {
+    case '1':
+        menu_resto();
+        break;
+
+    case '2':
+        menu_livreur();
+        break;
+
+    case '3':
+        menu_client();
+        break;
+    
+    default:
+        break;
+    }
+}
+
 void menu_client()
 {
     system("clear");
@@ -21,6 +64,35 @@ void menu_client()
     printf("4/ Passer une commande\n");
     printf("\n");
     printf("Votre choix (q pour quitter, r pour retour): ");
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='q' && choice!='r')
+            printf("choix invalide veuillez réessayer: ");
+    }while(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='q' && choice!='r');
+
+    switch (choice)
+    {
+    case '1':
+        menu_resto();
+        break;
+
+    case '2':
+        menu_livreur();
+        break;
+
+    case '3':
+        menu_client();
+        break;
+
+    case 'r':
+        menu_principal();
+        break;
+    
+    default:
+        break;
+    }
+
 }
 
 void menu_resto()
@@ -40,6 +112,35 @@ void menu_resto()
     printf("3/ Supprimer compte\n");
     printf("\n");
     printf("Votre choix (q pour quitter, r pour retour): ");
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='1' && choice!='2' && choice!='3' && choice!='q' && choice!='r')
+            printf("choix invalide veuillez réessayer: ");
+    }while(choice!='1' && choice!='2' && choice!='3' && choice!='q' && choice!='r');
+
+    switch (choice)
+    {
+    case '1':
+        menu_resto();
+        break;
+
+    case '2':
+        menu_livreur();
+        break;
+
+    case '3':
+        menu_client();
+        break;
+
+    case 'r':
+        menu_principal();
+        break;
+    
+    default:
+        break;
+    }
+
 }
 
 void menu_livreur()
@@ -59,4 +160,33 @@ void menu_livreur()
     printf("3/ Supprimer compte\n");
     printf("\n");
     printf("Votre choix (q pour quitter, r pour retour): ");
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='1' && choice!='2' && choice!='3' && choice!='q' && choice!='r')
+            printf("choix invalide veuillez réessayer: ");
+    }while(choice!='1' && choice!='2' && choice!='3' && choice!='q' && choice!='r');
+
+    switch (choice)
+    {
+    case '1':
+        menu_resto();
+        break;
+
+    case '2':
+        menu_livreur();
+        break;
+
+    case '3':
+        menu_client();
+        break;
+
+    case 'r':
+        menu_principal();
+        break;
+    
+    default:
+        break;
+    }
+
 }
