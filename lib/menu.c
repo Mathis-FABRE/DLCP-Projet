@@ -57,7 +57,7 @@ void menu_client()
     printf("              Menu Client              \n");
     printf("#######################################\n");
     printf("\n");
-    printf("vous voulez ?\n");
+    printf("Vous voulez ?\n");
     printf("1/ Consulter votre solde\n");
     printf("2/ Modifier votre profil\n");
     printf("3/ Voir la liste des restaurants\n");
@@ -74,7 +74,7 @@ void menu_client()
     switch (choice)
     {
     case '1':
-        menu_resto();
+        menu_client_solde();
         break;
 
     case '2':
@@ -95,6 +95,55 @@ void menu_client()
 
 }
 
+void menu_client_solde()
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("              Solde Client             \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Votre Solde : ");
+    printf("\n");
+    printf("Voulez vous créditer votre solde ?\n");
+    printf("(y pour oui, n pour non)\n");
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='y' && choice!='n')
+            printf("réponse invalide veuillez réessayer: ");
+    }while(choice!='y' && choice!='n');
+    switch(choice)
+    {
+    case 'y':
+        menu_credit_client();
+        break;
+    
+    case 'n':
+        menu_client();
+        break;
+    }
+}
+
+void menu_credit_client()
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("            Creditage Client           \n")
+    printf("#######################################\n");
+    printf("\n");
+    printf("Entrez la somme que vous souhaitez\n");
+    printf("créditer a votre solde: ");
+
+}
+
 void menu_resto()
 {
     system("clear");
@@ -106,7 +155,7 @@ void menu_resto()
     printf("            Menu Restaurant            \n");
     printf("#######################################\n");
     printf("\n");
-    printf("vous voulez ?\n");
+    printf("Vous voulez ?\n");
     printf("1/ Voir votre solde\n");
     printf("2/ Modifier le menu\n");
     printf("3/ Supprimer compte\n");
@@ -122,15 +171,15 @@ void menu_resto()
     switch (choice)
     {
     case '1':
-        menu_resto();
+        menu_resto_solde();
         break;
 
     case '2':
-        menu_livreur();
+        menu_modifier_resto();
         break;
 
     case '3':
-        menu_client();
+        menu_supprimer_resto();
         break;
 
     case 'r':
@@ -141,6 +190,25 @@ void menu_resto()
         break;
     }
 
+}
+
+void menu_resto_solde()
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("            Solde Restaurant           \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Votre Solde : ");
+    printf("\n");
+    printf("Entrer n'importe quoi pour retourner: ");
+    char choice;
+    scanf(" %c", &choice);
+    menu_resto();
 }
 
 void menu_livreur()
@@ -154,7 +222,7 @@ void menu_livreur()
     printf("              Menu Livreur             \n");
     printf("#######################################\n");
     printf("\n");
-    printf("vous voulez ?\n");
+    printf("Vous voulez ?\n");
     printf("1/ Voir votre solde\n");
     printf("2/ Modifier profil\n");
     printf("3/ Supprimer compte\n");
@@ -170,15 +238,15 @@ void menu_livreur()
     switch (choice)
     {
     case '1':
-        menu_resto();
+        menu_livreur_solde();
         break;
 
     case '2':
-        menu_livreur();
+        menu_modifier_livreur();
         break;
 
     case '3':
-        menu_client();
+        menu_supprimer_livreur();
         break;
 
     case 'r':
@@ -189,4 +257,23 @@ void menu_livreur()
         break;
     }
 
+}
+
+void menu_livreur_solde()
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("             Solde Livreur             \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Votre Solde : ");
+    printf("\n");
+    printf("Entrer n'importe quoi pour retourner: ");
+    char choice;
+    scanf(" %c", &choice);
+    menu_livreur();
 }
