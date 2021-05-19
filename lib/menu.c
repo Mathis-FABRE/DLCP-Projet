@@ -79,7 +79,7 @@ void menu_client()
         break;
 
     case '2':
-        menu_livreur();
+        menu_modifier_client();
         break;
 
     case '3':
@@ -157,6 +157,48 @@ void menu_credit_client()
             printf("somme invalide veuillez réessayer: ");
     }while(choice < 0);
     menu_client();
+}
+
+void menu_modifier_client()
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("          Modification Client          \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Vous voulez modifiez ?\n");
+    printf("1/ Code postal\n");
+    printf("2/ Téléphone\n");
+    printf("\n");
+    printf("Votre choix (q pour quitter, r pour retour): ");
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='1' && choice!='2' && choice!='q' && choice!='r')
+            printf("choix invalide veuillez réessayer: ");
+    }while(choice!='1' && choice!='2' && choice!='q' && choice!='r');
+
+    switch (choice)
+    {
+    case '1':
+        // menu_livreur_solde();
+        break;
+
+    case '2':
+        // menu_modifier_livreur();
+        break;
+
+    case 'r':
+        menu_client();
+        break;
+    
+    default:
+        break;
+    }
 }
 
 void menu_supprimer_client()
