@@ -136,12 +136,18 @@ void menu_credit_client()
     printf("#######################################\n");
     printf("\n");
     printf("#######################################\n");
-    printf("            Creditage Client           \n")
+    printf("            Creditage Client           \n");
     printf("#######################################\n");
     printf("\n");
     printf("Entrez la somme que vous souhaitez\n");
     printf("créditer a votre solde: ");
-
+    float choice;
+    do{
+        scanf(" %f", &choice);
+        if(choice < 0)
+            printf("somme invalide veuillez réessayer: ");
+    }while(choice < 0);
+    menu_client();
 }
 
 void menu_resto()
@@ -179,7 +185,7 @@ void menu_resto()
         break;
 
     case '3':
-        menu_supprimer_resto();
+        // menu_supprimer_resto();
         break;
 
     case 'r':
@@ -209,6 +215,47 @@ void menu_resto_solde()
     char choice;
     scanf(" %c", &choice);
     menu_resto();
+}
+
+void menu_modifier_resto()
+{
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("           Modification Menu           \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Vous voulez ?\n");
+    printf("1/ Ajouter un item\n");
+    printf("2/ supprimer un item\n");
+    printf("\n");
+    printf("Votre choix (q pour quitter, r pour retour): ");
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='1' && choice!='2' && choice!='q' && choice!='r')
+            printf("choix invalide veuillez réessayer: ");
+    }while(choice!='1' && choice!='2' && choice!='q' && choice!='r');
+
+    switch (choice)
+    {
+    case '1':
+        // menu_livreur_solde();
+        break;
+
+    case '2':
+        // menu_modifier_livreur();
+        break;
+
+    case 'r':
+        menu_resto();
+        break;
+    
+    default:
+        break;
+    }
 }
 
 void menu_livreur()
@@ -246,7 +293,7 @@ void menu_livreur()
         break;
 
     case '3':
-        menu_supprimer_livreur();
+        // menu_supprimer_livreur();
         break;
 
     case 'r':
@@ -256,7 +303,6 @@ void menu_livreur()
     default:
         break;
     }
-
 }
 
 void menu_livreur_solde()
@@ -276,4 +322,51 @@ void menu_livreur_solde()
     char choice;
     scanf(" %c", &choice);
     menu_livreur();
+}
+
+void menu_modifier_livreur()
+{
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("          Modification Livreur         \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Vous voulez modifiez ?\n");
+    printf("1/ Déplacements possibles\n");
+    printf("2/ Téléphone\n");
+    printf("3/ Exclusivité restaurateur");
+    printf("\n");
+    printf("\n");
+    printf("Votre choix (q pour quitter, r pour retour): ");
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='1' && choice!='2' && choice!='3' && choice!='q' && choice!='r')
+            printf("choix invalide veuillez réessayer: ");
+    }while(choice!='1' && choice!='2' && choice!='3' && choice!='q' && choice!='r');
+
+    switch (choice)
+    {
+    case '1':
+        // menu_livreur_solde();
+        break;
+
+    case '2':
+        // menu_modifier_livreur();
+        break;
+
+    case '3':
+        // menu_supprimer_livreur();
+        break;
+
+    case 'r':
+        menu_livreur();
+        break;
+    
+    default:
+        break;
+    }
 }
