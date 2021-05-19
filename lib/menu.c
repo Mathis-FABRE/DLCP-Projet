@@ -62,14 +62,15 @@ void menu_client()
     printf("2/ Modifier votre profil\n");
     printf("3/ Voir la liste des restaurants\n");
     printf("4/ Passer une commande\n");
+    printf("5/ supprimer compte\n");
     printf("\n");
     printf("Votre choix (q pour quitter, r pour retour): ");
     char choice;
     do{
         scanf(" %c", &choice);
-        if(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='q' && choice!='r')
+        if(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='q' && choice!='r')
             printf("choix invalide veuillez réessayer: ");
-    }while(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='q' && choice!='r');
+    }while(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='q' && choice!='r');
 
     switch (choice)
     {
@@ -83,6 +84,14 @@ void menu_client()
 
     case '3':
         menu_client();
+        break;
+
+    case '4':
+        menu_client();
+        break;
+
+    case '5':
+        menu_supprimer_client();
         break;
 
     case 'r':
@@ -150,6 +159,37 @@ void menu_credit_client()
     menu_client();
 }
 
+void menu_supprimer_client()
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("           Suppression Compte          \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Etes vous sûr de vouloir supprimer votre compte ?");
+    printf("(y pour oui, n pour non)\n");
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='y' && choice!='n')
+            printf("réponse invalide veuillez réessayer: ");
+    }while(choice!='y' && choice!='n');
+    switch(choice)
+    {
+    case 'y':
+        menu_principal();
+        break;
+    
+    case 'n':
+        menu_client();
+        break;
+    }
+}
+
 void menu_resto()
 {
     system("clear");
@@ -185,7 +225,7 @@ void menu_resto()
         break;
 
     case '3':
-        // menu_supprimer_resto();
+        menu_supprimer_resto();
         break;
 
     case 'r':
@@ -258,6 +298,37 @@ void menu_modifier_resto()
     }
 }
 
+void menu_supprimer_resto()
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("           Suppression Compte          \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Etes vous sûr de vouloir supprimer votre compte ?");
+    printf("(y pour oui, n pour non)\n");
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='y' && choice!='n')
+            printf("réponse invalide veuillez réessayer: ");
+    }while(choice!='y' && choice!='n');
+    switch(choice)
+    {
+    case 'y':
+        menu_principal();
+        break;
+    
+    case 'n':
+        menu_resto();
+        break;
+    }
+}
+
 void menu_livreur()
 {
     system("clear");
@@ -293,7 +364,7 @@ void menu_livreur()
         break;
 
     case '3':
-        // menu_supprimer_livreur();
+        menu_supprimer_livreur();
         break;
 
     case 'r':
@@ -367,6 +438,37 @@ void menu_modifier_livreur()
         break;
     
     default:
+        break;
+    }
+}
+
+void menu_supprimer_livreur()
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("           Suppression Compte          \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Etes vous sûr de vouloir supprimer votre compte ?");
+    printf("(y pour oui, n pour non)\n");
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='y' && choice!='n')
+            printf("réponse invalide veuillez réessayer: ");
+    }while(choice!='y' && choice!='n');
+    switch(choice)
+    {
+    case 'y':
+        menu_principal();
+        break;
+    
+    case 'n':
+        menu_livreur();
         break;
     }
 }
