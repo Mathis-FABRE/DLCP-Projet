@@ -12,6 +12,24 @@
 int main()
 {
     system("clear");
+    printf("chargement");
+    check(0);
+    vector restos = lecture_restaurant("db_restaurants.csv");
+    shrink_to_fit(&restos);
+    printf(".");
+    vector menus = lecture_menu("db_menus.csv");
+    shrink_to_fit(&menus);
+    printf(".");
+    vector livreurs = lecture_livreur("db_livreurs.csv");
+    shrink_to_fit(&livreurs);
+    printf(".");
+    vector clients = lecture_client("db_clients.csv");
+    shrink_to_fit(&clients);
+    printf(".");
+
+    printf("\n\n");
+
+    system("clear");
     printf("#######################################\n");
     printf(" Bienvenue sur kiki's delivery service \n");
     printf("#######################################\n");
@@ -50,6 +68,18 @@ int main()
     default:
         break;
     }
+
+    sauvegarde_clients(begin(&clients), end(&clients));
+    destroy(&clients);
+
+    sauvegarde_resto(begin(&restos), end(&restos));
+    destroy(&restos);
+
+    sauvegarde_menus(begin(&menus), end(&menus));
+    destroy(&menus);
+
+    sauvegarde_livreurs(begin(&livreurs), end(&livreurs));
+    destroy(&livreurs);
 
     return 0;
 }
