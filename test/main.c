@@ -72,6 +72,7 @@ int main()
             destroy(&clients);
         }
 
+        
         // test de separateur_chaine()
         {
             vector dbmenus=make_vector(sizeof(size_t),0,growth_factor);
@@ -165,6 +166,56 @@ int main()
             destroy(&livreurs);
         }
 
+            // Tests liste_resto
+        {
+            
+            vector livreurs = lecture_livreur("test/db_livreurs.csv");
+
+            // tests "peut me livrer"
+            
+            vector restos = lecture_restaurant("test/db_restaurants.csv");
+            vector liste = liste_resto(13001, &restos, &livreurs, NULL);
+
+            Restaurant *restaurant = (Restaurant *)(begin(&liste).element);
+            TEST(strcmp(restaurant->nom, "Chez Michel") == 0);
+
+            TEST(size(liste) == 1);
+
+            TEST( ajout_resto("Reste Tôt", 13009, "06 51 12 69 57", "Fast Food", &restos) == 4);
+            TEST( ajout_resto("Dindo Marrons", 13009, "06 23 72 89 75", "Francais", &restos) == 6);
+
+            liste = liste_resto(13009, &restos, &livreurs, NULL);
+            TEST(size(liste) == 2);
+
+            // tests "type de cuisine"
+
+            liste = liste_resto(0, &restos, &livreurs, "Fast Food");
+            TEST(size(liste) == 2);
+
+            liste = liste_resto(0, &restos, &livreurs, "Americain");
+            TEST(size(liste) == 1);
+
+            liste = liste_resto(0, &restos, &livreurs, "Francais");
+            TEST(size(liste) == 1);
+
+            liste = liste_resto(0, &restos, &livreurs, "Vegetarien");
+            TEST(size(liste) == 1);
+
+            // tests "peut me livrer" + "type de cuisine"
+
+            liste = liste_resto(13009, &restos, &livreurs, "Fast Food");
+            restaurant = (Restaurant *)(begin(&liste).element);
+            TEST(strcmp(restaurant->nom, "Reste Tôt") == 0);
+            TEST(size(liste) == 1);
+
+            liste = liste_resto(13003, &restos, &livreurs, "Provencal");
+            restaurant = (Restaurant *)(begin(&liste).element);
+            TEST(strcmp(restaurant->nom, "Chez Michel") == 0);
+            TEST(size(liste) == 1);
+
+        }
+
+
         // test lecture_menu() + sauvegarde_menus()
         {
             vector menus=lecture_menu("test/db_menus.csv");
@@ -238,8 +289,7 @@ int main()
         TEST(iscode("1111X") == 0);
         TEST(iscode("0x110") == 0);
         TEST(iscode("Marseille") == 0);
-        TEST(iscode("Paris" == 0))
-
+        TEST(iscode("Paris") == 0)
         TEST(iscode("11111") == 1);
         TEST(iscode("13009") == 1);
     }
