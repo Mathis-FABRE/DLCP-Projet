@@ -113,7 +113,7 @@ int ajout_menu(char *nom, char *ingredients, float prix, vector *menus)
     return id;
 }
 
-int add_menu(size_t id, Restaurant * resto, vector const menus)
+int add_menu(size_t id, Restaurant *resto, vector const menus)
 
 {
     Menu compare;
@@ -121,7 +121,7 @@ int add_menu(size_t id, Restaurant * resto, vector const menus)
 
     if (binary_search(begin(&menus), end(&menus), &compare, idmenu_compare))
     {
-        if(binary_search(begin(&resto->menu), end(&resto->menu), &id, numerical_compare))
+        if (binary_search(begin(&resto->menu), end(&resto->menu), &id, numerical_compare))
             return -2;
         push_back(&resto->menu, &id);
         sort_by(begin(&resto->menu), end(&resto->menu), numerical_compare);
@@ -129,18 +129,18 @@ int add_menu(size_t id, Restaurant * resto, vector const menus)
     }
 
     else
-        return -1;    
+        return -1;
 }
 
 int del_menu(iterator restaurant, size_t id)
 {
-    Restaurant * modif = (Restaurant*)(restaurant.element);
-    
+    Restaurant *modif = (Restaurant *)(restaurant.element);
+
     int search = 0;
-    for(iterator b=begin(&modif->menu), e=end(&modif->menu); compare(b,e) && search <=0; increment(&b, 1))
+    for (iterator b = begin(&modif->menu), e = end(&modif->menu); compare(b, e) && search <= 0; increment(&b, 1))
     {
-        search = *(int*)(b.element) - id;
-        if(search == 0)
+        search = *(int *)(b.element) - id;
+        if (search == 0)
         {
             erase(&modif->menu, b);
             return 1;
@@ -150,16 +150,16 @@ int del_menu(iterator restaurant, size_t id)
     return 0;
 }
 
-void del_resto(vector * restos, iterator restaurant, vector * livreurs)
+void del_resto(vector *restos, iterator restaurant, vector *livreurs)
 {
-    Restaurant * suppr = (Restaurant*)(restaurant.element);
+    Restaurant *suppr = (Restaurant *)(restaurant.element);
     destroy(&suppr->menu);
 
-    for(iterator b=begin(livreurs), e=end(livreurs); compare(b,e); increment(&b, 1))
+    for (iterator b = begin(livreurs), e = end(livreurs); compare(b, e); increment(&b, 1))
     {
-        Livreur * test = (Livreur*)(b.element);
+        Livreur *test = (Livreur *)(b.element);
 
-        if(suppr->id == test->restaurant)
+        if (suppr->id == test->restaurant)
             modif_livreur_resto(b, 0, *restos);
     }
 
@@ -265,8 +265,7 @@ int ajout_livreur(char *nom, char *tel, char *deplacement, size_t resto, vector 
     return id;
 }
 
-
-void del_livreur(vector * livreurs, iterator livreur)
+void del_livreur(vector *livreurs, iterator livreur)
 {
     Livreur *suppr = (Livreur *)(livreur.element);
 
@@ -391,4 +390,107 @@ int modif_livreur_tel(iterator livreur, char *tel)
     strcpy(modif->telephone, tel);
 
     return 1;
+}
+
+vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type_cuisine)
+{
+    vector liste = make_vector(sizeof(Restaurant), 0, 2.);
+    vector restaurants = make_vector(sizeof(Restaurant), size(*restos), 2.);
+    copy(begin(restos), end(restos), begin(&restaurants));
+    
+
+    // Un restau peut livrer le client si son id est dans les livreurs qui ont le code postal du client
+    // ou si son code postal est le même que celui du client et d'un livreur "libre"
+
+    if (code_postal)
+    {
+        for (iterator first = begin(livreurs), end_i = end(livreurs); compare(first, end_i) < 0; increment(&first, 1))
+        {
+
+            Livreur *livreur = (Livreur *)(first.element);
+            vector codes = livreur->deplacements;
+
+            for (iterator f = begin(&codes), e = end(&codes); compare(f, e) < 0; increment(&f, 1))
+            {
+                int code = *(int *)(f.element);
+                if (code == code_postal)
+                {
+                    if (livreur->restaurant != 0)
+                    {
+                        Restaurant *resto = (Restaurant *)at(&restaurants, livreur->restaurant - 1).element;
+                        push_back(&liste, resto);
+                        // on supprime le restaurant pour ne pas retomber dessus par la suite et accélérer les opérations
+                        erase(&restaurants, at(&restaurants, livreur->restaurant - 1));
+
+                        break;
+                    }
+                    else
+                    {
+                        for (iterator d = begin(&restaurants), fin = end(&restaurants); compare(d, fin) < 0; increment(&d, 1))
+                        {
+                            Restaurant *resto = (Restaurant *)d.element;
+                            if (resto->code_postal == code_postal)
+                            {
+                                push_back(&liste, resto);
+                                // on supprime le restaurant pour ne pas retomber dessus par la suite et accélérer les opérations
+                                erase(&restaurants, at(&restaurants, id_search(begin(&restaurants), end(&restaurants), resto, idresto_compare) - 1));
+
+                                // on décrémente pour ne pas sauter l'élément suivant celui supprimé
+                                decrement(&d, 1);
+
+                                // mise à jour de fin
+                                fin = end(&restaurants);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Restriction à un type de cuisine
+    if (type_cuisine)
+    {
+        if (code_postal)
+        {
+            for (iterator d = begin(&liste), fin = end(&liste); compare(d, fin) < 0; increment(&d, 1))
+            {
+                Restaurant *resto = (Restaurant *)(d.element);
+                if (strcmp(resto->type, type_cuisine) != 0)
+                {
+                    
+                    erase(&liste, at(&liste, id_search(begin(&liste), end(&liste), resto, idresto_compare) - 1));
+
+                    // on décrémente pour ne pas sauter l'élément suivant celui supprimé
+                    decrement(&d, 1);
+
+                    // mise à jour de fin
+                    fin = end(&liste);
+                }
+            }
+        }
+        else 
+        {
+            for (iterator d = begin(&restaurants), fin = end(&restaurants); compare(d, fin) < 0; increment(&d, 1))
+        {
+            Restaurant *resto = (Restaurant *)(d.element);
+            if (strcmp(resto->type, type_cuisine) == 0)
+            {
+                push_back(&liste, resto);
+                erase(&restaurants, at(&restaurants, id_search(begin(&restaurants), end(&restaurants), resto, idresto_compare) - 1));
+
+                // on décrémente pour ne pas sauter l'élément suivant celui supprimé
+                decrement(&d, 1);
+
+                // mise à jour de fin
+                fin = end(&restaurants);
+            }
+        }
+        }
+        
+    }
+
+    destroy(&restaurants);
+
+    return liste;
 }

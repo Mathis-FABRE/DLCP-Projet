@@ -17,6 +17,7 @@ typedef enum categorie
     CLIENT,
 } CATEGORIE;
 
+
 typedef struct restaurant
 {
     size_t id; // Clé primaire.
@@ -180,3 +181,8 @@ int modif_livreur_addcode(iterator livreur, int code);
 // -1 : tel invalide
 int modif_livreur_tel(iterator livreur, char * tel);
 
+// Fonction qui créé un vector de restaurants
+// elle prend en paramètres le code_postal et le type de cuisine 
+// si l'utilisateur souhaite filtrer aux restaurants qui le livrent
+// ou aux restaurants d'un certain type
+vector liste_resto(int code_postal, vector *restaurants, vector *livreurs, char *type_cuisine);
