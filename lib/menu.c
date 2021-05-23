@@ -106,7 +106,7 @@ void menu_client_solde(iterator client, vector * restos, vector * menus, vector 
     printf("              Solde Client             \n");
     printf("#######################################\n");
     printf("\n");
-    printf("Votre Solde : ");
+    printf("Votre Solde : %.2f€", ((Client*)client.element)->solde);
     printf("\n");
     printf("Voulez vous créditer votre solde ?\n");
     printf("(y pour oui, n pour non)\n");
@@ -316,7 +316,7 @@ void menu_resto_solde(iterator resto, vector * menus)
     printf("            Solde Restaurant           \n");
     printf("#######################################\n");
     printf("\n");
-    printf("Votre Solde : ");
+    printf("Votre Solde : %.2f€", ((Restaurant*)(resto.element))->solde);
     printf("\n");
     printf("Entrer n'importe quoi pour retourner: ");
     char choice;
@@ -491,7 +491,7 @@ void menu_livreur_solde(iterator livreur, vector * restos)
     printf("             Solde Livreur             \n");
     printf("#######################################\n");
     printf("\n");
-    printf("Votre Solde : ");
+    printf("Votre Solde : %.2f€", ((Livreur*)livreur.element)->solde);
     printf("\n");
     printf("Entrer n'importe quoi pour retourner: ");
     char choice;
