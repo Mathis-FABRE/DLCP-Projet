@@ -51,6 +51,14 @@ void menu_client(iterator client, vector * restos, vector * menus, vector * livr
     printf("              Menu Client              \n");
     printf("#######################################\n");
     printf("\n");
+
+    printf("info :\n");
+    Client * compte = (Client*)client.element;
+    printf("id: %ld\n", compte->id);
+    printf("nom: %s\n", compte->nom);
+    printf("code postal: %d\n", compte->code_postal);
+    printf("\n");
+
     printf("Vous voulez ?\n");
     printf("1/ Consulter votre solde\n");
     printf("2/ Modifier votre profil\n");
@@ -58,13 +66,13 @@ void menu_client(iterator client, vector * restos, vector * menus, vector * livr
     printf("4/ Passer une commande\n");
     printf("5/ supprimer compte\n");
     printf("\n");
-    printf("Votre choix (q pour quitter, r pour retour): ");
+    printf("Votre choix (r pour retour): ");
     char choice;
     do{
         scanf(" %c", &choice);
-        if(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='q' && choice!='r')
+        if(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='r')
             printf("choix invalide veuillez réessayer: ");
-    }while(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='q' && choice!='r');
+    }while(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='r');
 
     switch (choice)
     {
@@ -271,18 +279,26 @@ void menu_resto(iterator resto, vector * menus)
     printf("            Menu Restaurant            \n");
     printf("#######################################\n");
     printf("\n");
+
+    printf("info :\n");
+    Restaurant * compte = (Restaurant*)resto.element;
+    printf("id: %ld\n", compte->id);
+    printf("nom: %s\n", compte->nom);
+    printf("code postal: %d\n", compte->code_postal);
+    printf("\n");
+
     printf("Vous voulez ?\n");
     printf("1/ Voir votre solde\n");
     printf("2/ Modifier le menu\n");
     printf("3/ Supprimer compte\n");
     printf("\n");
-    printf("Votre choix (q pour quitter, r pour retour): ");
+    printf("Votre choix (r pour retour): ");
     char choice;
     do{
         scanf(" %c", &choice);
-        if(choice!='1' && choice!='2' && choice!='3' && choice!='q' && choice!='r')
+        if(choice!='1' && choice!='2' && choice!='3' && choice!='r')
             printf("choix invalide veuillez réessayer: ");
-    }while(choice!='1' && choice!='2' && choice!='3' && choice!='q' && choice!='r');
+    }while(choice!='1' && choice!='2' && choice!='3' && choice!='r');
 
     switch (choice)
     {
@@ -444,18 +460,26 @@ void menu_livreur(iterator livreur, vector * restos)
     printf("              Menu Livreur             \n");
     printf("#######################################\n");
     printf("\n");
+
+    printf("info :\n");
+    Livreur * compte = (Livreur*)livreur.element;
+    printf("id: %ld\n", compte->id);
+    printf("nom: %s\n", compte->nom);
+    printf("exclu resto: %ld\n", compte->restaurant);
+    printf("\n");
+
     printf("Vous voulez ?\n");
     printf("1/ Voir votre solde\n");
     printf("2/ Modifier profil\n");
     printf("3/ Supprimer compte\n");
     printf("\n");
-    printf("Votre choix (q pour quitter, r pour retour): ");
+    printf("Votre choix (r pour retour): ");
     char choice;
     do{
         scanf(" %c", &choice);
-        if(choice!='1' && choice!='2' && choice!='3' && choice!='q' && choice!='r')
+        if(choice!='1' && choice!='2' && choice!='3' && choice!='r')
             printf("choix invalide veuillez réessayer: ");
-    }while(choice!='1' && choice!='2' && choice!='3' && choice!='q' && choice!='r');
+    }while(choice!='1' && choice!='2' && choice!='3' && choice!='r');
 
     switch (choice)
     {
