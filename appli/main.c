@@ -49,7 +49,7 @@ int main()
         printf("Votre choix (q pour quitter): ");
         
         do{
-            scanf("%c", &choice);
+            scanf(" %c", &choice);
             if(choice!='1' && choice!='2' && choice!='3' && choice!='q')
                 printf("choix invalide veuillez réessayer: ");
         }while(choice!='1' && choice!='2' && choice!='3' && choice!='q');
