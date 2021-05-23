@@ -3,49 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// void menu_principal(vector * clients, vector * restos, vector * menus, vector * livreurs)
-// {
-//     system("clear");
-//     printf("#######################################\n");
-//     printf("         kiki's delivery sevice        \n");
-//     printf("#######################################\n");
-//     printf("\n");
-//     printf("#######################################\n");
-//     printf("             Menu Principal            \n");
-//     printf("#######################################\n");
-//     printf("\n");
-//     printf("Vous êtes ?\n");
-//     printf("1/ Un.e Restaurateur.tice\n");
-//     printf("2/ Un.e Livreur.se\n");
-//     printf("3/ Un.e Client.e\n");
-//     printf("\n");
-//     printf("Votre choix (q pour quitter): ");
-//     char choice;
-//     do{
-//         scanf(" %c", &choice);
-//         if(choice!='1' && choice!='2' && choice!='3' && choice!='q')
-//             printf("choix invalide veuillez réessayer: ");
-//     }while(choice!='1' && choice!='2' && choice!='3' && choice!='q');
-
-//     switch (choice)
-//     {
-//     case '1':
-//         connexion_resto(restos, menus);
-//         break;
-
-//     case '2':
-//         connexion_livreur(livreurs, restos);
-//         break;
-
-//     case '3':
-//         connexion_client(clients, restos, menus, livreurs);
-//         break;
-    
-//     default:
-//         break;
-//     }
-// }
-
 void connexion_client(vector * clients, vector * restos, vector * menus, vector * livreurs)
 {
     system("clear");
@@ -65,9 +22,9 @@ void connexion_client(vector * clients, vector * restos, vector * menus, vector 
         scanf(" %d", &id);
         if(id > 0)
         {
-            // Client comp;
-            // comp.id=id;
-            search = 0;//id_search(begin(clients), end(clients), &comp, idclient_compare);
+            Client comp;
+            comp.id=id;
+            search = id_search(begin(clients), end(clients), &comp, idclient_compare);
             if(search)
                 menu_client(at(clients, search-1), restos, menus, livreurs);
             else
@@ -285,9 +242,9 @@ void connexion_resto(vector * restos, vector * menus)
         scanf(" %d", &id);
         if(id > 0)
         {
-            // Restaurant comp;
-            // comp.id = id;
-            search = 0;//id_search(begin(restos), end(restos), &comp, idresto_compare);
+            Restaurant comp;
+            comp.id = id;
+            search = id_search(begin(restos), end(restos), &comp, idresto_compare);
             if(search)
                 menu_resto(at(restos, search - 1), menus);
             else
@@ -458,9 +415,9 @@ void connexion_livreur(vector * livreurs, vector * restos)
         scanf(" %d", &id);
         if(id > 0)
         {
-            // Livreur comp;
-            // comp.id = id;
-            search = 0; //id_search(begin(livreurs), end(livreurs), &comp, idlivreur_compare);
+            Livreur comp;
+            comp.id = id;
+            search = id_search(begin(livreurs), end(livreurs), &comp, idlivreur_compare);
             if(search)
                 menu_livreur(at(livreurs, search - 1), restos);
             else
