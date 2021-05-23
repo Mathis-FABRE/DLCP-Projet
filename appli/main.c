@@ -28,46 +28,47 @@ int main()
     printf(".");
 
     printf("\n\n");
-
-    system("clear");
-    printf("#######################################\n");
-    printf(" Bienvenue sur kiki's delivery service \n");
-    printf("#######################################\n");
-    printf("\n");
-    printf("#######################################\n");
-    printf("             Menu Principal            \n");
-    printf("#######################################\n");
-    printf("\n");
-    printf("Vous êtes ?\n");
-    printf("1/ Un.e Restaurateur.tice\n");
-    printf("2/ Un.e Livreur.se\n");
-    printf("3/ Un.e Client.e\n");
-    printf("\n");
-    printf("Votre choix (q pour quitter): ");
     char choice;
-    do{
-        scanf("%c", &choice);
-        if(choice!='1' && choice!='2' && choice!='3' && choice!='q')
-            printf("choix invalide veuillez réessayer: ");
-    }while(choice!='1' && choice!='2' && choice!='3' && choice!='q');
 
-    switch (choice)
+    do
     {
-    case '1':
-        menu_resto();
-        break;
+        system("clear");
+        printf("#######################################\n");
+        printf(" Bienvenue sur kiki's delivery service \n");
+        printf("#######################################\n");
+        printf("\n");
+        printf("#######################################\n");
+        printf("             Menu Principal            \n");
+        printf("#######################################\n");
+        printf("\n");
+        printf("Vous êtes ?\n");
+        printf("1/ Un.e Restaurateur.tice\n");
+        printf("2/ Un.e Livreur.se\n");
+        printf("3/ Un.e Client.e\n");
+        printf("\n");
+        printf("Votre choix (q pour quitter): ");
+        
+        do{
+            scanf("%c", &choice);
+            if(choice!='1' && choice!='2' && choice!='3' && choice!='q')
+                printf("choix invalide veuillez réessayer: ");
+        }while(choice!='1' && choice!='2' && choice!='3' && choice!='q');
 
-    case '2':
-        menu_livreur();
-        break;
+        switch (choice)
+        {
+        case '1':
+            connexion_resto(&restos, &menus);
+            break;
 
-    case '3':
-        menu_client();
-        break;
-    
-    default:
-        break;
-    }
+        case '2':
+            connexion_livreur(&livreurs, &restos);
+            break;
+
+        case '3':
+            connexion_client(&clients, &restos, &menus, &livreurs);
+            break;
+        }
+    }while (choice != 'q');    
 
     sauvegarde_clients(begin(&clients), end(&clients));
     destroy(&clients);
