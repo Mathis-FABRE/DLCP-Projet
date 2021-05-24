@@ -369,7 +369,7 @@ void menu_modifier_resto(iterator resto, vector * menus)
     switch (choice)
     {
     case '1':
-        // modif_additem(resto, menus);
+        modif_additem(resto, menus);
         break;
 
     case '2':
@@ -396,6 +396,31 @@ void modif_additem(iterator resto, vector * menus)
     printf("           Modification Menu           \n");
     printf("#######################################\n");
     printf("\n");
+    printf("Menus disponible : \n");
+    for(iterator b=begin(menus), e=end(menus); compare(b,e); increment(&b,1))
+    {
+        Menu * menu=(Menu*)(b.element);
+        printf("%zu,%s,", menu->id, menu->nom);
+        affiche_liste(begin(&menu->ingredients), end(&menu->ingredients));
+        printf(",%.2f\n", menu->prix);
+    }
+    printf("\n");
+    printf("Entrez l'id de l'item que vous souhaitez ajouter (0 pour creer un nouvel item): ");
+    int choice, test;
+    do
+    {
+        scanf(" %d", &choice);
+        test = add_menu(choice, (Restaurant*)resto.element, *menus);
+        if(test<0)
+        {
+            printf("id invalide : ");
+            if(test==-1)
+                printf("id inexistant\n");
+            else if(test==-2)
+                printf("item déjà dans menu\n");
+            printf("veuillez réessayer: ");
+        }
+    } while (choice !=0 && test<0);
     
 }
 
@@ -617,12 +642,31 @@ void menu_supprimer_livreur(iterator livreur, vector * restos)
 
 void affiche_liste(iterator first, iterator last)
 {
+    if(compare(first,last) == 0)
+    {
+        printf("vide");
+        return;
+    }
+
     iterator e = last;
     decrement(&e, 1);
-    for (iterator b = first; compare(b,e); increment(&b, 1))
+    if(first.element_size == sizeof(size_t))
     {
-        printf("%ld,", *((size_t*)b.element));
+        for (iterator b = first; compare(b,e); increment(&b, 1))
+        {
+            printf("%ld,", *((size_t*)b.element));
+        }
+        
+        printf("%ld", *((size_t*)e.element));
     }
-    
-    printf("%ld", *((size_t*)e.element));
+    else
+    {
+        for(iterator b=first; compare(b,e); increment(&b,1))
+        {
+            printf("%s;", (char*)(b.element));
+        }
+        printf("%s", (char*)(e.element));
+    }
+
+    return;
 }
