@@ -589,7 +589,9 @@ void menu_livreur(iterator livreur, vector * restos)
     printf("id: %ld\n", compte->id);
     printf("nom: %s\n", compte->nom);
     printf("téléphone: %s\n", compte->telephone);
-    printf("exclu resto: %ld\n", compte->restaurant);
+    printf("déplacements: ");
+    affiche_liste(begin(&compte->deplacements), end(&compte->deplacements));
+    printf("\nexclu resto: %ld\n", compte->restaurant);
     printf("\n");
 
     printf("Vous voulez ?\n");
@@ -674,7 +676,7 @@ void menu_modifier_livreur(iterator livreur, vector * restos)
     switch (choice)
     {
     case '1':
-        // menu_livreur_solde();
+        menu_deplacement(livreur, restos);
         break;
 
     case '2':
@@ -689,6 +691,123 @@ void menu_modifier_livreur(iterator livreur, vector * restos)
         menu_livreur(livreur, restos);
         break;
     }
+}
+
+void menu_deplacement(iterator livreur, vector * restos)
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("          Modification Livreur         \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Vous voulez ?\n");
+    printf("1/ Ajouter un déplacement\n");
+    printf("2/ Retirer un déplacement\n");
+    printf("\n");
+    printf("Votre choix (r pour retour): ");
+
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='1' && choice!='2' && choice!='r')
+            printf("choix invalide veuillez réessayer: ");
+    }while(choice!='1' && choice!='2' && choice!='r');
+
+    switch (choice)
+    {
+    case '1':
+        modif_addcode(livreur, restos);
+        break;
+
+    case '2':
+        modif_delcode(livreur, restos);
+        break;
+
+    case 'r':
+        menu_modifier_livreur(livreur, restos);
+        break;
+    }
+}
+
+void modif_addcode(iterator livreur, vector * restos)
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("          Modification Livreur         \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Entrez le nouveau code postale: ");
+
+    int test;
+    do
+    {
+        int code;
+        scanf(" %d", &code);
+        test = modif_livreur_addcode(livreur, code);
+        if(test<0)
+        {
+            printf("Erreur : ");
+            if(test == -1)
+                printf("code invalide\n");
+            else if(test == -2)
+                printf("code déjà présent\n");
+            printf("Veuillez réessayer: ");
+        }
+    } while (test<0);
+    
+    menu_livreur(livreur,restos);
+}
+
+void modif_delcode(iterator livreur, vector * restos)
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("          Modification Livreur         \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Déplacements possibles :\n");
+
+    Livreur * compte = (Livreur*)livreur.element;
+    int i=1;
+    for(iterator b=begin(&compte->deplacements), e=end(&compte->deplacements); compare(b,e); increment(&b,1))
+    {
+        printf("%d/ %d\n", i, *((int*)b.element));
+        i++;
+    }
+
+    printf("Entrez le numéro du déplacement à retirer: ");
+
+    int test;
+    do
+    {
+        int choice;
+        scanf(" %d", &choice);
+        test = modif_livreur_delcode(livreur, choice, *restos);
+        if(test<0)
+        {
+            printf("Erreur : ");
+            if(test == -1)
+                printf("numéro invalide\n");
+            else if(test == -2)
+                printf("cause conflit avec restaurant exclusif");
+            printf("Veuillez réessayer: ");
+        }
+    } while (test<0);
+    
+
+    menu_livreur(livreur,restos);
 }
 
 void modif_tellivreur(iterator livreur, vector * restos)
@@ -803,6 +922,17 @@ void affiche_liste(iterator first, iterator last)
         
         printf("%ld", *((size_t*)e.element));
     }
+
+    else if(first.element_size == sizeof(int))
+    {
+        for (iterator b = first; compare(b,e); increment(&b, 1))
+        {
+            printf("%d,", *((int*)b.element));
+        }
+        
+        printf("%d", *((int*)e.element));
+    }
+
     else
     {
         for(iterator b=first; compare(b,e); increment(&b,1))
