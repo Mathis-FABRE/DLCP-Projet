@@ -410,18 +410,56 @@ void modif_additem(iterator resto, vector * menus)
     do
     {
         scanf(" %d", &choice);
-        test = add_menu(choice, (Restaurant*)resto.element, *menus);
-        if(test<0)
+        if(choice != 0)
         {
-            printf("id invalide : ");
-            if(test==-1)
-                printf("id inexistant\n");
-            else if(test==-2)
-                printf("item déjà dans menu\n");
-            printf("veuillez réessayer: ");
+            test = add_menu(choice, (Restaurant*)resto.element, *menus);
+            if(test<0)
+            {
+                printf("id invalide : ");
+                if(test==-1)
+                    printf("id inexistant\n");
+                else if(test==-2)
+                    printf("item déjà dans menu\n");
+                printf("Veuillez réessayer: ");
+            }
         }
     } while (choice !=0 && test<0);
     
+    if(choice == 0)
+    {
+        printf("Entrez les infos de l'item (nom,ingredient1;ingredient2;...,prix): ");
+        do
+        {
+            char * nom, * ingredients;
+            nom=malloc(50);
+            ingredients=malloc(100);
+            float prix;
+            if(scanf(" %50[^,],%100[^,],%f", nom, ingredients, &prix)==3)
+            {
+                test = ajout_menu(nom, ingredients, prix, menus);
+                if (test<0)
+                {
+                    printf("Erreur : ");
+                    if(test == -1)
+                        printf("nom trop long\n");
+                    else if(test == -2)
+                        printf("ingredients invalides");
+                    else if(test == -3)
+                        printf("prix invalide\n");
+                    printf("Veuillez réessayer: ");
+                }
+                else
+                    add_menu(test, (Restaurant*)resto.element, *menus);
+            }
+
+            else
+            {
+                printf("Nombre de valeur incorrecte veuillez réessayer: ");
+                test=-1;
+            }
+        } while (test<0);
+        
+    }
 }
 
 void menu_supprimer_resto(iterator resto, vector * menus)
