@@ -24,6 +24,8 @@ void connexion_livreur(vector * livreurs, vector * restos);
 void menu_livreur(iterator livreur, vector * restos);
 void menu_livreur_solde(iterator livreur, vector * restos);
 void menu_modifier_livreur(iterator livreur, vector * restos);
+void modif_tellivreur(iterator livreur, vector * restos);
+void modif_restolivreur(iterator livreur, vector * restos);
 void menu_supprimer_livreur(iterator livreur, vector * restos);
 
 void affiche_liste(iterator first, iterator last);
