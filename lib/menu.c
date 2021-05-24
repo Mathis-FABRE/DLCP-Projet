@@ -373,7 +373,7 @@ void menu_modifier_resto(iterator resto, vector * menus)
         break;
 
     case '2':
-        // menu_modifier_livreur();
+        modif_suppritem(resto, menus);
         break;
 
     case 'r':
@@ -460,6 +460,45 @@ void modif_additem(iterator resto, vector * menus)
         } while (test<0);
         
     }
+
+    menu_resto(resto, menus);
+}
+
+void modif_suppritem(iterator resto, vector * menus)
+{
+    system("clear");
+    printf("#######################################\n");
+    printf("         kiki's delivery sevice        \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("#######################################\n");
+    printf("           Modification Menu           \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Vos items :\n");
+    Restaurant * compte = (Restaurant*)resto.element;
+    for(iterator b=begin(&compte->menu), e=end(&compte->menu); compare(b,e); increment(&b,1))
+    {
+        int * id=(int*)b.element;
+        Menu * menu=(Menu*)at(menus, (*id)-1).element;
+        printf("%zu,%s,", menu->id, menu->nom);
+        affiche_liste(begin(&menu->ingredients), end(&menu->ingredients));
+        printf(",%.2f\n", menu->prix);
+    }
+    printf("\n");
+    printf("Quel item souhaitez vous retirer: ");
+    int choice;
+    do
+    {
+        scanf(" %d", &choice);
+        choice = del_menu(resto, choice);
+        if(choice==0)
+            printf("id invalide veuillez réessayer: ");
+    } while (choice==0);
+    
+
+
+    menu_resto(resto, menus);
 }
 
 void menu_supprimer_resto(iterator resto, vector * menus)

@@ -17,6 +17,7 @@ void menu_resto(iterator resto, vector * menus);
 void menu_resto_solde(iterator resto, vector * menus);
 void menu_modifier_resto(iterator resto, vector * menus);
 void modif_additem(iterator resto, vector * menus);
+void modif_suppritem(iterator resto, vector * menus);
 void menu_supprimer_resto(iterator resto, vector * menus);
 
 void connexion_livreur(vector * livreurs, vector * restos);
