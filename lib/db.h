@@ -88,7 +88,7 @@ int ajout_ingredients(char * ingredients, vector * v);
 // si la fonction marche correctement return > 0
 // return == id nouvel item
 // sinon return < 0
-// -1 : nom resto au dessus 39 char
+// -1 : nom menu au dessus 39 char
 // -2 : ingredients invalides
 // -3 : prix < 0
 int ajout_menu(char * nom, char * ingredients, float prix, vector * menus);
