@@ -5,6 +5,8 @@
 
 #pragma once
 
+void menu_header();
+
 void connexion_client(vector * clients, vector * restos, vector * menus, vector * livreurs);
 void menu_client(iterator client, vector * restos, vector * menus, vector * livreurs);
 void menu_client_solde(iterator client, vector * restos, vector * menus, vector * livreurs);
