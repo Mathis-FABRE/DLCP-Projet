@@ -64,7 +64,7 @@ void creer_client(vector * clients, vector * restos, vector * menus, vector * li
     char * name = malloc(40);
     scanf(" %39[^\n]", name);
 
-    printf("Entrez votre telephone: ");
+    printf("Entrez votre telephone (XX XX XX XX XX): ");
     char * tel = malloc(15);
     scanf(" %14[^\n]", tel);
 
@@ -344,7 +344,7 @@ void creer_resto(vector * restos, vector * menus)
     char * name = malloc(40);
     scanf(" %39[^\n]", name);
 
-    printf("Entrez votre telephone: ");
+    printf("Entrez votre telephone (XX XX XX XX XX): ");
     char * tel = malloc(15);
     scanf(" %14[^\n]", tel);
 
@@ -690,7 +690,7 @@ void creer_livreur(vector * livreurs, vector * restos)
     char * name = malloc(40);
     scanf(" %39[^\n]", name);
 
-    printf("Entrez votre telephone: ");
+    printf("Entrez votre telephone (XX XX XX XX XX): ");
     char * tel = malloc(15);
     scanf(" %14[^\n]", tel);
 
