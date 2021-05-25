@@ -12,6 +12,116 @@ void menu_header()
     printf("\n");
 }
 
+int menu_connexion()
+{
+    menu_header();
+
+    printf("#######################################\n");
+    printf("               Connexion               \n");
+    printf("#######################################\n");
+    printf("\n");
+
+    printf("Vous voulez ?\n");
+    printf("1/ vous connecter\n");
+    printf("2/ creer un nouveau compte\n");
+    printf("\n");
+    printf("Votre choix (r pour retour): ");
+
+    char choice;
+    do{
+        scanf(" %c", &choice);
+        if(choice!='1' && choice!='2' && choice!='r')
+            printf("choix invalide veuillez réessayer: ");
+    }while(choice!='1' && choice!='2' && choice!='r');
+
+    switch (choice)
+    {
+    case '1':
+        return 1;
+        break;
+
+    case '2':
+        return 2;
+        break;
+
+    case 'r':
+        return 0;
+        break;
+    }
+
+    return 0;
+}
+
+void creer_client(vector * clients, vector * restos, vector * menus, vector * livreurs)
+{
+    menu_header();
+
+    printf("#######################################\n");
+    printf("            Création Client            \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Entrez votre nom: ");
+    char * name = malloc(40);
+    scanf(" %39[^\n]", name);
+
+    printf("Entrez votre telephone: ");
+    char * tel = malloc(15);
+    scanf(" %14[^\n]", tel);
+
+    printf("Entrez votre code postal: ");
+    char * code = malloc(6);
+    scanf(" %s", code);
+
+    printf("Entrez la solde de base: ");
+    float solde;
+
+    do
+    {
+        scanf(" %f", &solde);
+        if (solde < 0)
+        {
+            printf("Solde impossible réessayer: ");
+        }    
+    } while (solde < 0);
+
+    int test;
+    do
+    {
+        test = ajout_client(name, code, tel, solde, clients);
+        if(test < 0)
+        {
+            printf("Erreur : ");
+            if(test == -1)
+            {
+                printf("nom invalide\n");
+                printf("Veuillez réessayer (nom): ");
+                scanf(" %39[^\n]", name);
+            }
+            else if(test == -2)
+            {
+                printf("code postale invalide\n");
+                printf("Veuillez réessayer (code postal): ");
+                scanf(" %s", code);
+            }
+            else if(test == -3)
+            {
+                printf("téléphone invalide\n");
+                printf("Veuillez réessayer (téléphone): ");
+                scanf(" %14[^\n]", tel);
+            }
+        }
+    } while (test < 0);
+    
+    printf("votre id est %d\n\n", test);
+    printf("Entrez n'importe quoi pour continuer: ");
+    char c;
+    scanf(" %c", &c);
+
+    Client comp;
+    comp.id=test;
+    menu_client(at(clients, id_search(begin(clients), end(clients), &comp, idclient_compare)-1), restos, menus, livreurs);
+}
+
 void connexion_client(vector * clients, vector * restos, vector * menus, vector * livreurs)
 {
     menu_header();
@@ -220,6 +330,69 @@ void menu_supprimer_client(iterator client, vector * restos, vector * menus, vec
         menu_client(client, restos, menus, livreurs);
         break;
     }
+}
+
+void creer_resto(vector * restos, vector * menus)
+{
+    menu_header();
+
+    printf("#######################################\n");
+    printf("          Création Restaurant          \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Entrez votre nom: ");
+    char * name = malloc(40);
+    scanf(" %39[^\n]", name);
+
+    printf("Entrez votre telephone: ");
+    char * tel = malloc(15);
+    scanf(" %14[^\n]", tel);
+
+    printf("Entrez votre code postal: ");
+    int code;
+    scanf(" %d", &code);
+
+    printf("Entrez le type de votre restaurant: ");
+    char * type = malloc(40);
+    scanf(" %39[^\n]", type);
+
+    int test;
+    do
+    {
+        test = ajout_resto(name, code, tel, type, restos);
+        if(test < 0)
+        {
+            printf("Erreur : ");
+            if(test == -1)
+            {
+                printf("nom invalide\n");
+                printf("Veuillez réessayer (nom): ");
+                scanf(" %39[^\n]", name);
+            }
+            else if(test == -2)
+            {
+                printf("téléphone invalide\n");
+                printf("Veuillez réessayer (téléphone): ");
+                scanf(" %14[^\n]", tel);
+            }
+            else if(test == -3)
+            {
+                printf("type invalide\n");
+                printf("Veuillez réessayer (type): ");
+                scanf(" %14[^\n]", tel);
+            }
+        }
+    } while (test < 0);
+    
+    printf("votre id est %d\n\n", test);
+    printf("Entrez n'importe quoi pour continuer: ");
+    char c;
+    scanf(" %c", &c);
+
+    Restaurant comp;
+    comp.id=test;
+    menu_resto(at(restos, id_search(begin(restos), end(restos), &comp, idresto_compare)-1), menus);
+    
 }
 
 void connexion_resto(vector * restos, vector * menus)
@@ -503,6 +676,80 @@ void menu_supprimer_resto(iterator resto, vector * menus)
         menu_resto(resto, menus);
         break;
     }
+}
+
+void creer_livreur(vector * livreurs, vector * restos)
+{
+    menu_header();
+
+    printf("#######################################\n");
+    printf("            Création Livreur           ");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Entrez votre nom: ");
+    char * name = malloc(40);
+    scanf(" %39[^\n]", name);
+
+    printf("Entrez votre telephone: ");
+    char * tel = malloc(15);
+    scanf(" %14[^\n]", tel);
+
+    printf("Entrez vos déplacements possibles (code1;code2;...): ");
+    char * deplacements= malloc(100);
+    scanf(" %100[^\n]", deplacements);
+
+    printf("Entrez votre restaurant exclusif (0 si aucun): ");
+    int resto;
+    scanf(" %d", &resto);
+
+    int test;
+    do
+    {
+        test = ajout_livreur(name, tel, deplacements, resto, *restos, livreurs);
+        if(test < 0)
+        {
+            printf("Erreur : ");
+            if(test == -1)
+            {
+                printf("nom invalide\n");
+                printf("Veuillez réessayer (nom): ");
+                scanf(" %39[^\n]", name);
+            }
+            else if(test == -2)
+            {
+                printf("téléphone invalide\n");
+                printf("Veuillez réessayer (téléphone): ");
+                scanf(" %14[^\n]", tel);
+            }
+            else if(test == -3)
+            {
+                printf("déplacements invalide\n");
+                printf("Veuillez réessayer (déplacements): ");
+                scanf(" %100[^\n]", deplacements);
+            }
+            else if(test == -4)
+            {
+                printf("restaurants inexistant\n");
+                printf("Veuillez réessayer (restaurant): ");
+                scanf(" %d", &resto);
+            }
+            else if(test == -5)
+            {
+                printf("peut pas se déplacer au restaurant exclusif\n");
+                printf("Veuillez réessayer (restaurant): ");
+                scanf(" %d", &resto);
+            }
+        }
+    } while (test < 0);
+    
+    printf("votre id est %d\n\n", test);
+    printf("Entrez n'importe quoi pour continuer: ");
+    char c;
+    scanf(" %c", &c);
+
+    Livreur comp;
+    comp.id=test;
+    menu_resto(at(livreurs, id_search(begin(livreurs), end(livreurs), &comp, idresto_compare)-1), restos);
 }
 
 void connexion_livreur(vector * livreurs, vector * restos)
