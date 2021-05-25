@@ -60,9 +60,9 @@ int main()
         case '1':
             co = menu_connexion();
             if(co == 1)
-                connexion_resto(&restos, &menus);
+                connexion_resto(&restos, &menus, &livreurs);
             else if(co == 2)
-                creer_resto(&restos, &menus);
+                creer_resto(&restos, &menus, &livreurs);
             break;
 
         case '2':
