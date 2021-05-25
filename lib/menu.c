@@ -119,7 +119,7 @@ void creer_client(vector * clients, vector * restos, vector * menus, vector * li
 
     Client comp;
     comp.id=test;
-    menu_client(at(clients, id_search(begin(clients), end(clients), &comp, idclient_compare)-1), restos, menus, livreurs);
+    menu_client(at(clients, id_search(begin(clients), end(clients), &comp, idclient_compare)-1), clients, restos, menus, livreurs);
 }
 
 void connexion_client(vector * clients, vector * restos, vector * menus, vector * livreurs)
@@ -142,7 +142,7 @@ void connexion_client(vector * clients, vector * restos, vector * menus, vector 
             comp.id=id;
             search = id_search(begin(clients), end(clients), &comp, idclient_compare);
             if(search)
-                menu_client(at(clients, search-1), restos, menus, livreurs);
+                menu_client(at(clients, search-1), clients, restos, menus, livreurs);
             else
                 printf("id n'existe pas veuillez réessayer: ");
         }
@@ -156,67 +156,70 @@ void connexion_client(vector * clients, vector * restos, vector * menus, vector 
     }
 }
 
-void menu_client(iterator client, vector * restos, vector * menus, vector * livreurs)
+void menu_client(iterator client, vector * clients, vector * restos, vector * menus, vector * livreurs)
 {
-    menu_header();
-    
-    printf("#######################################\n");
-    printf("              Menu Client              \n");
-    printf("#######################################\n");
-    printf("\n");
-
-    printf("info :\n");
-    Client * compte = (Client*)client.element;
-    printf("id: %ld\n", compte->id);
-    printf("nom: %s\n", compte->nom);
-    printf("code postal: %d\n", compte->code_postal);
-    printf("\n");
-
-    printf("Vous voulez ?\n");
-    printf("1/ Consulter votre solde\n");
-    printf("2/ Modifier votre profil\n");
-    printf("3/ Voir la liste des restaurants\n");
-    printf("4/ Passer une commande\n");
-    printf("5/ supprimer compte\n");
-    printf("\n");
-    printf("Votre choix (r pour retour): ");
     char choice;
-    do{
-        scanf(" %c", &choice);
-        if(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='r')
-            printf("choix invalide veuillez réessayer: ");
-    }while(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='r');
+    do
+    {    
+        menu_header();
+        
+        printf("#######################################\n");
+        printf("              Menu Client              \n");
+        printf("#######################################\n");
+        printf("\n");
 
-    switch (choice)
-    {
-    case '1':
-        menu_client_solde(client, restos, menus, livreurs);
-        break;
+        printf("info :\n");
+        Client * compte = (Client*)client.element;
+        printf("id: %ld\n", compte->id);
+        printf("nom: %s\n", compte->nom);
+        printf("code postal: %d\n", compte->code_postal);
+        printf("\n");
 
-    case '2':
-        menu_modifier_client(client, restos, menus, livreurs);
-        break;
+        printf("Vous voulez ?\n");
+        printf("1/ Consulter votre solde\n");
+        printf("2/ Modifier votre profil\n");
+        printf("3/ Voir la liste des restaurants\n");
+        printf("4/ Passer une commande\n");
+        printf("5/ supprimer compte\n");
+        printf("\n");
+        printf("Votre choix (r pour retour): ");
+        
+        do{
+            scanf(" %c", &choice);
+            if(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='r')
+                printf("choix invalide veuillez réessayer: ");
+        }while(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='r');
 
-    case '3':
-        menu_client(client, restos, menus, livreurs);
-        break;
+        switch (choice)
+        {
+        case '1':
+            menu_client_solde(client);
+            break;
 
-    case '4':
-        menu_client(client, restos, menus, livreurs);
-        break;
+        case '2':
+            menu_modifier_client(client, restos, menus, livreurs);
+            break;
 
-    case '5':
-        menu_supprimer_client(client, restos, menus, livreurs);
-        break;
+        case '3':
+            menu_client(client, clients, restos, menus, livreurs);
+            break;
 
-    case 'r':
-        // menu_principal();
-        break;
-    }
+        case '4':
+            menu_client(client, clients, restos, menus, livreurs);
+            break;
 
+        case '5':
+            menu_supprimer_client(client, clients);
+            break;
+
+        case 'r':
+            break;
+        }
+
+    }while(choice != 'r');
 }
 
-void menu_client_solde(iterator client, vector * restos, vector * menus, vector * livreurs)
+void menu_client_solde(iterator client)
 {
     menu_header();
     
@@ -237,16 +240,15 @@ void menu_client_solde(iterator client, vector * restos, vector * menus, vector 
     switch(choice)
     {
     case 'y':
-        menu_credit_client(client, restos, menus, livreurs);
+        menu_credit_client(client);
         break;
     
     case 'n':
-        menu_client(client, restos, menus, livreurs);
         break;
     }
 }
 
-void menu_credit_client(iterator client, vector * restos, vector * menus, vector * livreurs)
+void menu_credit_client(iterator client)
 {
     menu_header();
     
@@ -262,7 +264,8 @@ void menu_credit_client(iterator client, vector * restos, vector * menus, vector
         if(choice < 0)
             printf("somme invalide veuillez réessayer: ");
     }while(choice < 0);
-    menu_client(client, restos, menus, livreurs);
+
+    client_credit_solde(client, choice);
 }
 
 void menu_modifier_client(iterator client, vector * restos, vector * menus, vector * livreurs)
@@ -296,7 +299,6 @@ void menu_modifier_client(iterator client, vector * restos, vector * menus, vect
         break;
 
     case 'r':
-        menu_client(client, restos, menus, livreurs);
         break;
     
     default:
@@ -304,7 +306,7 @@ void menu_modifier_client(iterator client, vector * restos, vector * menus, vect
     }
 }
 
-void menu_supprimer_client(iterator client, vector * restos, vector * menus, vector * livreurs)
+void menu_supprimer_client(iterator client, vector * clients)
 {
     menu_header();
     
@@ -327,7 +329,6 @@ void menu_supprimer_client(iterator client, vector * restos, vector * menus, vec
         break;
     
     case 'n':
-        menu_client(client, restos, menus, livreurs);
         break;
     }
 }
@@ -391,7 +392,7 @@ void creer_resto(vector * restos, vector * menus)
 
     Restaurant comp;
     comp.id=test;
-    menu_resto(at(restos, id_search(begin(restos), end(restos), &comp, idresto_compare)-1), menus);
+    menu_resto(at(restos, id_search(begin(restos), end(restos), &comp, idresto_compare)-1), restos, menus);
     
 }
 
@@ -415,7 +416,7 @@ void connexion_resto(vector * restos, vector * menus)
             comp.id = id;
             search = id_search(begin(restos), end(restos), &comp, idresto_compare);
             if(search)
-                menu_resto(at(restos, search - 1), menus);
+                menu_resto(at(restos, search - 1), restos, menus);
             else
                 printf("id n'existe pas veuillez réessayer: ");
         }
@@ -429,60 +430,63 @@ void connexion_resto(vector * restos, vector * menus)
     }
 }
 
-void menu_resto(iterator resto, vector * menus)
+void menu_resto(iterator resto, vector * restos, vector * menus)
 {
-    menu_header();
-    
-    printf("#######################################\n");
-    printf("            Menu Restaurant            \n");
-    printf("#######################################\n");
-    printf("\n");
-
-    printf("info :\n");
-    Restaurant * compte = (Restaurant*)resto.element;
-    printf("id: %ld\n", compte->id);
-    printf("nom: %s\n", compte->nom);
-    printf("code postal: %d\n", compte->code_postal);
-    printf("telephone: %s\n", compte->telephone);
-    printf("menu: ");
-    affiche_liste(begin(&compte->menu), end(&compte->menu));
-    printf("\n\n");
-
-    printf("Vous voulez ?\n");
-    printf("1/ Voir votre solde\n");
-    printf("2/ Modifier le menu\n");
-    printf("3/ Supprimer compte\n");
-    printf("\n");
-    printf("Votre choix (r pour retour): ");
     char choice;
-    do{
-        scanf(" %c", &choice);
-        if(choice!='1' && choice!='2' && choice!='3' && choice!='r')
-            printf("choix invalide veuillez réessayer: ");
-    }while(choice!='1' && choice!='2' && choice!='3' && choice!='r');
+    do
+    {    
+        menu_header();
+        
+        printf("#######################################\n");
+        printf("            Menu Restaurant            \n");
+        printf("#######################################\n");
+        printf("\n");
 
-    switch (choice)
-    {
-    case '1':
-        menu_resto_solde(resto, menus);
-        break;
+        printf("info :\n");
+        Restaurant * compte = (Restaurant*)resto.element;
+        printf("id: %ld\n", compte->id);
+        printf("nom: %s\n", compte->nom);
+        printf("code postal: %d\n", compte->code_postal);
+        printf("telephone: %s\n", compte->telephone);
+        printf("menu: ");
+        affiche_liste(begin(&compte->menu), end(&compte->menu));
+        printf("\n\n");
 
-    case '2':
-        menu_modifier_resto(resto, menus);
-        break;
+        printf("Vous voulez ?\n");
+        printf("1/ Voir votre solde\n");
+        printf("2/ Modifier le menu\n");
+        printf("3/ Supprimer compte\n");
+        printf("\n");
+        printf("Votre choix (r pour retour): ");
+        
+        do{
+            scanf(" %c", &choice);
+            if(choice!='1' && choice!='2' && choice!='3' && choice!='r')
+                printf("choix invalide veuillez réessayer: ");
+        }while(choice!='1' && choice!='2' && choice!='3' && choice!='r');
 
-    case '3':
-        menu_supprimer_resto(resto, menus);
-        break;
+        switch (choice)
+        {
+        case '1':
+            menu_resto_solde(resto);
+            break;
 
-    case 'r':
-        // menu_principal();
-        break;
-    }
+        case '2':
+            menu_modifier_resto(resto, menus);
+            break;
 
+        case '3':
+            menu_supprimer_resto(resto, menus);
+            break;
+
+        case 'r':
+            break;
+        }
+
+    }while(choice != 'r');
 }
 
-void menu_resto_solde(iterator resto, vector * menus)
+void menu_resto_solde(iterator resto)
 {
     menu_header();
     
@@ -495,7 +499,6 @@ void menu_resto_solde(iterator resto, vector * menus)
     printf("Entrer n'importe quoi pour retourner: ");
     char choice;
     scanf(" %c", &choice);
-    menu_resto(resto, menus);
 }
 
 void menu_modifier_resto(iterator resto, vector * menus)
@@ -529,10 +532,6 @@ void menu_modifier_resto(iterator resto, vector * menus)
         break;
 
     case 'r':
-        menu_resto(resto, menus);
-        break;
-    
-    default:
         break;
     }
 }
@@ -612,8 +611,6 @@ void modif_additem(iterator resto, vector * menus)
         } while (test<0);
         
     }
-
-    menu_resto(resto, menus);
 }
 
 void modif_suppritem(iterator resto, vector * menus)
@@ -646,11 +643,9 @@ void modif_suppritem(iterator resto, vector * menus)
     } while (choice==0);
     
 
-
-    menu_resto(resto, menus);
 }
 
-void menu_supprimer_resto(iterator resto, vector * menus)
+void menu_supprimer_resto(iterator resto, vector * restos)
 {
     menu_header();
     
@@ -673,7 +668,6 @@ void menu_supprimer_resto(iterator resto, vector * menus)
         break;
     
     case 'n':
-        menu_resto(resto, menus);
         break;
     }
 }
@@ -749,7 +743,7 @@ void creer_livreur(vector * livreurs, vector * restos)
 
     Livreur comp;
     comp.id=test;
-    menu_resto(at(livreurs, id_search(begin(livreurs), end(livreurs), &comp, idresto_compare)-1), restos);
+    menu_livreur(at(livreurs, id_search(begin(livreurs), end(livreurs), &comp, idresto_compare)-1), livreurs, restos);
 }
 
 void connexion_livreur(vector * livreurs, vector * restos)
@@ -772,7 +766,7 @@ void connexion_livreur(vector * livreurs, vector * restos)
             comp.id = id;
             search = id_search(begin(livreurs), end(livreurs), &comp, idlivreur_compare);
             if(search)
-                menu_livreur(at(livreurs, search - 1), restos);
+                menu_livreur(at(livreurs, search - 1), livreurs, restos);
             else
                 printf("id n'existe pas veuillez réessayer: ");
         }
@@ -786,62 +780,63 @@ void connexion_livreur(vector * livreurs, vector * restos)
     }
 }
 
-void menu_livreur(iterator livreur, vector * restos)
+void menu_livreur(iterator livreur, vector * livreurs, vector * restos)
 {
-    menu_header();
-    
-    printf("#######################################\n");
-    printf("              Menu Livreur             \n");
-    printf("#######################################\n");
-    printf("\n");
-
-    printf("Info :\n");
-    Livreur * compte = (Livreur*)livreur.element;
-    printf("id: %ld\n", compte->id);
-    printf("nom: %s\n", compte->nom);
-    printf("téléphone: %s\n", compte->telephone);
-    printf("déplacements: ");
-    affiche_liste(begin(&compte->deplacements), end(&compte->deplacements));
-    printf("\nexclu resto: %ld\n", compte->restaurant);
-    printf("\n");
-
-    printf("Vous voulez ?\n");
-    printf("1/ Voir votre solde\n");
-    printf("2/ Modifier profil\n");
-    printf("3/ Supprimer compte\n");
-    printf("\n");
-    printf("Votre choix (r pour retour): ");
     char choice;
-    do{
-        scanf(" %c", &choice);
-        if(choice!='1' && choice!='2' && choice!='3' && choice!='r')
-            printf("choix invalide veuillez réessayer: ");
-    }while(choice!='1' && choice!='2' && choice!='3' && choice!='r');
+    do
+    {    
+        menu_header();
+        
+        printf("#######################################\n");
+        printf("              Menu Livreur             \n");
+        printf("#######################################\n");
+        printf("\n");
 
-    switch (choice)
-    {
-    case '1':
-        menu_livreur_solde(livreur, restos);
-        break;
+        printf("Info :\n");
+        Livreur * compte = (Livreur*)livreur.element;
+        printf("id: %ld\n", compte->id);
+        printf("nom: %s\n", compte->nom);
+        printf("téléphone: %s\n", compte->telephone);
+        printf("déplacements: ");
+        affiche_liste(begin(&compte->deplacements), end(&compte->deplacements));
+        printf("\nexclu resto: %ld\n", compte->restaurant);
+        printf("\n");
 
-    case '2':
-        menu_modifier_livreur(livreur, restos);
-        break;
+        printf("Vous voulez ?\n");
+        printf("1/ Voir votre solde\n");
+        printf("2/ Modifier profil\n");
+        printf("3/ Supprimer compte\n");
+        printf("\n");
+        printf("Votre choix (r pour retour): ");
+        
+        do{
+            scanf(" %c", &choice);
+            if(choice!='1' && choice!='2' && choice!='3' && choice!='r')
+                printf("choix invalide veuillez réessayer: ");
+        }while(choice!='1' && choice!='2' && choice!='3' && choice!='r');
 
-    case '3':
-        menu_supprimer_livreur(livreur, restos);
-        break;
+        switch (choice)
+        {
+        case '1':
+            menu_livreur_solde(livreur);
+            break;
 
-    case 'r':
-        // menu_principal();
-        break;
-    
-    default:
-        break;
-    }
+        case '2':
+            menu_modifier_livreur(livreur, restos);
+            break;
+
+        case '3':
+            menu_supprimer_livreur(livreur, restos);
+            break;
+
+        case 'r':
+            break;
+        }
+
+    }while(choice != 'r');
 }
 
-void menu_livreur_solde(iterator livreur, vector * restos)
+void menu_livreur_solde(iterator livreur)
 {
     menu_header();
     
@@ -854,7 +849,6 @@ void menu_livreur_solde(iterator livreur, vector * restos)
     printf("Entrer n'importe quoi pour retourner: ");
     char choice;
     scanf(" %c", &choice);
-    menu_livreur(livreur, restos);
 }
 
 void menu_modifier_livreur(iterator livreur, vector * restos)
@@ -885,7 +879,7 @@ void menu_modifier_livreur(iterator livreur, vector * restos)
         break;
 
     case '2':
-        modif_tellivreur(livreur, restos);
+        modif_tellivreur(livreur);
         break;
 
     case '3':
@@ -893,7 +887,6 @@ void menu_modifier_livreur(iterator livreur, vector * restos)
         break;
 
     case 'r':
-        menu_livreur(livreur, restos);
         break;
     }
 }
@@ -922,7 +915,7 @@ void menu_deplacement(iterator livreur, vector * restos)
     switch (choice)
     {
     case '1':
-        modif_addcode(livreur, restos);
+        modif_addcode(livreur);
         break;
 
     case '2':
@@ -935,7 +928,7 @@ void menu_deplacement(iterator livreur, vector * restos)
     }
 }
 
-void modif_addcode(iterator livreur, vector * restos)
+void modif_addcode(iterator livreur)
 {
     menu_header();
     
@@ -961,8 +954,6 @@ void modif_addcode(iterator livreur, vector * restos)
             printf("Veuillez réessayer: ");
         }
     } while (test<0);
-    
-    menu_livreur(livreur,restos);
 }
 
 void modif_delcode(iterator livreur, vector * restos)
@@ -1001,12 +992,9 @@ void modif_delcode(iterator livreur, vector * restos)
             printf("Veuillez réessayer: ");
         }
     } while (test<0);
-    
-
-    menu_livreur(livreur,restos);
 }
 
-void modif_tellivreur(iterator livreur, vector * restos)
+void modif_tellivreur(iterator livreur)
 {
     menu_header();
     
@@ -1029,8 +1017,6 @@ void modif_tellivreur(iterator livreur, vector * restos)
         }
         free(tel);
     } while (test<0);
-    
-    menu_livreur(livreur, restos);
 }
 
 void modif_restolivreur(iterator livreur, vector * restos)
@@ -1058,11 +1044,10 @@ void modif_restolivreur(iterator livreur, vector * restos)
             printf("Veuillez réessayer: ");
         }
     } while (test<0);
-    
-    menu_livreur(livreur, restos);
+
 }
 
-void menu_supprimer_livreur(iterator livreur, vector * restos)
+void menu_supprimer_livreur(iterator livreur, vector * livreurs)
 {
     menu_header();
     
@@ -1085,7 +1070,6 @@ void menu_supprimer_livreur(iterator livreur, vector * restos)
         break;
     
     case 'n':
-        menu_livreur(livreur, restos);
         break;
     }
 }
