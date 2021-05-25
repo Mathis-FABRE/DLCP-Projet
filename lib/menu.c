@@ -183,7 +183,9 @@ void menu_client(iterator client, vector * clients, vector * restos, vector * me
         printf("5/ supprimer compte\n");
         printf("\n");
         printf("Votre choix (r pour retour): ");
-        
+
+        int res;
+
         do{
             scanf(" %c", &choice);
             if(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='r')
@@ -209,7 +211,9 @@ void menu_client(iterator client, vector * clients, vector * restos, vector * me
             break;
 
         case '5':
-            menu_supprimer_client(client, clients);
+            res = menu_supprimer_client(client, clients);
+            if(res == 1)
+                choice = 'r';
             break;
 
         case 'r':
@@ -306,7 +310,7 @@ void menu_modifier_client(iterator client, vector * restos, vector * menus, vect
     }
 }
 
-void menu_supprimer_client(iterator client, vector * clients)
+int menu_supprimer_client(iterator client, vector * clients)
 {
     menu_header();
     
@@ -314,7 +318,7 @@ void menu_supprimer_client(iterator client, vector * clients)
     printf("           Suppression Compte          \n");
     printf("#######################################\n");
     printf("\n");
-    printf("Etes vous sûr de vouloir supprimer votre compte ?");
+    printf("Etes vous sûr de vouloir supprimer votre compte ? ");
     printf("(y pour oui, n pour non)\n");
     char choice;
     do{
@@ -325,15 +329,19 @@ void menu_supprimer_client(iterator client, vector * clients)
     switch(choice)
     {
     case 'y':
-        // menu_principal();
+        del_client(clients, client);
+        return 1;
         break;
     
     case 'n':
+        return 0;
         break;
     }
+
+    return 0;
 }
 
-void creer_resto(vector * restos, vector * menus)
+void creer_resto(vector * restos, vector * menus, vector * livreurs)
 {
     menu_header();
 
@@ -392,11 +400,11 @@ void creer_resto(vector * restos, vector * menus)
 
     Restaurant comp;
     comp.id=test;
-    menu_resto(at(restos, id_search(begin(restos), end(restos), &comp, idresto_compare)-1), restos, menus);
+    menu_resto(at(restos, id_search(begin(restos), end(restos), &comp, idresto_compare)-1), restos, menus, livreurs);
     
 }
 
-void connexion_resto(vector * restos, vector * menus)
+void connexion_resto(vector * restos, vector * menus, vector * livreurs)
 {
     menu_header();
     
@@ -416,7 +424,7 @@ void connexion_resto(vector * restos, vector * menus)
             comp.id = id;
             search = id_search(begin(restos), end(restos), &comp, idresto_compare);
             if(search)
-                menu_resto(at(restos, search - 1), restos, menus);
+                menu_resto(at(restos, search - 1), restos, menus, livreurs);
             else
                 printf("id n'existe pas veuillez réessayer: ");
         }
@@ -430,7 +438,7 @@ void connexion_resto(vector * restos, vector * menus)
     }
 }
 
-void menu_resto(iterator resto, vector * restos, vector * menus)
+void menu_resto(iterator resto, vector * restos, vector * menus, vector * livreurs)
 {
     char choice;
     do
@@ -458,7 +466,9 @@ void menu_resto(iterator resto, vector * restos, vector * menus)
         printf("3/ Supprimer compte\n");
         printf("\n");
         printf("Votre choix (r pour retour): ");
-        
+
+        int res;
+
         do{
             scanf(" %c", &choice);
             if(choice!='1' && choice!='2' && choice!='3' && choice!='r')
@@ -476,7 +486,9 @@ void menu_resto(iterator resto, vector * restos, vector * menus)
             break;
 
         case '3':
-            menu_supprimer_resto(resto, menus);
+            res = menu_supprimer_resto(resto, restos, livreurs);
+            if(res == 1)
+                choice = 'r';
             break;
 
         case 'r':
@@ -645,7 +657,7 @@ void modif_suppritem(iterator resto, vector * menus)
 
 }
 
-void menu_supprimer_resto(iterator resto, vector * restos)
+int menu_supprimer_resto(iterator resto, vector * restos, vector * livreurs)
 {
     menu_header();
     
@@ -653,7 +665,7 @@ void menu_supprimer_resto(iterator resto, vector * restos)
     printf("           Suppression Compte          \n");
     printf("#######################################\n");
     printf("\n");
-    printf("Etes vous sûr de vouloir supprimer votre compte ?");
+    printf("Etes vous sûr de vouloir supprimer votre compte ? ");
     printf("(y pour oui, n pour non)\n");
     char choice;
     do{
@@ -664,12 +676,16 @@ void menu_supprimer_resto(iterator resto, vector * restos)
     switch(choice)
     {
     case 'y':
-        // menu_principal();
+        del_resto(restos, resto, livreurs);
+        return 1;
         break;
     
     case 'n':
+        return 0;
         break;
     }
+
+    return 0;
 }
 
 void creer_livreur(vector * livreurs, vector * restos)
@@ -808,7 +824,9 @@ void menu_livreur(iterator livreur, vector * livreurs, vector * restos)
         printf("3/ Supprimer compte\n");
         printf("\n");
         printf("Votre choix (r pour retour): ");
-        
+
+        int res;
+
         do{
             scanf(" %c", &choice);
             if(choice!='1' && choice!='2' && choice!='3' && choice!='r')
@@ -826,7 +844,9 @@ void menu_livreur(iterator livreur, vector * livreurs, vector * restos)
             break;
 
         case '3':
-            menu_supprimer_livreur(livreur, restos);
+            res = menu_supprimer_livreur(livreur, restos);
+            if (res == 1)
+                choice='r';            
             break;
 
         case 'r':
@@ -1047,7 +1067,7 @@ void modif_restolivreur(iterator livreur, vector * restos)
 
 }
 
-void menu_supprimer_livreur(iterator livreur, vector * livreurs)
+int menu_supprimer_livreur(iterator livreur, vector * livreurs)
 {
     menu_header();
     
@@ -1055,7 +1075,7 @@ void menu_supprimer_livreur(iterator livreur, vector * livreurs)
     printf("           Suppression Compte          \n");
     printf("#######################################\n");
     printf("\n");
-    printf("Etes vous sûr de vouloir supprimer votre compte ?");
+    printf("Etes vous sûr de vouloir supprimer votre compte ? ");
     printf("(y pour oui, n pour non)\n");
     char choice;
     do{
@@ -1066,12 +1086,16 @@ void menu_supprimer_livreur(iterator livreur, vector * livreurs)
     switch(choice)
     {
     case 'y':
-        // menu_principal();
+        del_livreur(livreurs, livreur);
+        return 1;
         break;
     
     case 'n':
+        return 0;
         break;
     }
+
+    return 0;
 }
 
 void affiche_liste(iterator first, iterator last)
