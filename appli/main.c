@@ -54,18 +54,31 @@ int main()
                 printf("choix invalide veuillez réessayer: ");
         }while(choice!='1' && choice!='2' && choice!='3' && choice!='q');
 
+        int co;
         switch (choice)
         {
         case '1':
-            connexion_resto(&restos, &menus);
+            co = menu_connexion();
+            if(co == 1)
+                connexion_resto(&restos, &menus, &livreurs);
+            else if(co == 2)
+                creer_resto(&restos, &menus, &livreurs);
             break;
 
         case '2':
-            connexion_livreur(&livreurs, &restos);
+            co = menu_connexion();
+            if(co == 1)
+                connexion_livreur(&livreurs, &restos);
+            else if(co == 2)
+                creer_livreur(&livreurs, &restos);
             break;
 
         case '3':
-            connexion_client(&clients, &restos, &menus, &livreurs);
+            co = menu_connexion();
+            if(co == 1)
+                connexion_client(&clients, &restos, &menus, &livreurs);
+            else if(co == 2)
+                creer_client(&clients, &restos, &menus, &livreurs);
             break;
         }
     }while (choice != 'q');    

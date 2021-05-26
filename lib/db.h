@@ -134,7 +134,6 @@ int ajout_code(char * deplacements, vector * v);
 // -5 : peut se déplacer dans le resto exclusif
 int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs);
 
-
 // Fontion ajoutant un client dans le vecteur clients
 // le vecteur est supposé trié en entrant et sortant
 // si la fonction marche correctement return > 0
@@ -180,6 +179,8 @@ int modif_livreur_addcode(iterator livreur, int code);
 // -1 : tel invalide
 int modif_livreur_tel(iterator livreur, char * tel);
 
+// fonction supprimant un certain iterateur de clients
+// considère que l'itérateur est un Client
 void del_client(vector *clients, iterator client);
 
 // fonction modifiant le code postal d'un client
@@ -200,5 +201,5 @@ int modif_client_tel(iterator client, char * tel);
 // l'itarateur d'un client à modifier
 // renvoie 1 si marche correctement
 // sinon renvoie < 0
-// -1 : tel invalide
+// -1 : ammount invalide
 int client_credit_solde(iterator client, float amount);
