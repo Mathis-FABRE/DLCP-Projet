@@ -62,6 +62,10 @@ int idresto_compare(
     void const* a,
     void const* b);
 
+int nameresto(
+    void const* data,
+    void const* name);
+
 // Présume que 'a' et 'b' contiennent des 'Menu'.
 // Renvoie un nombre négatif si id de 'a' précède id de 'b' dans l'ordre numérique.
 // Renvoie un nombre positif si id de 'b' précède id de 'a' dans l'ordre numérique.
@@ -78,6 +82,10 @@ int idlivreur_compare(
     void const* a,
     void const* b);
 
+int namelivreur(
+    void const* data,
+    void const* name);
+
 // Présume que 'a' et 'b' contiennent des 'Client'.
 // Renvoie un nombre négatif si id de 'a' précède id de 'b' dans l'ordre numérique.
 // Renvoie un nombre positif si id de 'b' précède id de 'a' dans l'ordre numérique.
@@ -85,6 +93,10 @@ int idlivreur_compare(
 int idclient_compare(
     void const* a,
     void const* b);
+
+int nameclient(
+    void const* data,
+    void const* name);
 
 // regarde si une chaine de caractères
 // est en dessous de 39 caractères
