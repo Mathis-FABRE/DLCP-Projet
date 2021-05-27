@@ -166,15 +166,19 @@ int main()
             destroy(&livreurs);
         }
 
-            // Tests liste_resto
+            // Tests liste_resto et liste_items
         {
             
             vector livreurs = lecture_livreur("test/db_livreurs.csv");
+            vector menus = lecture_menu("test/db_menus.csv");
+            vector restos = lecture_restaurant("test/db_restaurants.csv");
 
+            vector liste = liste_resto(0, &restos, &livreurs, NULL, NULL);
+            
+            TEST(size(liste) == 4);
             // tests "peut me livrer"
             
-            vector restos = lecture_restaurant("test/db_restaurants.csv");
-            vector liste = liste_resto(13001, &restos, &livreurs, NULL);
+            liste = liste_resto(13001, &restos, &livreurs, NULL, NULL);
 
             Restaurant *restaurant = (Restaurant *)(begin(&liste).element);
             TEST(strcmp(restaurant->nom, "Chez Michel") == 0);
@@ -182,37 +186,99 @@ int main()
             TEST(size(liste) == 1);
 
             TEST( ajout_resto("Reste Tôt", 13009, "06 51 12 69 57", "Fast Food", &restos) == 4);
+
+            restaurant = (Restaurant *)at(&restos, 3).element;
+            TEST(add_menu(2, restaurant, menus) == 1);
+            TEST(add_menu(8, restaurant, menus) == 1);
+            TEST(strcmp(restaurant->nom, "Reste Tôt") == 0)
+            TEST(size(restaurant->menu) == 2);
+
             TEST( ajout_resto("Dindo Marrons", 13009, "06 23 72 89 75", "Francais", &restos) == 6);
 
-            liste = liste_resto(13009, &restos, &livreurs, NULL);
+            restaurant = (Restaurant *)at(&restos, 5).element;
+            TEST(strcmp(restaurant->nom, "Dindo Marrons") == 0)
+            TEST(add_menu(7, restaurant, menus) == 1);
+            TEST(size(restaurant->menu) == 1);
+
+            liste = liste_resto(13009, &restos, &livreurs, NULL, NULL);
             TEST(size(liste) == 2);
 
             // tests "type de cuisine"
 
-            liste = liste_resto(0, &restos, &livreurs, "Fast Food");
+            liste = liste_resto(0, &restos, &livreurs, "Fast Food", NULL);
             TEST(size(liste) == 2);
 
-            liste = liste_resto(0, &restos, &livreurs, "Americain");
+            liste = liste_resto(0, &restos, &livreurs, "Americain", NULL);
             TEST(size(liste) == 1);
 
-            liste = liste_resto(0, &restos, &livreurs, "Francais");
+            liste = liste_resto(0, &restos, &livreurs, "Francais", NULL);
             TEST(size(liste) == 1);
 
-            liste = liste_resto(0, &restos, &livreurs, "Vegetarien");
+            liste = liste_resto(0, &restos, &livreurs, "Vegetarien", NULL);
             TEST(size(liste) == 1);
 
             // tests "peut me livrer" + "type de cuisine"
 
-            liste = liste_resto(13009, &restos, &livreurs, "Fast Food");
+            liste = liste_resto(13009, &restos, &livreurs, "Fast Food", NULL);
             restaurant = (Restaurant *)(begin(&liste).element);
             TEST(strcmp(restaurant->nom, "Reste Tôt") == 0);
             TEST(size(liste) == 1);
 
-            liste = liste_resto(13003, &restos, &livreurs, "Provencal");
+            liste = liste_resto(13003, &restos, &livreurs, "Provencal", NULL);
             restaurant = (Restaurant *)(begin(&liste).element);
             TEST(strcmp(restaurant->nom, "Chez Michel") == 0);
             TEST(size(liste) == 1);
 
+            liste = liste_resto(0, &restos, &livreurs, NULL, "Chez Michel");
+            restaurant = (Restaurant *)(begin(&liste).element);
+            TEST(strcmp(restaurant->nom, "Chez Michel") == 0);
+            TEST(size(liste) == 1);
+
+            liste = liste_resto(0, &restos, &livreurs, "Provencal", "Chez Michel");
+            restaurant = (Restaurant *)(begin(&liste).element);
+            TEST(strcmp(restaurant->nom, "Chez Michel") == 0);
+            TEST(size(liste) == 1);
+
+            destroy(&liste);
+
+            // tests liste_items
+
+            // tous les menus
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 0);
+            TEST(size(liste) == 8);
+
+            // tous les menus moins chers que 20€
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 20);
+            TEST(size(liste) == 7);
+
+            // tous les menus moins chers que 10€
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 10);
+            TEST(size(liste) == 4);
+
+            // tous les menus de Chez Michel
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Chez Michel", 0);
+            TEST(size(liste) == 3);
+
+            // tous les menus de Chez Michel
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Five Guys", 0);
+            TEST(size(liste) == 1);
+
+            // tous les menus disponibles en 13009
+            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, NULL, 0);
+            TEST(size(liste) == 3);
+
+            // tous les menus disponibles en 13009 chez Reste Tôt
+            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, "Reste Tôt", 0);
+            TEST(size(liste) == 2);
+
+            // tous les menus disponibles en 13009 chez Reste Tôt à moins de 5 euros
+            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, "Reste Tôt", 5);
+            TEST(size(liste) == 1);
+
+            destroy(&liste);
+            destroy(&restos);
+            destroy(&menus);
+            destroy(&livreurs);
         }
 
 
