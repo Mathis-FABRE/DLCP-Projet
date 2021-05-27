@@ -173,7 +173,29 @@ void connexion_client(vector * clients, vector * restos, vector * menus, vector 
         }
         else
         {
-            // select
+            printf("\n");
+            for(iterator b=begin(&select), e=end(&select); compare(b,e)!=0; increment(&b,1))
+            {
+                Client * client=(Client*)(b.element);
+                printf("%zu,%s,%d,%14s,%.2f\n", client->id, client->nom, client->code_postal, client->telephone, client->solde);
+            }
+
+            printf("Entrer votre id (<= 0 pour retour): ");
+            do
+            {
+                scanf(" %d", &id);
+                if(id > 0)
+                {
+                    Client comp;
+                    comp.id=id;
+                    search = id_search(begin(clients), end(clients), &comp, idclient_compare);
+                    if(search)
+                        menu_client(at(clients, search-1), clients, restos, menus, livreurs);
+                    else
+                        printf("id n'existe pas veuillez réessayer: ");
+                }
+            }while(id>0 && !search);
+
         }
     }
 }
@@ -477,7 +499,30 @@ void connexion_resto(vector * restos, vector * menus, vector * livreurs)
         }
         else
         {
-            // select
+            printf("\n");
+            for(iterator b=begin(&select), e=end(&select); compare(b,e)!=0; increment(&b,1))
+            {
+                Restaurant * resto=(Restaurant*)(b.element);
+                printf("%zu,%s,%d,%14s,%s,", resto->id, resto->nom, resto->code_postal, resto->telephone, resto->type);
+                affiche_liste(begin(&resto->menu), end(&resto->menu));
+                printf(",%.2f\n", resto->solde);
+            }
+
+            printf("Entrer votre id (<= 0 pour retour): ");
+            do
+            {
+                scanf(" %d", &id);
+                if(id > 0)
+                {
+                    Client comp;
+                    comp.id=id;
+                    search = id_search(begin(restos), end(restos), &comp, idresto_compare);
+                    if(search)
+                        menu_resto(at(restos, search-1), restos, menus, livreurs);
+                    else
+                        printf("id n'existe pas veuillez réessayer: ");
+                }
+            }while(id>0 && !search);
         }
     }
 }
@@ -855,7 +900,30 @@ void connexion_livreur(vector * livreurs, vector * restos)
         }
         else
         {
-            // select
+            printf("\n");
+            for(iterator b=begin(&select), e=end(&select); compare(b,e)!=0; increment(&b,1))
+            {
+                Livreur * livreur=(Livreur*)(b.element);
+                printf("%zu,%s,%14s,", livreur->id, livreur->nom, livreur->telephone);
+                affiche_liste(begin(&livreur->deplacements), end(&livreur->deplacements));
+                printf(",%zu,%.0f\n", livreur->restaurant, livreur->solde);
+            }
+
+            printf("Entrer votre id (<= 0 pour retour): ");
+            do
+            {
+                scanf(" %d", &id);
+                if(id > 0)
+                {
+                    Client comp;
+                    comp.id=id;
+                    search = id_search(begin(livreurs), end(livreurs), &comp, idlivreur_compare);
+                    if(search)
+                        menu_livreur(at(livreurs, search-1), livreurs, restos);
+                    else
+                        printf("id n'existe pas veuillez réessayer: ");
+                }
+            }while(id>0 && !search);
         }
     }
 }
