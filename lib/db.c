@@ -585,6 +585,7 @@ vector liste_items(int code_postal, vector *restos, vector *livreurs, vector *li
     destroy(&liste);
 
     return liste_items;
+}
 
 void del_client(vector *clients, iterator client)
 {
