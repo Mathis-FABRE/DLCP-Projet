@@ -13,7 +13,7 @@
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
 
-int const tests_total = 330;
+int const tests_total = 332;
 
 
 int const test_column_width = 80;
@@ -753,6 +753,7 @@ int main()
         TEST(binary_search(b, fourth, &n, numerical_compare) == false);
     }
 
+    // tests select name
     {
         vector names = make_vector(sizeof(char*), 0, 2.);
 
@@ -775,13 +776,17 @@ int main()
 
         vector clients = lecture_client("db_clients.csv");
         vector client = select_name(begin(&clients), end(&clients), "Quentin Tarantino", nameclient);
+        vector client0 = select_name(begin(&clients), end(&clients), "Charlie", nameclient);
 
+        TEST(size(client0) == 0);
         TEST(size(client) == 1);
         TEST(strcmp(((Client*)(at(&client,0).element))->nom, "Quentin Tarantino") == 0);
 
         vector livreurs = lecture_livreur("db_livreurs.csv");
         vector livreur = select_name(begin(&livreurs), end(&livreurs), "Mickey Mouse", namelivreur);
+        vector livreur0 = select_name(begin(&livreurs), end(&livreurs), "Hulysse", namelivreur);
 
+        TEST(size(livreur0) == 0);
         TEST(size(livreur) == 1);
         TEST(strcmp(((Livreur*)(at(&livreur,0).element))->nom, "Mickey Mouse") == 0);
 

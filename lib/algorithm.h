@@ -8,6 +8,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+// creer un vecteur avec tous les element d'iterateur
+// qui possèdent la même chaine que name 
 vector select_name(
     iterator first,
     iterator last,

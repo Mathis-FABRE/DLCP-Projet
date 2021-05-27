@@ -62,6 +62,10 @@ int idresto_compare(
     void const* a,
     void const* b);
 
+// Présume que a contient un Restaurant et b une chaine
+// Renvoie un nombre négatif si nom de 'a' précède nom de 'b' dans l'ordre numérique.
+// Renvoie un nombre positif si nom de 'b' précède nom de 'a' dans l'ordre numérique.
+// Renvoie zéro si nom de 'a' et nom de 'b' sont égaux.
 int nameresto(
     void const* data,
     void const* name);
@@ -82,6 +86,10 @@ int idlivreur_compare(
     void const* a,
     void const* b);
 
+// Présume que a contient un Livreur et b une chaine
+// Renvoie un nombre négatif si nom de 'a' précède nom de 'b' dans l'ordre numérique.
+// Renvoie un nombre positif si nom de 'b' précède nom de 'a' dans l'ordre numérique.
+// Renvoie zéro si nom de 'a' et nom de 'b' sont égaux.
 int namelivreur(
     void const* data,
     void const* name);
@@ -94,6 +102,10 @@ int idclient_compare(
     void const* a,
     void const* b);
 
+// Présume que a contient un Client et b une chaine
+// Renvoie un nombre négatif si nom de 'a' précède nom de 'b' dans l'ordre numérique.
+// Renvoie un nombre positif si nom de 'b' précède nom de 'a' dans l'ordre numérique.
+// Renvoie zéro si nom de 'a' et nom de 'b' sont égaux.
 int nameclient(
     void const* data,
     void const* name);
