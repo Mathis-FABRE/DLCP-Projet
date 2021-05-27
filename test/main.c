@@ -13,7 +13,7 @@
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
 
-int const tests_total = 306;
+int const tests_total = 352;
 
 int const test_column_width = 80;
 
@@ -251,9 +251,9 @@ int main()
             liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 20);
             TEST(size(liste) == 7);
 
-            // tous les menus moins chers que 10€
+            // tous les menus moins chers que 10€ ou à 10€
             liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 10);
-            TEST(size(liste) == 4);
+            TEST(size(liste) == 5);
 
             // tous les menus de Chez Michel
             liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Chez Michel", 0);
