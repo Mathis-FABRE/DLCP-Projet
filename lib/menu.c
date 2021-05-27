@@ -112,6 +112,10 @@ void creer_client(vector * clients, vector * restos, vector * menus, vector * li
         }
     } while (test < 0);
     
+    free(name);
+    free(tel);
+    free(code);
+
     printf("votre id est %d\n\n", test);
     printf("Entrez n'importe quoi pour continuer: ");
     char c;
@@ -411,6 +415,10 @@ void creer_resto(vector * restos, vector * menus, vector * livreurs)
         }
     } while (test < 0);
     
+    free(name);
+    free(tel);
+    free(type);
+
     printf("votre id est %d\n\n", test);
     printf("Entrez n'importe quoi pour continuer: ");
     char c;
@@ -787,6 +795,9 @@ void creer_livreur(vector * livreurs, vector * restos)
         }
     } while (test < 0);
     
+    free(name);
+    free(tel);
+    free(deplacements);
     printf("votre id est %d\n\n", test);
     printf("Entrez n'importe quoi pour continuer: ");
     char c;
