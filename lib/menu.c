@@ -151,8 +151,26 @@ void connexion_client(vector * clients, vector * restos, vector * menus, vector 
     if(id<=0)
     {
         printf("Entrer votre nom: ");
-        // char * name;
-        // scanf(" %s", name);
+        char * name = malloc(40);
+        scanf(" %40[^\n]", name);
+        vector select = select_name(begin(clients), end(clients), name, nameclient);
+
+        free(name);
+               if(size(select) == 1)
+            menu_client(at(clients, id_search(begin(clients), end(clients), at(&select, 0).element, idclient_compare)-1), clients, restos, menus, livreurs);
+        
+        else if(size(select) == 0)
+        {
+            printf("Erreur : nom non présent dans db");
+ 
+            char * c = malloc(1);
+            printf("Entrez n'importe quoi pour retourner: ");
+            scanf(" %1[^\n]", c);
+            free(c);}
+        else
+        {
+            // select
+        }
     }
 }
 
@@ -433,8 +451,26 @@ void connexion_resto(vector * restos, vector * menus, vector * livreurs)
     if(id<=0)
     {
         printf("Entrer votre nom: ");
-        // char * name;
-        // scanf(" %s", name);
+        char * name = malloc(40);
+        scanf(" %40[^\n]", name);
+        vector select = select_name(begin(restos), end(restos), name, nameresto);
+
+        free(name);
+               if(size(select) == 1)
+            menu_resto(at(restos, id_search(begin(restos), end(restos), at(&select, 0).element, idresto_compare)-1), restos, menus, livreurs);
+        
+        else if(size(select) == 0)
+        {
+            printf("Erreur : nom non présent dans db");
+ 
+            char * c = malloc(1);
+            printf("Entrez n'importe quoi pour retourner: ");
+            scanf(" %1[^\n]", c);
+            free(c);}
+        else
+        {
+            // select
+        }
     }
 }
 
@@ -654,7 +690,6 @@ void modif_suppritem(iterator resto, vector * menus)
             printf("id invalide veuillez réessayer: ");
     } while (choice==0);
     
-
 }
 
 int menu_supprimer_resto(iterator resto, vector * restos, vector * livreurs)
@@ -791,8 +826,26 @@ void connexion_livreur(vector * livreurs, vector * restos)
     if(id<=0)
     {
         printf("Entrer votre nom: ");
-        // char * name;
-        // scanf(" %s", name);
+        char * name = malloc(40);
+        scanf(" %40[^\n]", name);
+        vector select = select_name(begin(livreurs), end(livreurs), name, namelivreur);
+        free(name);
+
+        if(size(select) == 1)
+            menu_livreur(at(livreurs, id_search(begin(livreurs), end(livreurs), at(&select, 0).element, idlivreur_compare)-1), livreurs, restos);
+        
+        else if(size(select) == 0)
+        {
+            printf("Erreur : nom non présent dans db\n");
+            char * c = malloc(1);
+            printf("Entrez n'importe quoi pour retourner: ");
+            scanf(" %1[^\n]", c);
+            free(c);    
+        }
+        else
+        {
+            // select
+        }
     }
 }
 
