@@ -185,4 +185,12 @@ int modif_livreur_tel(iterator livreur, char * tel);
 // elle prend en paramètres le code_postal et le type de cuisine 
 // si l'utilisateur souhaite filtrer aux restaurants qui le livrent
 // ou aux restaurants d'un certain type
-vector liste_resto(int code_postal, vector *restaurants, vector *livreurs, char *type_cuisine);
+vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type_cuisine, char *nom_restaurant);
+
+
+// Fonction qui créé un vector de menus
+// elle prend en paramètres le code_postal, 
+// le type de cuisine un nom de restaurant et un solde
+// si l'utilisateur souhaite filtrer aux restaurants qui le livrent
+// ou aux restaurants d'un certain type
+vector liste_items(int code_postal, vector *restos, vector *livreurs, vector *menus, char *type_cuisine, char *nom_restaurant, float solde);
