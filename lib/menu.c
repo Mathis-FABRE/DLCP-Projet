@@ -112,6 +112,10 @@ void creer_client(vector * clients, vector * restos, vector * menus, vector * li
         }
     } while (test < 0);
     
+    free(name);
+    free(tel);
+    free(code);
+
     printf("votre id est %d\n\n", test);
     printf("Entrez n'importe quoi pour continuer: ");
     char c;
@@ -151,8 +155,48 @@ void connexion_client(vector * clients, vector * restos, vector * menus, vector 
     if(id<=0)
     {
         printf("Entrer votre nom: ");
-        // char * name;
-        // scanf(" %s", name);
+        char * name = malloc(40);
+        scanf(" %40[^\n]", name);
+        vector select = select_name(begin(clients), end(clients), name, nameclient);
+
+        free(name);
+               if(size(select) == 1)
+            menu_client(at(clients, id_search(begin(clients), end(clients), at(&select, 0).element, idclient_compare)-1), clients, restos, menus, livreurs);
+        
+        else if(size(select) == 0)
+        {
+            printf("Erreur : nom non présent dans db");
+ 
+            printf("Entrez n'importe quoi pour retourner: ");
+            char choice;
+            scanf(" %c", &choice);
+        }
+        else
+        {
+            printf("\n");
+            for(iterator b=begin(&select), e=end(&select); compare(b,e)!=0; increment(&b,1))
+            {
+                Client * client=(Client*)(b.element);
+                printf("%zu,%s,%d,%14s,%.2f\n", client->id, client->nom, client->code_postal, client->telephone, client->solde);
+            }
+
+            printf("Entrer votre id (<= 0 pour retour): ");
+            do
+            {
+                scanf(" %d", &id);
+                if(id > 0)
+                {
+                    Client comp;
+                    comp.id=id;
+                    search = id_search(begin(clients), end(clients), &comp, idclient_compare);
+                    if(search)
+                        menu_client(at(clients, search-1), clients, restos, menus, livreurs);
+                    else
+                        printf("id n'existe pas veuillez réessayer: ");
+                }
+            }while(id>0 && !search);
+
+        }
     }
 }
 
@@ -393,6 +437,10 @@ void creer_resto(vector * restos, vector * menus, vector * livreurs)
         }
     } while (test < 0);
     
+    free(name);
+    free(tel);
+    free(type);
+
     printf("votre id est %d\n\n", test);
     printf("Entrez n'importe quoi pour continuer: ");
     char c;
@@ -433,8 +481,49 @@ void connexion_resto(vector * restos, vector * menus, vector * livreurs)
     if(id<=0)
     {
         printf("Entrer votre nom: ");
-        // char * name;
-        // scanf(" %s", name);
+        char * name = malloc(40);
+        scanf(" %40[^\n]", name);
+        vector select = select_name(begin(restos), end(restos), name, nameresto);
+
+        free(name);
+               if(size(select) == 1)
+            menu_resto(at(restos, id_search(begin(restos), end(restos), at(&select, 0).element, idresto_compare)-1), restos, menus, livreurs);
+        
+        else if(size(select) == 0)
+        {
+            printf("Erreur : nom non présent dans db");
+ 
+            printf("Entrez n'importe quoi pour retourner: ");
+            char choice;
+            scanf(" %c", &choice);
+        }
+        else
+        {
+            printf("\n");
+            for(iterator b=begin(&select), e=end(&select); compare(b,e)!=0; increment(&b,1))
+            {
+                Restaurant * resto=(Restaurant*)(b.element);
+                printf("%zu,%s,%d,%14s,%s,", resto->id, resto->nom, resto->code_postal, resto->telephone, resto->type);
+                affiche_liste(begin(&resto->menu), end(&resto->menu));
+                printf(",%.2f\n", resto->solde);
+            }
+
+            printf("Entrer votre id (<= 0 pour retour): ");
+            do
+            {
+                scanf(" %d", &id);
+                if(id > 0)
+                {
+                    Client comp;
+                    comp.id=id;
+                    search = id_search(begin(restos), end(restos), &comp, idresto_compare);
+                    if(search)
+                        menu_resto(at(restos, search-1), restos, menus, livreurs);
+                    else
+                        printf("id n'existe pas veuillez réessayer: ");
+                }
+            }while(id>0 && !search);
+        }
     }
 }
 
@@ -508,7 +597,7 @@ void menu_resto_solde(iterator resto)
     printf("\n");
     printf("Votre Solde : %.2f€", ((Restaurant*)(resto.element))->solde);
     printf("\n");
-    printf("Entrer n'importe quoi pour retourner: ");
+    printf("Entrez n'importe quoi pour retourner: ");
     char choice;
     scanf(" %c", &choice);
 }
@@ -654,7 +743,6 @@ void modif_suppritem(iterator resto, vector * menus)
             printf("id invalide veuillez réessayer: ");
     } while (choice==0);
     
-
 }
 
 int menu_supprimer_resto(iterator resto, vector * restos, vector * livreurs)
@@ -752,6 +840,9 @@ void creer_livreur(vector * livreurs, vector * restos)
         }
     } while (test < 0);
     
+    free(name);
+    free(tel);
+    free(deplacements);
     printf("votre id est %d\n\n", test);
     printf("Entrez n'importe quoi pour continuer: ");
     char c;
@@ -791,8 +882,49 @@ void connexion_livreur(vector * livreurs, vector * restos)
     if(id<=0)
     {
         printf("Entrer votre nom: ");
-        // char * name;
-        // scanf(" %s", name);
+        char * name = malloc(40);
+        scanf(" %40[^\n]", name);
+        vector select = select_name(begin(livreurs), end(livreurs), name, namelivreur);
+        free(name);
+
+        if(size(select) == 1)
+            menu_livreur(at(livreurs, id_search(begin(livreurs), end(livreurs), at(&select, 0).element, idlivreur_compare)-1), livreurs, restos);
+        
+        else if(size(select) == 0)
+        {
+            printf("Erreur : nom non présent dans db\n");
+            
+            printf("Entrez n'importe quoi pour retourner: ");
+            char choice;
+            scanf(" %c", &choice);
+        }
+        else
+        {
+            printf("\n");
+            for(iterator b=begin(&select), e=end(&select); compare(b,e)!=0; increment(&b,1))
+            {
+                Livreur * livreur=(Livreur*)(b.element);
+                printf("%zu,%s,%14s,", livreur->id, livreur->nom, livreur->telephone);
+                affiche_liste(begin(&livreur->deplacements), end(&livreur->deplacements));
+                printf(",%zu,%.0f\n", livreur->restaurant, livreur->solde);
+            }
+
+            printf("Entrer votre id (<= 0 pour retour): ");
+            do
+            {
+                scanf(" %d", &id);
+                if(id > 0)
+                {
+                    Client comp;
+                    comp.id=id;
+                    search = id_search(begin(livreurs), end(livreurs), &comp, idlivreur_compare);
+                    if(search)
+                        menu_livreur(at(livreurs, search-1), livreurs, restos);
+                    else
+                        printf("id n'existe pas veuillez réessayer: ");
+                }
+            }while(id>0 && !search);
+        }
     }
 }
 
@@ -866,7 +998,7 @@ void menu_livreur_solde(iterator livreur)
     printf("\n");
     printf("Votre Solde : %.2f€", ((Livreur*)livreur.element)->solde);
     printf("\n");
-    printf("Entrer n'importe quoi pour retourner: ");
+    printf("Entrez n'importe quoi pour retourner: ");
     char choice;
     scanf(" %c", &choice);
 }

@@ -8,6 +8,14 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+// creer un vecteur avec tous les element d'iterateur
+// qui possèdent la même chaine que name 
+vector select_name(
+    iterator first,
+    iterator last,
+    char * name,
+    int (*name_comp)(void const *data, void const *name));
+
 // Renvoie 'vrai' si la fonction 'predicate' appliquée à tout les éléments de 
 // 'first' à 'last' non-inclus renvoie 'vrai' pour tout les éléments.
 // (c.-à-d. predicate(i->element) == true).

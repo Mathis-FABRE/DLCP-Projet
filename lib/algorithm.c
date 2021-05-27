@@ -8,6 +8,23 @@
 #include <stddef.h>
 #include <string.h>
 
+vector select_name(
+    iterator first,
+    iterator last,
+    char * name,
+    int (*name_comp)(void const *data, void const *name))
+{
+    vector new = make_vector(first.element_size, 0, 2.);
+
+    for(iterator b=first, e=last; compare(b,e); increment(&b,1))
+    {
+        if(name_comp(b.element, name) == 0)
+            push_back(&new, b.element);
+    }
+
+    shrink_to_fit(&new);
+    return new;
+}
 
 bool all_of(
     iterator first,

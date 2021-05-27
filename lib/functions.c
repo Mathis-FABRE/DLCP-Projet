@@ -145,6 +145,13 @@ int idresto_compare(
     return ((Restaurant*)a)->id - ((Restaurant*)b)->id;
 }
 
+int nameresto(
+    void const* data,
+    void const* name)
+{
+    return strcmp(((Restaurant*)data)->nom, (char*)name);
+}
+
 int idmenu_compare(
     void const* a,
     void const* b)
@@ -159,6 +166,13 @@ int idlivreur_compare(
     return ((Livreur*)a)->id - ((Livreur*)b)->id;
 }
 
+int namelivreur(
+    void const* data,
+    void const* name)
+{
+    return strcmp(((Livreur*)data)->nom, (char*)name);
+}
+
 int idclient_compare(
     void const* a,
     void const*b)
@@ -166,6 +180,12 @@ int idclient_compare(
     return ((Client*)a)->id - ((Client*)b)->id;
 }
 
+int nameclient(
+    void const* data,
+    void const* name)
+{
+    return strcmp(((Client*)data)->nom, (char*)name);
+}
 
 int isunder39(char * string)
 {

@@ -13,8 +13,7 @@
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
 
-
-int const tests_total = 367;
+int const tests_total = 378;
 
 int const test_column_width = 80;
 
@@ -882,6 +881,56 @@ int main()
         TEST(binary_search(fourth, e, &n, numerical_compare) == false);
         n = 22;
         TEST(binary_search(b, fourth, &n, numerical_compare) == false);
+    }
+
+    // tests select name
+    {
+        vector names = make_vector(sizeof(char*), 0, 2.);
+
+        push_back(&names, "toto");
+        push_back(&names, "hulice");
+        push_back(&names, "math");
+        push_back(&names, "toto");
+
+        vector name = select_name(begin(&names), end(&names), "toto", lexicographical_compare);
+
+        TEST(size(name) == 2);
+        TEST(strcmp((char*)(at(&name,0).element), "toto") == 0);
+        TEST(strcmp((char*)(at(&name,1).element), "toto") == 0);
+
+        vector restos = lecture_restaurant("db_restaurants.csv");
+        vector resto = select_name(begin(&restos), end(&restos), "empburger", nameresto);
+
+        TEST(size(resto) == 1);
+        TEST(strcmp(((Restaurant*)(at(&resto,0).element))->nom, "empburger") == 0);
+
+        vector clients = lecture_client("db_clients.csv");
+        vector client = select_name(begin(&clients), end(&clients), "Quentin Tarantino", nameclient);
+        vector client0 = select_name(begin(&clients), end(&clients), "Charlie", nameclient);
+
+        TEST(size(client0) == 0);
+        TEST(size(client) == 1);
+        TEST(strcmp(((Client*)(at(&client,0).element))->nom, "Quentin Tarantino") == 0);
+
+        vector livreurs = lecture_livreur("db_livreurs.csv");
+        vector livreur = select_name(begin(&livreurs), end(&livreurs), "Mickey Mouse", namelivreur);
+        vector livreur0 = select_name(begin(&livreurs), end(&livreurs), "Hulysse", namelivreur);
+
+        TEST(size(livreur0) == 0);
+        TEST(size(livreur) == 1);
+        TEST(strcmp(((Livreur*)(at(&livreur,0).element))->nom, "Mickey Mouse") == 0);
+
+        destroy(&name);
+        destroy(&names);
+
+        destroy(&restos);
+        destroy(&resto);
+
+        destroy(&clients);
+        destroy(&client);
+
+        destroy(&livreurs);
+        destroy(&livreur);
     }
 
     return tests_executed - tests_successful;
