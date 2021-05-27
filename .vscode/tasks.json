@@ -7,10 +7,7 @@
             "label": "make test",
             "type": "shell",
             "command": "make build/test",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
+            "group": "build",
             "problemMatcher": "$gcc",
             "presentation": {
                 "reveal": "always",
@@ -21,7 +18,10 @@
             "label": "make all",
             "type": "shell",
             "command": "make all",
-            "group": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "problemMatcher": "$gcc",
             "presentation": {
                 "reveal": "always",

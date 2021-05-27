@@ -89,7 +89,7 @@ int ajout_ingredients(char * ingredients, vector * v);
 // si la fonction marche correctement return > 0
 // return == id nouvel item
 // sinon return < 0
-// -1 : nom resto au dessus 39 char
+// -1 : nom menu au dessus 39 char
 // -2 : ingredients invalides
 // -3 : prix < 0
 int ajout_menu(char * nom, char * ingredients, float prix, vector * menus);
@@ -134,7 +134,6 @@ int ajout_code(char * deplacements, vector * v);
 // -4 : resto n'existe pas
 // -5 : peut se déplacer dans le resto exclusif
 int ajout_livreur(char * nom, char * tel, char * deplacement, size_t resto, vector restos, vector * livreurs);
-
 
 // Fontion ajoutant un client dans le vecteur clients
 // le vecteur est supposé trié en entrant et sortant
@@ -187,10 +186,33 @@ int modif_livreur_tel(iterator livreur, char * tel);
 // ou aux restaurants d'un certain type
 vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type_cuisine, char *nom_restaurant);
 
-
 // Fonction qui créé un vector de menus
 // elle prend en paramètres le code_postal, 
 // le type de cuisine un nom de restaurant et un solde
 // si l'utilisateur souhaite filtrer aux restaurants qui le livrent
 // ou aux restaurants d'un certain type
 vector liste_items(int code_postal, vector *restos, vector *livreurs, vector *menus, char *type_cuisine, char *nom_restaurant, float solde);
+// fonction supprimant un certain iterateur de clients
+// considère que l'itérateur est un Client
+void del_client(vector *clients, iterator client);
+
+// fonction modifiant le code postal d'un client
+// l'itarateur d'un client à modifier
+// renvoie 1 si marche correctement
+// sinon renvoie < 0
+// -1 : tel invalide
+int modif_client_code(iterator client, char * code);
+
+// fonction modifiant le # de tel d'un client
+// l'itarateur d'un client à modifier
+// renvoie 1 si marche correctement
+// sinon renvoie < 0
+// -1 : tel invalide
+int modif_client_tel(iterator client, char * tel);
+
+// fonction permettant de créditer un solde
+// l'itarateur d'un client à modifier
+// renvoie 1 si marche correctement
+// sinon renvoie < 0
+// -1 : ammount invalide
+int client_credit_solde(iterator client, float amount);
