@@ -163,10 +163,10 @@ void connexion_client(vector * clients, vector * restos, vector * menus, vector 
         {
             printf("Erreur : nom non présent dans db");
  
-            char * c = malloc(1);
             printf("Entrez n'importe quoi pour retourner: ");
-            scanf(" %1[^\n]", c);
-            free(c);}
+            char choice;
+            scanf(" %c", &choice);
+        }
         else
         {
             // select
@@ -463,10 +463,10 @@ void connexion_resto(vector * restos, vector * menus, vector * livreurs)
         {
             printf("Erreur : nom non présent dans db");
  
-            char * c = malloc(1);
             printf("Entrez n'importe quoi pour retourner: ");
-            scanf(" %1[^\n]", c);
-            free(c);}
+            char choice;
+            scanf(" %c", &choice);
+        }
         else
         {
             // select
@@ -544,7 +544,7 @@ void menu_resto_solde(iterator resto)
     printf("\n");
     printf("Votre Solde : %.2f€", ((Restaurant*)(resto.element))->solde);
     printf("\n");
-    printf("Entrer n'importe quoi pour retourner: ");
+    printf("Entrez n'importe quoi pour retourner: ");
     char choice;
     scanf(" %c", &choice);
 }
@@ -837,10 +837,10 @@ void connexion_livreur(vector * livreurs, vector * restos)
         else if(size(select) == 0)
         {
             printf("Erreur : nom non présent dans db\n");
-            char * c = malloc(1);
+            
             printf("Entrez n'importe quoi pour retourner: ");
-            scanf(" %1[^\n]", c);
-            free(c);    
+            char choice;
+            scanf(" %c", &choice);
         }
         else
         {
@@ -919,7 +919,7 @@ void menu_livreur_solde(iterator livreur)
     printf("\n");
     printf("Votre Solde : %.2f€", ((Livreur*)livreur.element)->solde);
     printf("\n");
-    printf("Entrer n'importe quoi pour retourner: ");
+    printf("Entrez n'importe quoi pour retourner: ");
     char choice;
     scanf(" %c", &choice);
 }
