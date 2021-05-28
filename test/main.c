@@ -275,6 +275,56 @@ int main()
             liste = liste_items(13009, &restos, &livreurs, &menus, NULL, "Reste Tôt", 5);
             TEST(size(liste) == 1);
 
+            // tests confirm_commande
+
+            // vector clients = lecture_client("test/db_clients.csv");
+
+            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, NULL, 0);
+            
+            // vector pour les paiements
+            vector restaurants = make_vector(sizeof(Restaurant), 0, 2.);
+            vector paiements = make_vector(sizeof(float), 0, 2.);
+            vector liv = make_vector(sizeof(Livreur), 0, 2.);
+
+            TEST(commande(&liste, &restos, &livreurs, 13009, NULL, &restaurants, &paiements, &liv) == 28);
+
+            TEST(size(liv) == 2);
+            TEST(size(restaurants) == 3);
+
+            destroy(&restaurants);
+            destroy(&paiements);
+            destroy(&liv);
+
+            restaurants = make_vector(sizeof(Restaurant), 0, 2.);
+            paiements = make_vector(sizeof(float), 0, 2.);
+            liv = make_vector(sizeof(Livreur), 0, 2.);
+
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 0);
+            
+            TEST(commande(&liste, &restos, &livreurs, 0, NULL, &restaurants, &paiements, &liv) == 92);
+            
+            TEST(size(liv) == 3);
+            TEST(size(restaurants) == 4);
+
+            destroy(&restaurants);
+            destroy(&paiements);
+            destroy(&liv);
+
+            restaurants = make_vector(sizeof(Restaurant), 0, 2.);
+            paiements = make_vector(sizeof(float), 0, 2.);
+            liv = make_vector(sizeof(Livreur), 0, 2.);
+
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Chez Michel", 0);
+            
+            TEST(commande(&liste, &restos, &livreurs, 0, "Chez Michel", &restaurants, &paiements, &liv) == 50);
+
+            TEST(size(restaurants) == 1);
+            TEST(size(liv) == 1);
+
+            destroy(&restaurants);
+            destroy(&paiements);
+            destroy(&liv);
+
             destroy(&liste);
             destroy(&restos);
             destroy(&menus);
