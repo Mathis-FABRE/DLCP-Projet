@@ -1,12 +1,12 @@
 id,nom,ingredients,prix
-1,bouillabaise,poissons de roche;pommes de terre,25
-2,taco,haricots;salsa;lime;tortilla,4
-3,houmous,pois chiche;tahini;ail;citron,6
-4,ratatouille,aubergine;courgette;poivron;tomate,15
-5,salade nicoise,oeuf;thon;olive;huile,10
-6,pancakes aux myrtilles,farine;lait;oeuf;myrtille,8
-7,petit-dej du champion,oeufs;toast;bacon;pomme de terre,12
-8,burger,pain;tomate;salade;oignon;fromage;boeuf,8
-9,chicken nuggets,poulet;farine;huile,2
-10,salade de fruits,fruits mixtes,4
-11,free stuff,free;peanut,0
+1,bouillabaise,poissons de roche;pommes de terre,25.00
+2,taco,haricots;salsa;lime;tortilla,4.00
+3,houmous,pois chiche;tahini;ail;citron,6.00
+4,ratatouille,aubergine;courgette;poivron;tomate,15.00
+5,salade nicoise,oeuf;thon;olive;huile,10.00
+6,pancakes aux myrtilles,farine;lait;oeuf;myrtille,8.00
+7,petit-dej du champion,oeufs;toast;bacon;pomme de terre,12.00
+8,burger,pain;tomate;salade;oignon;fromage;boeuf,8.00
+9,chicken nuggets,poulet;farine;huile,2.50
+10,salade de fruits,fruits mixtes,3.50
+11,free stuff,free;peanut,0.00
