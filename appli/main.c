@@ -29,7 +29,7 @@ int main()
     printf(".");
 
     printf("\n\n");
-    char * str = malloc(50);
+
     char choice;
 
     do
@@ -49,6 +49,8 @@ int main()
         printf("3/ Un.e Client.e\n");
         printf("\n");
         printf("Votre choix (q pour quitter): ");
+
+        char * str = malloc(50);
         
         do{
             if(scanf(" %50[^\n]", str) == 1)

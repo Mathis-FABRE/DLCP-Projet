@@ -208,7 +208,6 @@ void connexion_client(vector * clients, vector * restos, vector * menus, vector 
 
 void menu_client(iterator client, vector * clients, vector * restos, vector * menus, vector * livreurs)
 {
-    char * str = malloc(NB_INPUT);
     char choice;
     do
     {    
@@ -235,6 +234,7 @@ void menu_client(iterator client, vector * clients, vector * restos, vector * me
         printf("\n");
         printf("Votre choix (r pour retour): ");
 
+        char * str = malloc(NB_INPUT);
         int res;
 
         do{
@@ -555,7 +555,6 @@ void connexion_resto(vector * restos, vector * menus, vector * livreurs)
 
 void menu_resto(iterator resto, vector * restos, vector * menus, vector * livreurs)
 {
-    char * str = malloc(NB_INPUT);
     char choice;
     do
     {    
@@ -584,6 +583,7 @@ void menu_resto(iterator resto, vector * restos, vector * menus, vector * livreu
         printf("Votre choix (r pour retour): ");
 
         int res;
+        char * str = malloc(NB_INPUT);
 
         do{
             scanf(" %50[^\n]", str);
@@ -971,7 +971,6 @@ void connexion_livreur(vector * livreurs, vector * restos)
 
 void menu_livreur(iterator livreur, vector * livreurs, vector * restos)
 {
-    char * str = malloc(NB_INPUT);
     char choice;
     do
     {    
@@ -999,6 +998,7 @@ void menu_livreur(iterator livreur, vector * livreurs, vector * restos)
         printf("\n");
         printf("Votre choix (r pour retour): ");
 
+        char * str = malloc(NB_INPUT);
         int res;
 
         do{
