@@ -196,6 +196,11 @@ int isunder39(char * string)
         return 0;
 }
 
+int equals_id(void const *test, void const *id)
+{
+    return (*(size_t *)test - *(size_t *)id);
+}
+
 int isnom(char * string)
 {
     int len=strlen(string);
