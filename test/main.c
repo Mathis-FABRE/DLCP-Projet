@@ -325,6 +325,32 @@ int main()
             destroy(&paiements);
             destroy(&liv);
 
+            // tests add_commande et del_commande
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 0);
+            vector items = make_vector(sizeof(Menu), 0, 2.);
+
+            TEST(size(items) == 0);
+
+            TEST(add_commande(&liste, &items, 1) == 1);
+            TEST(size(items) == 1);
+
+            TEST(add_commande(&liste, &items, 5) == 1);
+            TEST(size(items) == 2);
+
+            TEST(add_commande(&liste, &items, 10) == -1);
+            TEST(size(items) == 2);
+            
+            TEST(del_commande(&items, 0) == -1);
+            TEST(size(items) == 2);
+
+            TEST(del_commande(&items, 3) == -1);
+            TEST(size(items) == 2);
+
+            TEST(del_commande(&items, 2) == 1);
+            TEST(size(items) == 1);
+
+            destroy(&items);
+
             destroy(&liste);
             destroy(&restos);
             destroy(&menus);
