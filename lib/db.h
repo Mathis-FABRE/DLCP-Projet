@@ -221,3 +221,13 @@ int client_credit_solde(iterator client, float amount);
 // en les ajoutant aux vector passés en paramètre
 // renvoie le montant de la liste (livraison inclue)
 float commande(vector * commande, vector *restos, vector *livreurs, int code_client, char *nom_rest, vector *restaurants, vector *paiements, vector *liv);
+
+// Fonction qui ajoute un item du vector liste au vector commande (sans le supprimer de liste)
+// renvoie 1 si l'id est correct
+// sinon renvoie -1
+int add_commande(vector *liste, vector *commande, size_t id);
+
+// Fonction qui retire un item du vector commande
+// renvoie 1 si l'id est correct
+// renvoie -1 sinon
+int del_commande(vector *commande, size_t id);

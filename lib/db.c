@@ -757,3 +757,32 @@ float commande(vector *commande, vector *restos, vector *livreurs, int code_clie
 
     return prix_commande;
 }
+
+int add_commande(vector *liste, vector *commande, size_t id)
+{
+    if (id <= 0 || id > size(*liste))
+    {
+        return -1;
+    }
+    else
+    {
+        Menu *item = (Menu *)(at(liste, id - 1).element);
+        push_back(commande, item);
+    }
+
+    return 1;
+}
+
+int del_commande(vector *commande, size_t id)
+{
+    if (id <= 0 || id > size(*commande))
+    {
+        return -1;
+    }
+    else
+    {
+        erase(commande, at(commande, id - 1));
+    }
+
+    return 1;
+}
