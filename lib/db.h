@@ -216,3 +216,8 @@ int modif_client_tel(iterator client, char * tel);
 // sinon renvoie < 0
 // -1 : ammount invalide
 int client_credit_solde(iterator client, float amount);
+
+// Fonction permettant d'attribuer les restaurants et livreurs à la liste d'items
+// en les ajoutant aux vector passés en paramètre
+// renvoie le montant de la liste (livraison inclue)
+float commande(vector * commande, vector *restos, vector *livreurs, int code_client, char *nom_rest, vector *restaurants, vector *paiements, vector *liv);
