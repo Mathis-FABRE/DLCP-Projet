@@ -281,7 +281,7 @@ void sauvegarde_clients(iterator first, iterator last)
     for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
     {
         Client * client=(Client*)(b.element);
-        fprintf(db_client, "%zu,%s,%d,%14s,%.0f\n", client->id, client->nom, client->code_postal, client->telephone, client->solde);
+        fprintf(db_client, "%zu,%s,%d,%14s,%.2f\n", client->id, client->nom, client->code_postal, client->telephone, client->solde);
     }
 
     fclose(db_client);
@@ -348,7 +348,7 @@ void sauvegarde_resto(iterator first, iterator last)
         Restaurant * resto=(Restaurant*)(b.element);
         fprintf(db_resto, "%zu,%s,%d,%14s,%s,", resto->id, resto->nom, resto->code_postal, resto->telephone, resto->type);
         sauvegarde_liste(db_resto, begin(&resto->menu), end(&resto->menu));
-        fprintf(db_resto, ",%.0f\n", resto->solde);
+        fprintf(db_resto, ",%.2f\n", resto->solde);
     }
 
     fclose(db_resto);
@@ -367,7 +367,7 @@ void sauvegarde_livreurs(iterator first, iterator last)
         Livreur * livreur=(Livreur*)(b.element);
         fprintf(db_livreur, "%zu,%s,%14s,", livreur->id, livreur->nom, livreur->telephone);
         sauvegarde_liste(db_livreur, begin(&livreur->deplacements), end(&livreur->deplacements));
-        fprintf(db_livreur, ",%zu,%.0f\n", livreur->restaurant, livreur->solde);
+        fprintf(db_livreur, ",%zu,%.2f\n", livreur->restaurant, livreur->solde);
     }
 
     fclose(db_livreur);
@@ -386,7 +386,7 @@ void sauvegarde_menus(iterator first, iterator last)
         Menu * menu=(Menu*)(b.element);
         fprintf(db_menu, "%zu,%s,", menu->id, menu->nom);
         sauvegarde_liste(db_menu, begin(&menu->ingredients), end(&menu->ingredients));
-        fprintf(db_menu, ",%0.f\n", menu->prix);
+        fprintf(db_menu, ",%.2f\n", menu->prix);
     }
 
     fclose(db_menu);
