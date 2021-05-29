@@ -116,6 +116,11 @@ int nameclient(
 // si non retourne 0
 int isunder39(char * string);
 
+// vérifie si l'élément de l'iterator possède un certain id
+// renvoie 1 si vrai
+// 0 sinon
+int equals_id(void const* test, void const *id);
+
 // regarde si une chaine de caractères
 // est un téléphone
 // si oui retourne 1

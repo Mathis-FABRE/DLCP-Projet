@@ -13,7 +13,7 @@
 // Valeurs pour le harnais de test spécifiques à ce programme.
 // augmenter cette val à chaque test créer
 
-int const tests_total = 378;
+int const tests_total = 400;
 
 int const test_column_width = 80;
 
@@ -274,6 +274,82 @@ int main()
             // tous les menus disponibles en 13009 chez Reste Tôt à moins de 5 euros
             liste = liste_items(13009, &restos, &livreurs, &menus, NULL, "Reste Tôt", 5);
             TEST(size(liste) == 1);
+
+            // tests confirm_commande
+
+            // vector clients = lecture_client("test/db_clients.csv");
+
+            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, NULL, 0);
+            
+            // vector pour les paiements
+            vector restaurants = make_vector(sizeof(Restaurant), 0, 2.);
+            vector paiements = make_vector(sizeof(float), 0, 2.);
+            vector liv = make_vector(sizeof(Livreur), 0, 2.);
+
+            TEST(commande(&liste, &restos, &livreurs, 13009, NULL, &restaurants, &paiements, &liv) == 28);
+
+            TEST(size(liv) == 2);
+            TEST(size(restaurants) == 3);
+
+            destroy(&restaurants);
+            destroy(&paiements);
+            destroy(&liv);
+
+            restaurants = make_vector(sizeof(Restaurant), 0, 2.);
+            paiements = make_vector(sizeof(float), 0, 2.);
+            liv = make_vector(sizeof(Livreur), 0, 2.);
+
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 0);
+            
+            TEST(commande(&liste, &restos, &livreurs, 0, NULL, &restaurants, &paiements, &liv) == 92);
+            
+            TEST(size(liv) == 3);
+            TEST(size(restaurants) == 4);
+
+            destroy(&restaurants);
+            destroy(&paiements);
+            destroy(&liv);
+
+            restaurants = make_vector(sizeof(Restaurant), 0, 2.);
+            paiements = make_vector(sizeof(float), 0, 2.);
+            liv = make_vector(sizeof(Livreur), 0, 2.);
+
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Chez Michel", 0);
+            
+            TEST(commande(&liste, &restos, &livreurs, 0, "Chez Michel", &restaurants, &paiements, &liv) == 50);
+
+            TEST(size(restaurants) == 1);
+            TEST(size(liv) == 1);
+
+            destroy(&restaurants);
+            destroy(&paiements);
+            destroy(&liv);
+
+            // tests add_commande et del_commande
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 0);
+            vector items = make_vector(sizeof(Menu), 0, 2.);
+
+            TEST(size(items) == 0);
+
+            TEST(add_commande(&liste, &items, 1) == 1);
+            TEST(size(items) == 1);
+
+            TEST(add_commande(&liste, &items, 5) == 1);
+            TEST(size(items) == 2);
+
+            TEST(add_commande(&liste, &items, 10) == -1);
+            TEST(size(items) == 2);
+            
+            TEST(del_commande(&items, 0) == -1);
+            TEST(size(items) == 2);
+
+            TEST(del_commande(&items, 3) == -1);
+            TEST(size(items) == 2);
+
+            TEST(del_commande(&items, 2) == 1);
+            TEST(size(items) == 1);
+
+            destroy(&items);
 
             destroy(&liste);
             destroy(&restos);
