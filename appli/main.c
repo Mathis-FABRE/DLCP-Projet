@@ -36,7 +36,7 @@ int main()
     {
         system("clear");
         printf("#######################################\n");
-        printf(" Bienvenue sur kiki's delivery service \n");
+        printf(" Bienvenue sur Kiki's Delivery Service \n");
         printf("#######################################\n");
         printf("\n");
         printf("#######################################\n");
@@ -57,10 +57,10 @@ int main()
             {
                 choice = str[0];
                 if(choice!='1' && choice!='2' && choice!='3' && choice!='q')
-                    printf("choix invalide veuillez réessayer: ");
+                    printf("Choix invalide veuillez réessayer: ");
             }
             else
-                printf("choix invalide veuillez réessayer: ");
+                printf("Choix invalide veuillez réessayer: ");
         }while(choice!='1' && choice!='2' && choice!='3' && choice!='q');
 
         free(str);
