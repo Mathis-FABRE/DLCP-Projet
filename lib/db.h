@@ -193,6 +193,7 @@ vector liste_resto(char * code_postal, vector *restos, vector *livreurs, char *t
 // si l'utilisateur souhaite filtrer aux restaurants qui le livrent
 // ou aux restaurants d'un certain type
 vector liste_items(char * code_postal, vector *restos, vector *livreurs, vector *menus, char *type_cuisine, char *nom_restaurant, float solde);
+
 // fonction supprimant un certain iterateur de clients
 // considère que l'itérateur est un Client
 void del_client(vector *clients, iterator client);

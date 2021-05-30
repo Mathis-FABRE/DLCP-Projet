@@ -389,7 +389,7 @@ int modif_livreur_addcode(iterator livreur, char * code)
     if(binary_search(begin(&modif->deplacements), end(&modif->deplacements), code, lexicographical_compare))
         return -2;
 
-    push_back(&modif->deplacements, &code);
+    push_back(&modif->deplacements, code);
 
     return 1;
 }
@@ -720,8 +720,11 @@ float commande(vector *commande, vector *restos, vector *livreurs, char * code_c
                     char * code = (char *)(first.element);
                     if (strcmp(code, resto->code_postal) == 0)
                         cresto = 1;
-                    if (strcmp(code, code_client) == 0)
-                        cclient = 1;
+                    if (code_client)
+                    {
+                        if (strcmp(code, code_client) == 0)
+                            cclient = 1;
+                    }
 
                     if (((code_client && cclient && cresto) || cresto) && id_search(begin(liv), end(liv), livreur, idlivreur_compare) == 0)
                     {
@@ -752,8 +755,11 @@ float commande(vector *commande, vector *restos, vector *livreurs, char * code_c
                         char * code = (char *)(first.element);
                         if (strcmp(code, resto->code_postal) == 0)
                             cresto = 1;
-                        if (strcmp(code, code_client) == 0)
-                            cclient = 1;
+                        if (code_client)
+                        {
+                            if (strcmp(code, code_client) == 0)
+                                cclient = 1;
+                        }
 
                         if (((code_client && cclient && cresto) || cresto) && id_search(begin(liv), end(liv), livreur, idlivreur_compare) == 0)
                         {
