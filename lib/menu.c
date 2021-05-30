@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define NB_INPUT 50
 
@@ -258,7 +259,7 @@ void menu_client(iterator client, vector * clients, vector * restos, vector * me
             break;
 
         case '3':
-            menu_client(client, clients, restos, menus, livreurs);
+            menu_afficher_restos(client, clients, restos, menus, livreurs);
             break;
 
         case '4':
@@ -429,16 +430,102 @@ int menu_modif_client_tel(iterator client)
     return 1;
 }
 
-// int menu_commande_client(iterator client, vector *clients)
-// {
-//     menu_header();
+int menu_afficher_restos(iterator client, vector *clients, vector *restos, vector *menus, vector *livreurs)
+{
+    menu_header();
+
+    printf("#######################################\n");
+    printf("       Affichage des restaurants       \n");
+    printf("#######################################\n");
+    printf("\n");
+
+    printf("Voulez-vous limiter la recherche :\n");
+    char str[NB_INPUT];
+    printf("Aux restaurants pouvant vous livrer ? (y pour oui, n pour non) : ");
+    char choice;
+    do
+    {
+        scanf(" %40[^\n]", str);
+        choice = str[0];
+        if (choice != 'y' && choice != 'n')
+            printf("choix invalide, veuillez réessayer: ");
+    } while (choice != 'y' && choice != 'n');
+    char type[TAILLE_CHAMP_NOM+1];
+    printf("A un type de cuisine ? (n pour non) : ");
     
-//     printf("#######################################\n");
-//     printf("           Passer une commande          \n");
-//     printf("#######################################\n");
-//     printf("\n");
-//     printf("Entrer votre id (<= 0 si vous ne le connaissez pas): ");
-// }
+        scanf(" %40[^\n]", type);
+          
+    int code;
+    if (choice == 'n') code = 0;
+    else code = ((Client *)(client.element))->code_postal;
+
+    vector liste = liste_resto(code, restos, livreurs, type, NULL);
+
+    affichage_restos(&liste, menus);
+    
+    return 1;
+}
+
+int affichage_restos(vector *liste, vector *menus)
+{
+
+    menu_header();
+
+    printf("#######################################\n");
+    printf("       Affichage des restaurants       \n");
+    printf("#######################################\n");
+    printf("\n");
+
+    int id = 1;
+    for (iterator f = begin(liste), e = end(liste); compare(f, e) < 0; increment(&f, 1))
+    {
+        Restaurant *resto = (Restaurant *)(f.element);
+        printf("%d | %s | %d | %s : ", id++, resto->nom, resto->code_postal, resto->telephone);
+        if (size(resto->menu) == 0) printf("(pas de menu), ");
+        for (iterator first = begin(&resto->menu), last = end(&resto->menu); compare(first, last) < 0; increment(&first, 1))
+        {
+            size_t id = *(size_t *)(first.element);
+            Menu *menu = (Menu *)at(menus, id - 1).element;
+            printf("%s, ", menu->nom);
+        }
+        printf("%s\n", resto->type);
+    }
+
+    char str[NB_INPUT];
+    printf("\n");
+    printf("Nombre de résultats : %ld\n", size(*liste));
+    printf("\n");
+    printf("Souahitez-vous faire une commande à partir de cette liste ? (y / n) : ")
+    char choice;
+    do
+    {
+        scanf(" %40[^\n]", str);
+        choice = str[0];
+        if (choice != 'y' && choice != 'n')
+            printf("choix invalide, veuillez réessayer: ");
+    } while (choice != 'y' && choice != 'n');
+
+    switch (choice)
+    {
+    case 'y':
+        menu_commande(client, restos, livreurs, menus, type, nom);
+        break;
+    
+    default:
+        break;
+    }
+
+    // modif liste_items pour ne pas appeler liste_resto si déjà fait
+   // demander si veut faire commande à partir de cette liste
+   // si oui go commande
+   // sinon go demander si faire nouvelle liste
+   // ou passer commande selon d'autres critères
+    
+
+    return 1;
+}
+
+
 int menu_supprimer_client(iterator client, vector * clients)
 {
     menu_header();
