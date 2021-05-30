@@ -236,7 +236,7 @@ vector lecture_livreur(const char * file)
 
     while(fscanf(db_livreur, "%zu,%39[^,],%14[^,],%[^,],%zu,%f", &livreur.id, livreur.nom, livreur.telephone, restos, &livreur.restaurant, &livreur.solde)==6)
     {
-        livreur.deplacements=make_vector(sizeof(int), 0, 2.);
+        livreur.deplacements=make_vector(6, 0, 2.);
         separateur_chaine(&livreur.deplacements, restos);
         push_back(&livreurs, &livreur);
     }
@@ -308,19 +308,6 @@ void sauvegarde_liste(FILE* file, iterator first, iterator last)
         }
         size_t * id=(size_t*)(e.element);
         fprintf(file, "%zu", *id);
-    }
-
-    else if(first.element_size==sizeof(int))
-    {
-        iterator e=last;
-        decrement(&e,1);
-        for(iterator b=first; compare(b,e)!=0; increment(&b,1))
-        {
-            int * id=(int*)(b.element);
-            fprintf(file, "%d;", *id);
-        }
-        int * id=(int*)(e.element);
-        fprintf(file, "%d", *id);
     }
 
     else
