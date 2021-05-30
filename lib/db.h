@@ -76,6 +76,7 @@ bool est_generaliste(
 // -1 : nom resto au dessus 39 char
 // -2 : tel invalide
 // -3 : type invalide
+// -4 : code invalide
 int ajout_resto(char * nom, char * code, char * telephone, char * type, vector * restos);
 
 // fonction ajoutant des ingredients dans un menu

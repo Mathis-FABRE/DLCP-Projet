@@ -21,8 +21,6 @@ int ajout_resto(char *nom, char *code, char *telephone, char *type, vector *rest
     else
         return -1;
 
-    strcpy(new.code_postal, code);
-
     if (istel(telephone))
         strcpy(new.telephone, telephone);
     else
