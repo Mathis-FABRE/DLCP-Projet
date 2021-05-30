@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int ajout_resto(char *nom, int code, char *telephone, char *type, vector *restos)
+int ajout_resto(char *nom, char *code, char *telephone, char *type, vector *restos)
 {
     int id = get_first_id(begin(restos), end(restos));
 
@@ -21,8 +21,6 @@ int ajout_resto(char *nom, int code, char *telephone, char *type, vector *restos
     else
         return -1;
 
-    new.code_postal = code;
-
     if (istel(telephone))
         strcpy(new.telephone, telephone);
     else
@@ -32,6 +30,11 @@ int ajout_resto(char *nom, int code, char *telephone, char *type, vector *restos
         strcpy(new.type, type);
     else
         return -3;
+
+    if(iscode(code))
+        strcpy(new.code_postal, code);
+    else
+        return -4;
 
     new.menu = make_vector(sizeof(size_t), 0, 2.);
     new.solde = 0.;
@@ -52,20 +55,32 @@ int ajout_ingredients(char *ingredients, vector *v)
     if (sscanf(ingredients, "%39[^;];%[^,]", ingredient, buffer) == 2)
     {
         if (isnom(ingredient))
+        {
+            if(binary_search(begin(v), end(v), ingredient, lexicographical_compare))
+                return 0;
             push_back(v, ingredient);
+        }
         else
             return 0;
 
         while (sscanf(buffer, "%39[^;];%[^,]", ingredient, buffer) == 2)
         {
             if (isnom(ingredient))
+            {
+                if(binary_search(begin(v), end(v), ingredient, lexicographical_compare))
+                    return 0;
                 push_back(v, ingredient);
+            }
             else
                 return 0;
         }
         sscanf(buffer, "%39[^;]", ingredient);
         if (isnom(ingredient))
+        {
+            if(binary_search(begin(v), end(v), ingredient, lexicographical_compare))
+                return 0;
             push_back(v, ingredient);
+        }
         else
             return 0;
     }
@@ -73,7 +88,11 @@ int ajout_ingredients(char *ingredients, vector *v)
     else if (sscanf(ingredients, "%39[^;]", ingredient) == 1)
     {
         if (isnom(ingredient))
+        {
+            if(binary_search(begin(v), end(v), ingredient, lexicographical_compare))
+                return 0;
             push_back(v, ingredient);
+        }
         else
             return 0;
     }
@@ -114,7 +133,6 @@ int ajout_menu(char *nom, char *ingredients, float prix, vector *menus)
 }
 
 int add_menu(size_t id, Restaurant *resto, vector const menus)
-
 {
     Menu compare;
     compare.id = id;
@@ -170,27 +188,39 @@ int ajout_code(char *deplacements, vector *v)
 {
     char buffer[256];
 
-    int code;
+    char code[6];
 
-    if (sscanf(deplacements, "%d;%s", &code, buffer) == 2)
+    if (sscanf(deplacements, "%6[^;];%s", code, buffer) == 2)
     {
-        if (code > 0)
-            push_back(v, &code);
+        if (iscode(code))
+        {
+            if(binary_search(begin(v), end(v), code, lexicographical_compare))
+                return 0;
+            push_back(v, code);
+        }
         else
             return 0;
 
-        while (sscanf(buffer, "%d;%s", &code, buffer) == 2)
+        while (sscanf(buffer, "%6[^;];%s", code, buffer) == 2)
         {
-            if (code > 0)
-                push_back(v, &code);
+            if (iscode(code))
+            {
+                if(binary_search(begin(v), end(v), code, lexicographical_compare))
+                    return 0;
+                push_back(v, code);
+            }
             else
                 return 0;
         }
 
-        if (sscanf(buffer, "%d", &code) == 1)
+        if (sscanf(buffer, "%6[^;]", code) == 1)
         {
-            if (code > 0)
-                push_back(v, &code);
+            if (iscode(code))
+            {
+                if(binary_search(begin(v), end(v), code, lexicographical_compare))
+                    return 0;
+                push_back(v, code);
+            }
             else
                 return 0;
         }
@@ -198,10 +228,14 @@ int ajout_code(char *deplacements, vector *v)
             return 0;
     }
 
-    else if (sscanf(deplacements, "%d", &code) == 1)
+    else if (sscanf(deplacements, "%6[^;]", code) == 1)
     {
-        if (code > 0)
-            push_back(v, &code);
+        if (iscode(code))
+        {
+            if(binary_search(begin(v), end(v), code, lexicographical_compare))
+                return 0;
+            push_back(v, code);
+        }
         else
             return 0;
     }
@@ -230,7 +264,7 @@ int ajout_livreur(char *nom, char *tel, char *deplacement, size_t resto, vector 
     else
         return -2;
 
-    new.deplacements = make_vector(sizeof(int), 0, 2.);
+    new.deplacements = make_vector(6, 0, 2.);
     if (!ajout_code(deplacement, &new.deplacements))
         return -3;
 
@@ -244,15 +278,8 @@ int ajout_livreur(char *nom, char *tel, char *deplacement, size_t resto, vector 
 
     if (resto != 0)
     {
-        int test = 0;
         Restaurant const *comp = (Restaurant *)(at(&restos, presence - 1).element);
-        for (iterator b = begin(&new.deplacements), e = end(&new.deplacements); compare(b, e) && !test; increment(&b, 1))
-        {
-            if (*(int *)(b.element) == comp->code_postal)
-                test = 1;
-        }
-
-        if (!test)
+        if(!binary_search(begin(&new.deplacements), end(&new.deplacements), &comp->code_postal, lexicographical_compare))
             return -5;
     }
 
@@ -287,11 +314,7 @@ int ajout_client(char *nom, char *code, char *telephone, float solde, vector *cl
         return -1;
 
     if (iscode(code))
-    {
-        int int_code;
-        sscanf(code, "%d", &int_code);
-        new.code_postal = int_code;
-    }
+        strcpy(new.code_postal, code);
     else
         return -2;
 
@@ -321,15 +344,8 @@ int modif_livreur_resto(iterator livreur, size_t resto, vector restos)
         if (!posresto)
             return -1;
 
-        int test = 0;
         Restaurant const *compd = (Restaurant *)(at(&restos, posresto - 1).element);
-        for (iterator b = begin(&modif->deplacements), e = end(&modif->deplacements); compare(b, e) && !test; increment(&b, 1))
-        {
-            if (*(int *)(b.element) == compd->code_postal)
-                test = 1;
-        }
-
-        if (!test)
+        if(!binary_search(begin(&modif->deplacements), end(&modif->deplacements), &compd->code_postal, lexicographical_compare))
             return -2;
     }
 
@@ -348,11 +364,11 @@ int modif_livreur_delcode(iterator livreur, size_t pos, vector restos)
 
     if (modif->restaurant != 0)
     {
-        int *code = (int *)(at(&modif->deplacements, pos - 1).element);
+        char *code = (char *)(at(&modif->deplacements, pos - 1).element);
         Restaurant comp;
         comp.id = modif->restaurant;
         Restaurant *exclu = (Restaurant *)(at(&restos, id_search(begin(&restos), end(&restos), &comp, idresto_compare) - 1).element);
-        if (*code == exclu->code_postal)
+        if (strcmp(code, exclu->code_postal) == 0)
             return -2;
     }
 
@@ -361,21 +377,17 @@ int modif_livreur_delcode(iterator livreur, size_t pos, vector restos)
     return 1;
 }
 
-int modif_livreur_addcode(iterator livreur, int code)
+int modif_livreur_addcode(iterator livreur, char * code)
 {
     Livreur *modif = (Livreur *)(livreur.element);
 
-    if (code < 9999 || code > 99999)
+    if (!iscode(code))
         return -1;
 
-    for (iterator b = begin(&modif->deplacements), e = end(&modif->deplacements); compare(b, e); increment(&b, 1))
-    {
-        int *comp = (int *)(b.element);
-        if (*comp == code)
-            return -2;
-    }
+    if(binary_search(begin(&modif->deplacements), end(&modif->deplacements), code, lexicographical_compare))
+        return -2;
 
-    push_back(&modif->deplacements, &code);
+    push_back(&modif->deplacements, code);
 
     return 1;
 }
@@ -392,7 +404,7 @@ int modif_livreur_tel(iterator livreur, char *tel)
     return 1;
 }
 
-vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type_cuisine, char *nom_restaurant)
+vector liste_resto(char * code_postal, vector *restos, vector *livreurs, char *type_cuisine, char *nom_restaurant)
 {
     vector liste = make_vector(sizeof(Restaurant), 0, 2.);
     vector restaurants = make_vector(sizeof(Restaurant), size(*restos), 2.);
@@ -411,8 +423,8 @@ vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type
 
             for (iterator f = begin(&codes), e = end(&codes); compare(f, e) < 0; increment(&f, 1))
             {
-                int code = *(int *)(f.element);
-                if (code == code_postal)
+                char * code = (char *)(f.element);
+                if (strcmp(code, code_postal) ==0)
                 {
                     if (livreur->restaurant != 0)
                     {
@@ -428,7 +440,7 @@ vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type
                         for (iterator d = begin(&restaurants), fin = end(&restaurants); compare(d, fin) < 0; increment(&d, 1))
                         {
                             Restaurant *resto = (Restaurant *)d.element;
-                            if (resto->code_postal == code_postal)
+                            if (strcmp(resto->code_postal, code_postal) == 0)
                             {
                                 push_back(&liste, resto);
                                 // on supprime le restaurant pour ne pas retomber dessus par la suite et accélérer les opérations
@@ -536,7 +548,7 @@ vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type
     return liste;
 }
 
-vector liste_items(int code_postal, vector *restos, vector *livreurs, vector *liste_menus, char *type_cuisine, char *nom_restaurant, float solde)
+vector liste_items(char * code_postal, vector *restos, vector *livreurs, vector *liste_menus, char *type_cuisine, char *nom_restaurant, float solde)
 {
     vector liste = liste_resto(code_postal, restos, livreurs, type_cuisine, nom_restaurant);
 
@@ -598,9 +610,7 @@ int modif_client_code(iterator client, char *code)
     if (!iscode(code))
         return -1;
 
-    int int_code;
-    sscanf(code, "%d", &int_code);
-    modif->code_postal = int_code;
+    strcpy(modif->code_postal, code);
 
     return 1;
 }
@@ -629,7 +639,7 @@ int client_credit_solde(iterator client, float amount)
     return 1;
 }
 
-float commande(vector *commande, vector *restos, vector *livreurs, int code_client, char *nom_resto, vector *restaurants, vector *paiements, vector *liv)
+float commande(vector *commande, vector *restos, vector *livreurs, char * code_client, char *nom_resto, vector *restaurants, vector *paiements, vector *liv)
 {
 
     float prix_commande = 0;
@@ -705,11 +715,14 @@ float commande(vector *commande, vector *restos, vector *livreurs, int code_clie
                 int cclient = 0, cresto = 0;
                 for (iterator first = begin(&livreur->deplacements), e = end(&livreur->deplacements); compare(first, e) < 0; increment(&first, 1))
                 {
-                    int code = *(int *)(first.element);
-                    if (code == resto->code_postal)
+                    char * code = (char *)(first.element);
+                    if (strcmp(code, resto->code_postal) == 0)
                         cresto = 1;
-                    if (code == code_client)
-                        cclient = 1;
+                    if (code_client)
+                    {
+                        if (strcmp(code, code_client) == 0)
+                            cclient = 1;
+                    }
 
                     if (((code_client && cclient && cresto) || cresto) && id_search(begin(liv), end(liv), livreur, idlivreur_compare) == 0)
                     {
@@ -737,11 +750,14 @@ float commande(vector *commande, vector *restos, vector *livreurs, int code_clie
                     int cclient = 0, cresto = 0;
                     for (iterator first = begin(&livreur->deplacements), e = end(&livreur->deplacements); compare(first, e) < 0; increment(&first, 1))
                     {
-                        int code = *(int *)(first.element);
-                        if (code == resto->code_postal)
+                        char * code = (char *)(first.element);
+                        if (strcmp(code, resto->code_postal) == 0)
                             cresto = 1;
-                        if (code == code_client)
-                            cclient = 1;
+                        if (code_client)
+                        {
+                            if (strcmp(code, code_client) == 0)
+                                cclient = 1;
+                        }
 
                         if (((code_client && cclient && cresto) || cresto) && id_search(begin(liv), end(liv), livreur, idlivreur_compare) == 0)
                         {

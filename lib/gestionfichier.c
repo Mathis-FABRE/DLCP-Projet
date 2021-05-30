@@ -108,7 +108,7 @@ vector lecture_client(const char * file)
 
     Client client;
 
-    while (fscanf(db_clients, "%zu,%39[^,],%d,%14[^,],%f", &client.id, client.nom, &client.code_postal, client.telephone, &client.solde)==5)
+    while (fscanf(db_clients, "%zu,%39[^,],%5[^,],%14[^,],%f", &client.id, client.nom, client.code_postal, client.telephone, &client.solde)==5)
     {
         push_back(&clients, &client);
     }
@@ -148,23 +148,23 @@ void separateur_chaine(vector* v, char * chaine)
         }
         break;
     
-    case sizeof(int): ;
-        int code;
+    case 6: ;
+        char code[6];
 
-        if(sscanf(chaine, "%d;%s", &code, buffer)==2)
+        if(sscanf(chaine, "%5[^,];%s", code, buffer)==2)
         {
-            push_back(v,&code);
-            while(sscanf(buffer, "%d;%s", &code, buffer)==2)
+            push_back(v,code);
+            while(sscanf(buffer, "%5[^,];%s", code, buffer)==2)
             {
-                push_back(v,&code);
+                push_back(v,code);
             }
-            sscanf(buffer, "%d", &code);
-            push_back(v,&code);
+            sscanf(buffer, "%5[^,]", code);
+            push_back(v,code);
         }
 
         else
         {
-            sscanf(chaine, "%d", &code);
+            sscanf(chaine, "%5[^,]", code);
             push_back(v,&code);
         }
         break;
@@ -208,7 +208,7 @@ vector lecture_restaurant(const char * file)
 
     char menus[50];
 
-    while(fscanf(db_resto, "%zu,%39[^,],%d,%14[^,],%39[^,],%[^,],%f", &resto.id, resto.nom, &resto.code_postal, resto.telephone, resto.type, menus, &resto.solde)==7)
+    while(fscanf(db_resto, "%zu,%39[^,],%5[^,],%14[^,],%39[^,],%[^,],%f", &resto.id, resto.nom, resto.code_postal, resto.telephone, resto.type, menus, &resto.solde)==7)
     {
         resto.menu=make_vector(sizeof(size_t),0,2.);
         separateur_chaine(&resto.menu, menus);
@@ -236,7 +236,7 @@ vector lecture_livreur(const char * file)
 
     while(fscanf(db_livreur, "%zu,%39[^,],%14[^,],%[^,],%zu,%f", &livreur.id, livreur.nom, livreur.telephone, restos, &livreur.restaurant, &livreur.solde)==6)
     {
-        livreur.deplacements=make_vector(sizeof(int), 0, 2.);
+        livreur.deplacements=make_vector(6, 0, 2.);
         separateur_chaine(&livreur.deplacements, restos);
         push_back(&livreurs, &livreur);
     }
@@ -281,7 +281,7 @@ void sauvegarde_clients(iterator first, iterator last)
     for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
     {
         Client * client=(Client*)(b.element);
-        fprintf(db_client, "%zu,%s,%d,%14s,%.2f\n", client->id, client->nom, client->code_postal, client->telephone, client->solde);
+        fprintf(db_client, "%zu,%s,%5s,%14s,%.2f\n", client->id, client->nom, client->code_postal, client->telephone, client->solde);
     }
 
     fclose(db_client);
@@ -310,19 +310,6 @@ void sauvegarde_liste(FILE* file, iterator first, iterator last)
         fprintf(file, "%zu", *id);
     }
 
-    else if(first.element_size==sizeof(int))
-    {
-        iterator e=last;
-        decrement(&e,1);
-        for(iterator b=first; compare(b,e)!=0; increment(&b,1))
-        {
-            int * id=(int*)(b.element);
-            fprintf(file, "%d;", *id);
-        }
-        int * id=(int*)(e.element);
-        fprintf(file, "%d", *id);
-    }
-
     else
     {
         iterator e=last;
@@ -346,7 +333,7 @@ void sauvegarde_resto(iterator first, iterator last)
     for(iterator b=first, e=last; compare(b,e)!=0; increment(&b,1))
     {
         Restaurant * resto=(Restaurant*)(b.element);
-        fprintf(db_resto, "%zu,%s,%d,%14s,%s,", resto->id, resto->nom, resto->code_postal, resto->telephone, resto->type);
+        fprintf(db_resto, "%zu,%s,%5s,%14s,%s,", resto->id, resto->nom, resto->code_postal, resto->telephone, resto->type);
         sauvegarde_liste(db_resto, begin(&resto->menu), end(&resto->menu));
         fprintf(db_resto, ",%.2f\n", resto->solde);
     }

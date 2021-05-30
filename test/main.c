@@ -34,7 +34,7 @@ int main()
             Client const* a=(Client*)(begin(&clients).element);
             TEST(a->id==1);
             TEST(strcmp(a->nom,"Francoise Perrin")==0);
-            TEST(a->code_postal==13005);
+            TEST(strcmp(a->code_postal, "13005") == 0);
             TEST(strcmp(a->telephone,"04 10 20 30 40")==0);
             TEST(a->solde==0.);
 
@@ -100,7 +100,7 @@ int main()
 
             TEST(c->id==3);
             TEST(strcmp(c->nom, "Joe's International House of Pancakes")==0);
-            TEST(c->code_postal==13010);
+            TEST(strcmp(c->code_postal, "13010")==0);
             TEST(strcmp(c->telephone, "04 22 33 44 55")==0);
             TEST(strcmp(c->type, "Americain")==0);
             TEST(size(c->menu)==2);
@@ -108,11 +108,11 @@ int main()
 
             TEST(get_first_id(begin(&restos), end(&restos)) == 4);
 
-            TEST(ajout_resto("empburger", 82517, "06 53 12 89 75", "Fast Food", &restos) == 4);
-            TEST(ajout_resto("ALEXA donne un nom à mon resto jsp n'importe quoi", 83962, "06 89 48 35 36", "Italien", &restos) == -1);
-            TEST(ajout_resto("l'erreur du midi", 65471, "07 53 20 45 A6", "Bistro", &restos) == -2);
-            TEST(ajout_resto("japan service", 75000, "06 46 21 47 00", "B@r m@aid", &restos) == -3);
-            TEST(ajout_resto("suspect", 99254, "06 44 25 01 47 12", "Detective", &restos) == -2);
+            TEST(ajout_resto("empburger", "82517", "06 53 12 89 75", "Fast Food", &restos) == 4);
+            TEST(ajout_resto("ALEXA donne un nom à mon resto jsp n'importe quoi", "83962", "06 89 48 35 36", "Italien", &restos) == -1);
+            TEST(ajout_resto("l'erreur du midi", "65471", "07 53 20 45 A6", "Bistro", &restos) == -2);
+            TEST(ajout_resto("japan service", "75000", "06 46 21 47 00", "B@r m@aid", &restos) == -3);
+            TEST(ajout_resto("suspect", "99254", "06 44 25 01 47 12", "Detective", &restos) == -2);
 
             TEST(size(restos) == 5);
 
@@ -138,12 +138,12 @@ int main()
             TEST(d->restaurant==1);
             TEST(d->solde==20.);
 
-            int * deplacement=(int*)(at(&d->deplacements,0).element);
-            TEST(*deplacement==13001);
-            deplacement=(int*)(at(&d->deplacements,1).element);
-            TEST(*deplacement==13002);
-            deplacement=(int*)(at(&d->deplacements,2).element);
-            TEST(*deplacement==13003);
+            char * deplacement=(char*)(at(&d->deplacements,0).element);
+            TEST(strcmp(deplacement, "13001")==0);
+            deplacement=(char*)(at(&d->deplacements,1).element);
+            TEST(strcmp(deplacement, "13002")==0);
+            deplacement=(char*)(at(&d->deplacements,2).element);
+            TEST(strcmp(deplacement, "13003")==0);
 
             TEST(get_first_id(begin(&livreurs), end(&livreurs)) == 4);
 
@@ -178,14 +178,14 @@ int main()
             TEST(size(liste) == 4);
             // tests "peut me livrer"
             
-            liste = liste_resto(13001, &restos, &livreurs, NULL, NULL);
+            liste = liste_resto("13001", &restos, &livreurs, NULL, NULL);
 
             Restaurant *restaurant = (Restaurant *)(begin(&liste).element);
             TEST(strcmp(restaurant->nom, "Chez Michel") == 0);
 
             TEST(size(liste) == 1);
 
-            TEST( ajout_resto("Reste Tôt", 13009, "06 51 12 69 57", "Fast Food", &restos) == 4);
+            TEST( ajout_resto("Reste Tôt", "13009", "06 51 12 69 57", "Fast Food", &restos) == 4);
 
             restaurant = (Restaurant *)at(&restos, 3).element;
             TEST(add_menu(2, restaurant, menus) == 1);
@@ -193,14 +193,14 @@ int main()
             TEST(strcmp(restaurant->nom, "Reste Tôt") == 0)
             TEST(size(restaurant->menu) == 2);
 
-            TEST( ajout_resto("Dindo Marrons", 13009, "06 23 72 89 75", "Francais", &restos) == 6);
+            TEST( ajout_resto("Dindo Marrons", "13009", "06 23 72 89 75", "Francais", &restos) == 6);
 
             restaurant = (Restaurant *)at(&restos, 5).element;
             TEST(strcmp(restaurant->nom, "Dindo Marrons") == 0)
             TEST(add_menu(7, restaurant, menus) == 1);
             TEST(size(restaurant->menu) == 1);
 
-            liste = liste_resto(13009, &restos, &livreurs, NULL, NULL);
+            liste = liste_resto("13009", &restos, &livreurs, NULL, NULL);
             TEST(size(liste) == 2);
 
             // tests "type de cuisine"
@@ -219,12 +219,12 @@ int main()
 
             // tests "peut me livrer" + "type de cuisine"
 
-            liste = liste_resto(13009, &restos, &livreurs, "Fast Food", NULL);
+            liste = liste_resto("13009", &restos, &livreurs, "Fast Food", NULL);
             restaurant = (Restaurant *)(begin(&liste).element);
             TEST(strcmp(restaurant->nom, "Reste Tôt") == 0);
             TEST(size(liste) == 1);
 
-            liste = liste_resto(13003, &restos, &livreurs, "Provencal", NULL);
+            liste = liste_resto("13003", &restos, &livreurs, "Provencal", NULL);
             restaurant = (Restaurant *)(begin(&liste).element);
             TEST(strcmp(restaurant->nom, "Chez Michel") == 0);
             TEST(size(liste) == 1);
@@ -244,49 +244,49 @@ int main()
             // tests liste_items
 
             // tous les menus
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 0);
+            liste = liste_items(NULL, &restos, &livreurs, &menus, NULL, NULL, 0);
             TEST(size(liste) == 8);
 
             // tous les menus moins chers que 20€
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 20);
+            liste = liste_items(NULL, &restos, &livreurs, &menus, NULL, NULL, 20);
             TEST(size(liste) == 7);
 
             // tous les menus moins chers que 10€ ou à 10€
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 10);
+            liste = liste_items(NULL, &restos, &livreurs, &menus, NULL, NULL, 10);
             TEST(size(liste) == 5);
 
             // tous les menus de Chez Michel
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Chez Michel", 0);
+            liste = liste_items(NULL, &restos, &livreurs, &menus, NULL, "Chez Michel", 0);
             TEST(size(liste) == 3);
 
             // tous les menus de Chez Michel
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Five Guys", 0);
+            liste = liste_items(NULL, &restos, &livreurs, &menus, NULL, "Five Guys", 0);
             TEST(size(liste) == 1);
 
             // tous les menus disponibles en 13009
-            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, NULL, 0);
+            liste = liste_items("13009", &restos, &livreurs, &menus, NULL, NULL, 0);
             TEST(size(liste) == 3);
 
             // tous les menus disponibles en 13009 chez Reste Tôt
-            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, "Reste Tôt", 0);
+            liste = liste_items("13009", &restos, &livreurs, &menus, NULL, "Reste Tôt", 0);
             TEST(size(liste) == 2);
 
             // tous les menus disponibles en 13009 chez Reste Tôt à moins de 5 euros
-            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, "Reste Tôt", 5);
+            liste = liste_items("13009", &restos, &livreurs, &menus, NULL, "Reste Tôt", 5);
             TEST(size(liste) == 1);
 
             // tests confirm_commande
 
             // vector clients = lecture_client("test/db_clients.csv");
 
-            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, NULL, 0);
+            liste = liste_items("13009", &restos, &livreurs, &menus, NULL, NULL, 0);
             
             // vector pour les paiements
             vector restaurants = make_vector(sizeof(Restaurant), 0, 2.);
             vector paiements = make_vector(sizeof(float), 0, 2.);
             vector liv = make_vector(sizeof(Livreur), 0, 2.);
 
-            TEST(commande(&liste, &restos, &livreurs, 13009, NULL, &restaurants, &paiements, &liv) == 28);
+            TEST(commande(&liste, &restos, &livreurs, "13009", NULL, &restaurants, &paiements, &liv) == 28);
 
             TEST(size(liv) == 2);
             TEST(size(restaurants) == 3);
@@ -299,9 +299,9 @@ int main()
             paiements = make_vector(sizeof(float), 0, 2.);
             liv = make_vector(sizeof(Livreur), 0, 2.);
 
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 0);
+            liste = liste_items(NULL, &restos, &livreurs, &menus, NULL, NULL, 0);
             
-            TEST(commande(&liste, &restos, &livreurs, 0, NULL, &restaurants, &paiements, &liv) == 92);
+            TEST(commande(&liste, &restos, &livreurs, NULL, NULL, &restaurants, &paiements, &liv) == 92);
             
             TEST(size(liv) == 3);
             TEST(size(restaurants) == 4);
@@ -314,9 +314,9 @@ int main()
             paiements = make_vector(sizeof(float), 0, 2.);
             liv = make_vector(sizeof(Livreur), 0, 2.);
 
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Chez Michel", 0);
+            liste = liste_items(NULL, &restos, &livreurs, &menus, NULL, "Chez Michel", 0);
             
-            TEST(commande(&liste, &restos, &livreurs, 0, "Chez Michel", &restaurants, &paiements, &liv) == 50);
+            TEST(commande(&liste, &restos, &livreurs, NULL, "Chez Michel", &restaurants, &paiements, &liv) == 50);
 
             TEST(size(restaurants) == 1);
             TEST(size(liv) == 1);
@@ -326,7 +326,7 @@ int main()
             destroy(&liv);
 
             // tests add_commande et del_commande
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 0);
+            liste = liste_items(NULL, &restos, &livreurs, &menus, NULL, NULL, 0);
             vector items = make_vector(sizeof(Menu), 0, 2.);
 
             TEST(size(items) == 0);
@@ -588,7 +588,7 @@ int main()
         Client *test = (Client *)(at(&clients, id_search(begin(&clients), end(&clients), &comp_client, idclient_compare) - 1).element);
 
         TEST(test->id == 1);
-        TEST(test->code_postal == 13009);
+        TEST(strcmp(test->code_postal, "13009") == 0);
 
         comp_client.id = 3;
 
@@ -662,7 +662,7 @@ int main()
         TEST(test->id == 2);
         TEST(test->restaurant == 3);
 
-        TEST(ajout_resto("la nouvelle cuisine", 13011, "08 07 05 04 03", "Gastronomique", &restos) == 6);
+        TEST(ajout_resto("la nouvelle cuisine", "13011", "08 07 05 04 03", "Gastronomique", &restos) == 6);
         TEST(size(restos) == 6);
         Restaurant comp_resto;
         comp_resto.id = 6;
@@ -728,21 +728,21 @@ int main()
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 2);
         TEST(size(test->deplacements) == 5);
-        TEST(*(int*)(at(&test->deplacements, 0).element) == 13004);
+        TEST(strcmp((char*)(at(&test->deplacements, 0).element), "13004") == 0);
 
         comp_livreur.id = 2;
         TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 3, restos) == 1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 2);
         TEST(size(test->deplacements) == 4);
-        TEST(*(int*)(at(&test->deplacements, 2).element) == 13009);
+        TEST(strcmp((char*)(at(&test->deplacements, 2).element), "13009") == 0);
 
         comp_livreur.id = 4;
         TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 3, restos) == 1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 4);
         TEST(size(test->deplacements) == 2);
-        TEST(*(int*)(at(&test->deplacements, 2 - 1).element) == 12300);
+        TEST(strcmp((char*)(at(&test->deplacements, 2 - 1).element), "12300") == 0);
 
         comp_livreur.id = 3;
         TEST(modif_livreur_delcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 0, restos) == -1);
@@ -794,65 +794,65 @@ int main()
 
         // modif_livreur_addcode
         comp_livreur.id = 1;
-        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 13009) == 1);
+        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "13009") == 1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 1);
         TEST(size(test->deplacements) == 4);
-        TEST(*(int*)(at(&test->deplacements, 4-1).element) == 13009);
+        TEST(strcmp((char*)(at(&test->deplacements, 4-1).element), "13009") == 0);
 
         comp_livreur.id = 4;
-        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 13007) == 1);
+        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "13007") == 1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 4);
         TEST(size(test->deplacements) == 3);
-        TEST(*(int*)(at(&test->deplacements, 3-1).element) == 13007);
+        TEST(strcmp((char*)(at(&test->deplacements, 3-1).element), "13007") == 0);
 
         comp_livreur.id = 3;
-        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 13006) == 1);
+        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "13006") == 1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 3);
         TEST(size(test->deplacements) == 5);
-        TEST(*(int*)(at(&test->deplacements, 5-1).element) == 13006);
+        TEST(strcmp((char*)(at(&test->deplacements, 5-1).element), "13006") == 0);
 
         comp_livreur.id = 3;
-        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 13004) == 1);
+        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "13004") == 1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 3);
         TEST(size(test->deplacements) == 6);
-        TEST(*(int*)(at(&test->deplacements, 6-1).element) == 13004);
+        TEST(strcmp((char*)(at(&test->deplacements, 6-1).element), "13004") == 0);
 
         comp_livreur.id = 5;
-        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 130069) == -1);
+        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "130069") == -1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 5);
         TEST(size(test->deplacements) == 2);
 
         comp_livreur.id = 5;
-        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), -130069) == -1);
+        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "-130069") == -1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 5);
         TEST(size(test->deplacements) == 2);
 
         comp_livreur.id = 1;
-        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), -13006) == -1);
+        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "-13006") == -1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 1);
         TEST(size(test->deplacements) == 4);
 
         comp_livreur.id = 1;
-        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 01) == -1);
+        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "01") == -1);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 1);
         TEST(size(test->deplacements) == 4);
 
         comp_livreur.id = 2;
-        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 13010) == -2);
+        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "13010") == -2);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 2);
         TEST(size(test->deplacements) == 4);
 
         comp_livreur.id = 3;
-        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 13011) == -2);
+        TEST(modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "13011") == -2);
         test = (Livreur*)(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1).element);
         TEST(test->id == 3);
         TEST(size(test->deplacements) == 6);
@@ -890,7 +890,7 @@ int main()
 
         Livreur comp_livreur;
         comp_livreur.id = 3;
-        modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 13001);
+        modif_livreur_addcode(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), "13001");
         modif_livreur_resto(at(&livreurs, id_search(begin(&livreurs), end(&livreurs), &comp_livreur, idlivreur_compare) - 1), 1, restos);
 
         del_resto(&restos, at(&restos, 0), &livreurs);
