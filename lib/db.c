@@ -536,7 +536,9 @@ vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type
     return liste;
 }
 
-vector liste_items(int code_postal, vector *restos, vector *livreurs, vector *liste_menus, char *type_cuisine, char *nom_restaurant, float solde, vector *liste)
+
+
+vector liste_items(int code_postal, vector *restos, vector *livreurs, vector *liste_menus, char *type_cuisine, char *nom_restaurant, float solde)
 {
     // items à traiter
     vector menus = make_vector(sizeof(Menu), size(*liste_menus), 2.);
@@ -548,73 +550,83 @@ vector liste_items(int code_postal, vector *restos, vector *livreurs, vector *li
     // recup les items à partir de la liste de restos
 
     // enlever les items trop chers
-    if (liste)
+
+    vector new_liste = liste_resto(code_postal, restos, livreurs, type_cuisine, nom_restaurant);
+    for (iterator d = begin(&new_liste), fin = end(&new_liste); compare(d, fin) < 0; increment(&d, 1))
     {
-        for (iterator d = begin(liste), fin = end(liste); compare(d, fin) < 0; increment(&d, 1))
+        Restaurant *resto = (Restaurant *)(d.element);
+
+        for (iterator first = begin(&resto->menu), end_i = end(&resto->menu); compare(first, end_i) < 0; increment(&first, 1))
         {
-            Restaurant *resto = (Restaurant *)(d.element);
-
-            for (iterator first = begin(&resto->menu), end_i = end(&resto->menu); compare(first, end_i) < 0; increment(&first, 1))
+            size_t id = *(size_t *)(first.element);
+            Menu search;
+            search.id = id;
+            int it_id = id_search(begin(&menus), end(&menus), &search, idmenu_compare);
+            if (it_id)
             {
-                size_t id = *(size_t *)(first.element);
-                Menu search;
-                search.id = id;
-                int it_id = id_search(begin(&menus), end(&menus), &search, idmenu_compare);
-                if (it_id)
+                Menu *menu = (Menu *)(at(&menus, it_id - 1).element);
+                float prix = menu->prix;
+                if (prix <= solde || solde < 0)
                 {
-                    Menu *menu = (Menu *)(at(&menus, it_id - 1).element);
-                    float prix = menu->prix;
-                    if (prix <= solde || solde < 0)
-                    {
 
-                        // chercher l'item dans la liste de tous les items
-                        if (id_search(begin(liste_menus), end(liste_menus), menu, idmenu_compare))
-                        {
-                            // ajouter l'item au vect des items à renvoyer
-                            push_back(&liste_items, menu);
-                            // retirer l'item du vect de tous les items
-                            erase(&menus, at(&menus, id_search(begin(&menus), end(&menus), menu, idmenu_compare) - 1));
-                        }
+                    // chercher l'item dans la liste de tous les items
+                    if (id_search(begin(liste_menus), end(liste_menus), menu, idmenu_compare))
+                    {
+                        // ajouter l'item au vect des items à renvoyer
+                        push_back(&liste_items, menu);
+                        // retirer l'item du vect de tous les items
+                        erase(&menus, at(&menus, id_search(begin(&menus), end(&menus), menu, idmenu_compare) - 1));
                     }
                 }
             }
         }
-        destroy(liste);
     }
-    else
+
+    destroy(&new_liste);
+    destroy(&menus);
+
+    return liste_items;
+}
+
+vector liste_items_bis(vector *liste_menus, vector *liste, float solde)
+{
+    // liste d'items à renvoyer
+    vector liste_items = make_vector(sizeof(Menu), 0, 2.);
+
+    // items à traiter
+    vector menus = make_vector(sizeof(Menu), size(*liste_menus), 2.);
+    copy(begin(liste_menus), end(liste_menus), begin(&menus));
+
+    for (iterator d = begin(liste), fin = end(liste); compare(d, fin) < 0; increment(&d, 1))
     {
-        vector new_liste = liste_resto(code_postal, restos, livreurs, type_cuisine, nom_restaurant);
-        for (iterator d = begin(&new_liste), fin = end(&new_liste); compare(d, fin) < 0; increment(&d, 1))
+        Restaurant *resto = (Restaurant *)(d.element);
+
+        for (iterator first = begin(&resto->menu), end_i = end(&resto->menu); compare(first, end_i) < 0; increment(&first, 1))
         {
-            Restaurant *resto = (Restaurant *)(d.element);
-
-            for (iterator first = begin(&resto->menu), end_i = end(&resto->menu); compare(first, end_i) < 0; increment(&first, 1))
+            size_t id = *(size_t *)(first.element);
+            Menu search;
+            search.id = id;
+            int it_id = id_search(begin(&menus), end(&menus), &search, idmenu_compare);
+            if (it_id)
             {
-                size_t id = *(size_t *)(first.element);
-                Menu search;
-                search.id = id;
-                int it_id = id_search(begin(&menus), end(&menus), &search, idmenu_compare);
-                if (it_id)
+                Menu *menu = (Menu *)(at(&menus, it_id - 1).element);
+                float prix = menu->prix;
+                if (prix <= solde || solde < 0)
                 {
-                    Menu *menu = (Menu *)(at(&menus, it_id - 1).element);
-                    float prix = menu->prix;
-                    if (prix <= solde || solde < 0)
-                    {
 
-                        // chercher l'item dans la liste de tous les items
-                        if (id_search(begin(liste_menus), end(liste_menus), menu, idmenu_compare))
-                        {
-                            // ajouter l'item au vect des items à renvoyer
-                            push_back(&liste_items, menu);
-                            // retirer l'item du vect de tous les items
-                            erase(&menus, at(&menus, id_search(begin(&menus), end(&menus), menu, idmenu_compare) - 1));
-                        }
+                    // chercher l'item dans la liste de tous les items
+                    if (id_search(begin(liste_menus), end(liste_menus), menu, idmenu_compare))
+                    {
+                        // ajouter l'item au vect des items à renvoyer
+                        push_back(&liste_items, menu);
+                        // retirer l'item du vect de tous les items
+                        erase(&menus, at(&menus, id_search(begin(&menus), end(&menus), menu, idmenu_compare) - 1));
                     }
                 }
             }
         }
-        destroy(&new_liste);
     }
+    destroy(liste);
 
     destroy(&menus);
 
