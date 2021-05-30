@@ -223,6 +223,7 @@ void menu_client(iterator client, vector * clients, vector * restos, vector * me
         printf("id: %ld\n", compte->id);
         printf("nom: %s\n", compte->nom);
         printf("code postal: %d\n", compte->code_postal);
+        printf("numéro de téléphone: %s\n", compte->telephone);
         printf("\n");
 
         printf("Vous voulez ?\n");
@@ -335,20 +336,23 @@ void menu_credit_client(iterator client)
 
 void menu_modifier_client(iterator client, vector * restos, vector * menus, vector * livreurs)
 {
+    char choice;
+
+    
     menu_header();
     
     printf("#######################################\n");
     printf("          Modification Client          \n");
     printf("#######################################\n");
     printf("\n");
-    printf("Vous voulez modifiez ?\n");
+    printf("Vous voulez modifier ?\n");
     printf("1/ Code postal\n");
     printf("2/ Téléphone\n");
     printf("\n");
     printf("Votre choix (q pour quitter, r pour retour): ");
 
-    char * str = malloc(NB_INPUT);
-    char choice;
+    char str[NB_INPUT];
+    
     do{
         scanf(" %50[^\n]", str);
         choice = str[0];
@@ -359,11 +363,11 @@ void menu_modifier_client(iterator client, vector * restos, vector * menus, vect
     switch (choice)
     {
     case '1':
-        // menu_livreur_solde();
+        menu_modif_client_code(client);
         break;
 
     case '2':
-        // menu_modifier_livreur();
+        menu_modif_client_tel(client);
         break;
 
     case 'r':
@@ -372,8 +376,69 @@ void menu_modifier_client(iterator client, vector * restos, vector * menus, vect
     default:
         break;
     }
+   
 }
 
+int menu_modif_client_code(iterator client)
+{
+    menu_header();
+
+    printf("#######################################\n");
+    printf("    Modification code postal client    \n");
+    printf("#######################################\n");
+    printf("\n");
+    printf("Votre code postal actuel est %d\n", ((Client *)(client.element))->code_postal);
+    printf("\n");
+    printf("Entrez votre nouveau code postal (r pour retour):\n");
+
+    char str[5];
+    char choice;
+    do
+    {
+        scanf(" %50[^\n]", str);
+        choice = str[0];
+        if (choice != 'r' && modif_client_code(client, str) != 1)
+            printf("choix invalide, veuillez réessayer: ");
+    } while (choice != 'r' && modif_client_code(client, str) != 1);
+
+    return 1;
+}
+
+int menu_modif_client_tel(iterator client)
+{
+    menu_header();
+
+    printf("###############################################\n");
+    printf("    Modification numéro de téléphone client    \n");
+    printf("###############################################\n");
+    printf("\n");
+    printf("Votre numéro de téléphone actuel est : %s\n", ((Client *)(client.element))->telephone);
+    printf("\n");
+    printf("Entrez votre nouveau numéro de téléphone (r pour retour):\n");
+
+    char str[15];
+    char choice;
+    do
+    {
+        scanf(" %15[^\n]", str);
+        choice = str[0];
+        if (choice != 'r' && modif_client_tel(client, str) != 1)
+            printf("choix invalide, veuillez réessayer: ");
+    } while (choice != 'r' && modif_client_tel(client, str) != 1);
+
+    return 1;
+}
+
+// int menu_commande_client(iterator client, vector *clients)
+// {
+//     menu_header();
+    
+//     printf("#######################################\n");
+//     printf("           Passer une commande          \n");
+//     printf("#######################################\n");
+//     printf("\n");
+//     printf("Entrer votre id (<= 0 si vous ne le connaissez pas): ");
+// }
 int menu_supprimer_client(iterator client, vector * clients)
 {
     menu_header();

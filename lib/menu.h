@@ -14,6 +14,8 @@ void menu_client(iterator client, vector * clients, vector * restos, vector * me
 void menu_client_solde(iterator client);
 void menu_credit_client(iterator client);
 void menu_modifier_client(iterator client, vector * restos, vector * menus, vector * livreurs);
+int menu_modif_client_code(iterator client);
+int menu_modif_client_tel(iterator client);
 int menu_supprimer_client(iterator client, vector * clients);
 
 void creer_resto(vector * restos, vector * menus, vector * livreurs);
