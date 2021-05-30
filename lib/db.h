@@ -9,15 +9,6 @@
 #define TAILLE_CHAMP_NOM 39
 #define TAILLE_CHAMP_TEL 14
 
-typedef enum categorie
-{
-    RESTAURANT,
-    MENU,
-    LIVREUR,
-    CLIENT,
-} CATEGORIE;
-
-
 typedef struct restaurant
 {
     size_t id; // Clé primaire.
@@ -63,9 +54,6 @@ void ecriture_table(
     FILE *fichier,
     vector const *db);
 
-// Renvoie 'vrai' si le docteur compte 'MEDECINE_GENERALE' parmi ses spécialités.
-bool est_generaliste(
-    void const *d);
 
 // fonction ajoutant un resto dans le vecteur resto
 // le vecteur est supposé trié en entrant et sortant
@@ -233,3 +221,8 @@ int add_commande(vector *liste, vector *commande, size_t id);
 // renvoie 1 si l'id est correct
 // renvoie -1 sinon
 int del_commande(vector *commande, size_t id);
+
+// Fonction qui retire l'argent du client et paye les restaurants et livreurs pour la commande concernée
+// renvoie 1 si le client a assez d'argent pour payer
+// renvoie -1 sinon
+int make_payment(iterator client, vector *restaurants, vector *paiements, vector *livreurs, float total);

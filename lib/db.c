@@ -536,8 +536,6 @@ vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type
     return liste;
 }
 
-
-
 vector liste_items(int code_postal, vector *restos, vector *livreurs, vector *liste_menus, char *type_cuisine, char *nom_restaurant, float solde)
 {
     // items à traiter
@@ -685,11 +683,11 @@ float commande(vector *commande, vector *restos, vector *livreurs, int code_clie
     {
         Menu *item = (Menu *)(start.element);
         // size_t id = item->id;
-
-        for (iterator d = begin(restos), fin = end(restos); compare(d, fin) < 0; increment(&d, 1))
+        int found = 0;
+        for (iterator d = begin(restaurants), fin = end(restaurants); compare(d, fin) < 0 && !found; increment(&d, 1))
         {
             Restaurant *resto = (Restaurant *)(d.element);
-            if (nom_resto)
+            if (nom_resto && strlen(nom_resto) > 2)
             {
                 if (binary_search(begin(&resto->menu), end(&resto->menu), &item->id, equals_id) && strcmp(resto->nom, nom_resto) == 0)
                 {
@@ -699,11 +697,13 @@ float commande(vector *commande, vector *restos, vector *livreurs, int code_clie
                     {
                         float *paiement = (float *)at(paiements, where - 1).element;
                         *paiement = *paiement + item->prix;
+                        found = 1;
                     }
                     else
                     {
                         push_back(restaurants, resto);
                         push_back(paiements, &(item->prix));
+                        found = 1;
                     }
 
                     prix_commande += item->prix;
@@ -720,15 +720,70 @@ float commande(vector *commande, vector *restos, vector *livreurs, int code_clie
                     {
                         float *paiement = (float *)at(paiements, where - 1).element;
                         *paiement = *paiement + item->prix;
+                        found = 1;
                     }
                     else
                     {
                         push_back(restaurants, resto);
                         push_back(paiements, &(item->prix));
+                        found = 1;
                     }
 
                     prix_commande += item->prix;
                     break;
+                }
+            }
+        }
+        if (!found)
+        {
+            for (iterator d = begin(restos), fin = end(restos); compare(d, fin) < 0 && !found; increment(&d, 1))
+            {
+                Restaurant *resto = (Restaurant *)(d.element);
+                if (nom_resto && strlen(nom_resto) > 2)
+                {
+                    if (binary_search(begin(&resto->menu), end(&resto->menu), &item->id, equals_id) && strcmp(resto->nom, nom_resto) == 0)
+                    {
+                        // le resto propose l'item
+                        int where = id_search(begin(restaurants), end(restaurants), resto, idresto_compare);
+                        if (where)
+                        {
+                            float *paiement = (float *)at(paiements, where - 1).element;
+                            *paiement = *paiement + item->prix;
+                            // found = 1;
+                        }
+                        else
+                        {
+                            push_back(restaurants, resto);
+                            push_back(paiements, &(item->prix));
+                            // found = 1;
+                        }
+
+                        prix_commande += item->prix;
+                        break;
+                    }
+                }
+                else
+                {
+                    if (binary_search(begin(&resto->menu), end(&resto->menu), &item->id, equals_id))
+                    {
+                        // le resto propose l'item
+                        int where = id_search(begin(restaurants), end(restaurants), resto, idresto_compare);
+                        if (where)
+                        {
+                            float *paiement = (float *)at(paiements, where - 1).element;
+                            *paiement = *paiement + item->prix;
+                            // found = 1;
+                        }
+                        else
+                        {
+                            push_back(restaurants, resto);
+                            push_back(paiements, &(item->prix));
+                            // found = 1;
+                        }
+
+                        prix_commande += item->prix;
+                        break;
+                    }
                 }
             }
         }
@@ -741,10 +796,12 @@ float commande(vector *commande, vector *restos, vector *livreurs, int code_clie
 
         for (iterator d = begin(liv), fin = end(liv); compare(d, fin) < 0; increment(&d, 1))
         {
+            int liv_ok = 0;
             Livreur *livreur = (Livreur *)(d.element);
             if (livreur->restaurant == resto->id)
             {
                 push_back(liv, livreur);
+                liv_ok = 1;
                 break;
             }
             else
@@ -763,9 +820,12 @@ float commande(vector *commande, vector *restos, vector *livreurs, int code_clie
                         push_back(liv, livreur);
                         prix_commande += 2;
                         found = 1;
+                        liv_ok = 1;
                         break;
                     }
                 }
+                if (liv_ok)
+                    break;
             }
         }
 
@@ -774,9 +834,11 @@ float commande(vector *commande, vector *restos, vector *livreurs, int code_clie
             for (iterator d = begin(livreurs), fin = end(livreurs); compare(d, fin) < 0; increment(&d, 1))
             {
                 Livreur *livreur = (Livreur *)(d.element);
+                int liv_ok = 0;
                 if (livreur->restaurant == resto->id)
                 {
                     push_back(liv, livreur);
+                    liv_ok = 1;
                     break;
                 }
                 else
@@ -794,10 +856,13 @@ float commande(vector *commande, vector *restos, vector *livreurs, int code_clie
                         {
                             push_back(liv, livreur);
                             prix_commande += 2;
+                            liv_ok = 1;
                             break;
                         }
                     }
                 }
+                if (liv_ok)
+                    break;
             }
         }
     }
@@ -829,6 +894,32 @@ int del_commande(vector *commande, size_t id)
     else
     {
         erase(commande, at(commande, id - 1));
+    }
+
+    return 1;
+}
+
+int make_payment(iterator client, vector *restaurants, vector *paiements, vector *livreurs, float total)
+{
+    Client *cl = (Client *)(client.element);
+    if (cl->solde >= total)
+        cl->solde -= total;
+    else
+        return -1;
+
+    iterator f_payment = begin(paiements);
+    for (iterator f = begin(restaurants), e = end(restaurants); compare(f, e) < 0; increment(&f, 1))
+    {
+        Restaurant *resto = (Restaurant *)(f.element);
+        float paiement = *(float *)(f_payment.element);
+        resto->solde += paiement;
+        increment(&f_payment, 1);
+    }
+
+    for (iterator f = begin(livreurs), e = end(livreurs); compare(f, e) < 0; increment(&f, 1))
+    {
+        Livreur *liv = (Livreur *)(f.element);
+        liv->solde += 2;
     }
 
     return 1;
