@@ -448,7 +448,7 @@ vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type
     }
 
     // Restriction à un type de cuisine
-    if (type_cuisine)
+    if (type_cuisine && strlen(type_cuisine) > 1)
     {
         if (code_postal)
         {
@@ -487,7 +487,7 @@ vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type
             }
         }
     }
-    if (nom_restaurant)
+    if (nom_restaurant && strlen(nom_restaurant) > 1)
     {
         if (code_postal || type_cuisine)
         {
@@ -526,7 +526,7 @@ vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type
             }
         }
     }
-    if (!code_postal && !type_cuisine && !nom_restaurant)
+    if (!code_postal && strlen(type_cuisine) <= 1  && !nom_restaurant)
     {
         return restaurants;
     }
