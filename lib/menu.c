@@ -814,7 +814,7 @@ void creer_livreur(vector * livreurs, vector * restos)
     menu_header();
 
     printf("#######################################\n");
-    printf("            Création Livreur           ");
+    printf("            Création Livreur           \n");
     printf("#######################################\n");
     printf("\n");
     printf("Entrez votre nom: ");
