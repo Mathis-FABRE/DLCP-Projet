@@ -8,6 +8,7 @@
 
 #define TAILLE_CHAMP_NOM 39
 #define TAILLE_CHAMP_TEL 14
+#define TAILLE_CODE 5
 
 typedef enum categorie
 {
@@ -22,7 +23,7 @@ typedef struct restaurant
 {
     size_t id; // Clé primaire.
     char nom[TAILLE_CHAMP_NOM+1];
-    int code_postal;
+    char code_postal[TAILLE_CODE+1];
     char telephone[TAILLE_CHAMP_TEL+1];
     char type[TAILLE_CHAMP_NOM+1];
     vector menu;
@@ -51,7 +52,7 @@ typedef struct client
 {
     size_t id; // Clé primaire.
     char nom[TAILLE_CHAMP_NOM+1];
-    int code_postal;
+    char code_postal[TAILLE_CODE+1];
     char telephone[TAILLE_CHAMP_TEL+1];
     float solde;
 } Client;
@@ -75,7 +76,7 @@ bool est_generaliste(
 // -1 : nom resto au dessus 39 char
 // -2 : tel invalide
 // -3 : type invalide
-int ajout_resto(char * nom, int code, char * telephone, char * type, vector * restos);
+int ajout_resto(char * nom, char * code, char * telephone, char * type, vector * restos);
 
 // fonction ajoutant des ingredients dans un menu
 // ingredients sous forme
@@ -171,7 +172,7 @@ int modif_livreur_delcode(iterator livreur, size_t pos, vector restos);
 // sinon renvoie < 0
 // -1 : code invalide
 // -2 : peut déjà se déplacer là
-int modif_livreur_addcode(iterator livreur, int code);
+int modif_livreur_addcode(iterator livreur, char * code);
 
 // fonction modifiant le telephone d'un livreur
 // l'itarateur d'un livreur à modifier
@@ -184,14 +185,14 @@ int modif_livreur_tel(iterator livreur, char * tel);
 // elle prend en paramètres le code_postal et le type de cuisine 
 // si l'utilisateur souhaite filtrer aux restaurants qui le livrent
 // ou aux restaurants d'un certain type
-vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type_cuisine, char *nom_restaurant);
+vector liste_resto(char * code_postal, vector *restos, vector *livreurs, char *type_cuisine, char *nom_restaurant);
 
 // Fonction qui créé un vector de menus
 // elle prend en paramètres le code_postal, 
 // le type de cuisine un nom de restaurant et un solde
 // si l'utilisateur souhaite filtrer aux restaurants qui le livrent
 // ou aux restaurants d'un certain type
-vector liste_items(int code_postal, vector *restos, vector *livreurs, vector *menus, char *type_cuisine, char *nom_restaurant, float solde);
+vector liste_items(char * code_postal, vector *restos, vector *livreurs, vector *menus, char *type_cuisine, char *nom_restaurant, float solde);
 // fonction supprimant un certain iterateur de clients
 // considère que l'itérateur est un Client
 void del_client(vector *clients, iterator client);
@@ -220,7 +221,7 @@ int client_credit_solde(iterator client, float amount);
 // Fonction permettant d'attribuer les restaurants et livreurs à la liste d'items
 // en les ajoutant aux vector passés en paramètre
 // renvoie le montant de la liste (livraison inclue)
-float commande(vector * commande, vector *restos, vector *livreurs, int code_client, char *nom_rest, vector *restaurants, vector *paiements, vector *liv);
+float commande(vector * commande, vector *restos, vector *livreurs, char * code_client, char *nom_rest, vector *restaurants, vector *paiements, vector *liv);
 
 // Fonction qui ajoute un item du vector liste au vector commande (sans le supprimer de liste)
 // renvoie 1 si l'id est correct
