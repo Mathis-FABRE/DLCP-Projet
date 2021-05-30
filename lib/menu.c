@@ -29,7 +29,7 @@ int menu_connexion()
     printf("\n");
     printf("Votre choix (r pour retour): ");
 
-    char * str = malloc(NB_INPUT);
+    char str[NB_INPUT];
     char choice;
     do{
         scanf(" %50[^\n]", str);
@@ -37,8 +37,6 @@ int menu_connexion()
         if(choice!='1' && choice!='2' && choice!='r')
             printf("choix invalide veuillez réessayer: ");
     }while(choice!='1' && choice!='2' && choice!='r');
-
-    free(str);
 
     switch (choice)
     {
@@ -234,7 +232,7 @@ void menu_client(iterator client, vector * clients, vector * restos, vector * me
         printf("\n");
         printf("Votre choix (r pour retour): ");
 
-        char * str = malloc(NB_INPUT);
+        char str[NB_INPUT];
         int res;
 
         do{
@@ -243,8 +241,6 @@ void menu_client(iterator client, vector * clients, vector * restos, vector * me
             if(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='r')
                 printf("choix invalide veuillez réessayer: ");
         }while(choice!='1' && choice!='2' && choice!='3' && choice!='4' && choice!='5' && choice!='r');
-
-        free(str);
 
         switch (choice)
         {
@@ -290,7 +286,7 @@ void menu_client_solde(iterator client)
     printf("Voulez vous créditer votre solde ?\n");
     printf("(y pour oui, n pour non)\n");
 
-    char * str = malloc(NB_INPUT);
+    char str[NB_INPUT];
     char choice;
 
     do{
@@ -299,8 +295,6 @@ void menu_client_solde(iterator client)
         if(choice!='y' && choice!='n')
             printf("réponse invalide veuillez réessayer: ");
     }while(choice!='y' && choice!='n');
-
-    free(str);
 
     switch(choice)
     {
@@ -347,7 +341,7 @@ void menu_modifier_client(iterator client, vector * restos, vector * menus, vect
     printf("\n");
     printf("Votre choix (q pour quitter, r pour retour): ");
 
-    char * str = malloc(NB_INPUT);
+    char str[NB_INPUT];
     char choice;
     do{
         scanf(" %50[^\n]", str);
@@ -385,7 +379,7 @@ int menu_supprimer_client(iterator client, vector * clients)
     printf("Etes vous sûr de vouloir supprimer votre compte ? ");
     printf("(y pour oui, n pour non)\n");
 
-    char * str = malloc(NB_INPUT);
+    char str[NB_INPUT];
     char choice;
     do{
         scanf(" %50[^\n]", str);
@@ -393,8 +387,6 @@ int menu_supprimer_client(iterator client, vector * clients)
         if(choice!='y' && choice!='n')
             printf("réponse invalide veuillez réessayer: ");
     }while(choice!='y' && choice!='n');
-
-    free(str);
 
     switch(choice)
     {
@@ -583,7 +575,7 @@ void menu_resto(iterator resto, vector * restos, vector * menus, vector * livreu
         printf("Votre choix (r pour retour): ");
 
         int res;
-        char * str = malloc(NB_INPUT);
+        char str[NB_INPUT];
 
         do{
             scanf(" %50[^\n]", str);
@@ -591,8 +583,6 @@ void menu_resto(iterator resto, vector * restos, vector * menus, vector * livreu
             if(choice!='1' && choice!='2' && choice!='3' && choice!='r')
                 printf("choix invalide veuillez réessayer: ");
         }while(choice!='1' && choice!='2' && choice!='3' && choice!='r');
-
-        free(str);
 
         switch (choice)
         {
@@ -646,7 +636,7 @@ void menu_modifier_resto(iterator resto, vector * menus)
     printf("\n");
     printf("Votre choix (r pour retour): ");
 
-    char * str = malloc(NB_INPUT);
+    char str[NB_INPUT];
     char choice;
     do{
         scanf(" %50[^\n]", str);
@@ -654,8 +644,6 @@ void menu_modifier_resto(iterator resto, vector * menus)
         if(choice!='1' && choice!='2' && choice!='r')
             printf("choix invalide veuillez réessayer: ");
     }while(choice!='1' && choice!='2' && choice!='r');
-
-    free(str);
 
     switch (choice)
     {
@@ -791,7 +779,7 @@ int menu_supprimer_resto(iterator resto, vector * restos, vector * livreurs)
     printf("Etes vous sûr de vouloir supprimer votre compte ? ");
     printf("(y pour oui, n pour non)\n");
 
-    char * str = malloc(NB_INPUT);
+    char str[NB_INPUT];
     char choice;
     do{
         scanf(" %50[^\n]", str);
@@ -799,8 +787,6 @@ int menu_supprimer_resto(iterator resto, vector * restos, vector * livreurs)
         if(choice!='y' && choice!='n')
             printf("réponse invalide veuillez réessayer: ");
     }while(choice!='y' && choice!='n');
-
-    free(str);
 
     switch(choice)
     {
@@ -998,7 +984,7 @@ void menu_livreur(iterator livreur, vector * livreurs, vector * restos)
         printf("\n");
         printf("Votre choix (r pour retour): ");
 
-        char * str = malloc(NB_INPUT);
+        char str[NB_INPUT];
         int res;
 
         do{
@@ -1007,8 +993,6 @@ void menu_livreur(iterator livreur, vector * livreurs, vector * restos)
             if(choice!='1' && choice!='2' && choice!='3' && choice!='r')
                 printf("choix invalide veuillez réessayer: ");
         }while(choice!='1' && choice!='2' && choice!='3' && choice!='r');
-
-        free(str);
 
         switch (choice)
         {
@@ -1063,7 +1047,7 @@ void menu_modifier_livreur(iterator livreur, vector * restos)
     printf("\n");
     printf("Votre choix (r pour retour): ");
 
-    char * str = malloc(NB_INPUT);
+    char str[NB_INPUT];
     char choice;
     do{
         scanf(" %50[^\n]", str);
@@ -1071,8 +1055,6 @@ void menu_modifier_livreur(iterator livreur, vector * restos)
         if(choice!='1' && choice!='2' && choice!='3' && choice!='r')
             printf("choix invalide veuillez réessayer: ");
     }while(choice!='1' && choice!='2' && choice!='3' && choice!='r');
-
-    free(str);
 
     switch (choice)
     {
@@ -1107,7 +1089,7 @@ void menu_deplacement(iterator livreur, vector * restos)
     printf("\n");
     printf("Votre choix (r pour retour): ");
 
-    char * str = malloc(NB_INPUT);
+    char str[NB_INPUT];
     char choice;
     do{
         scanf(" %50[^\n]", str);
@@ -1115,8 +1097,6 @@ void menu_deplacement(iterator livreur, vector * restos)
         if(choice!='1' && choice!='2' && choice!='r')
             printf("choix invalide veuillez réessayer: ");
     }while(choice!='1' && choice!='2' && choice!='r');
-
-    free(str);
 
     switch (choice)
     {
@@ -1264,15 +1244,15 @@ int menu_supprimer_livreur(iterator livreur, vector * livreurs)
     printf("Etes vous sûr de vouloir supprimer votre compte ? ");
     printf("(y pour oui, n pour non)\n");
 
-    char * str = malloc(NB_INPUT);
+    char str[NB_INPUT];
     char choice;
     do{
-        scanf(" %50[^\n]", &choice);
+        scanf(" %50[^\n]", str);
+        choice = str[0];
         if(choice!='y' && choice!='n')
             printf("réponse invalide veuillez réessayer: ");
     }while(choice!='y' && choice!='n');
 
-    free(str);
     switch(choice)
     {
     case 'y':
