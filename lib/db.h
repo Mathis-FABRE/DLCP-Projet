@@ -191,7 +191,7 @@ vector liste_resto(int code_postal, vector *restos, vector *livreurs, char *type
 // le type de cuisine un nom de restaurant et un solde
 // si l'utilisateur souhaite filtrer aux restaurants qui le livrent
 // ou aux restaurants d'un certain type
-vector liste_items(int code_postal, vector *restos, vector *livreurs, vector *menus, char *type_cuisine, char *nom_restaurant, float solde);
+vector liste_items(int code_postal, vector *restos, vector *livreurs, vector *menus, char *type_cuisine, char *nom_restaurant, float solde, vector* liste);
 // fonction supprimant un certain iterateur de clients
 // considère que l'itérateur est un Client
 void del_client(vector *clients, iterator client);

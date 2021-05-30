@@ -244,42 +244,42 @@ int main()
             // tests liste_items
 
             // tous les menus
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 0);
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, -1, NULL);
             TEST(size(liste) == 8);
 
             // tous les menus moins chers que 20€
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 20);
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 20, NULL);
             TEST(size(liste) == 7);
 
             // tous les menus moins chers que 10€ ou à 10€
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 10);
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 10, NULL);
             TEST(size(liste) == 5);
 
             // tous les menus de Chez Michel
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Chez Michel", 0);
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Chez Michel", -1, NULL);
             TEST(size(liste) == 3);
 
             // tous les menus de Chez Michel
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Five Guys", 0);
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Five Guys", -1, NULL);
             TEST(size(liste) == 1);
 
             // tous les menus disponibles en 13009
-            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, NULL, 0);
+            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, NULL, -1, NULL);
             TEST(size(liste) == 3);
 
             // tous les menus disponibles en 13009 chez Reste Tôt
-            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, "Reste Tôt", 0);
+            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, "Reste Tôt", -1, NULL);
             TEST(size(liste) == 2);
 
             // tous les menus disponibles en 13009 chez Reste Tôt à moins de 5 euros
-            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, "Reste Tôt", 5);
+            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, "Reste Tôt", 5, NULL);
             TEST(size(liste) == 1);
 
             // tests confirm_commande
 
             // vector clients = lecture_client("test/db_clients.csv");
 
-            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, NULL, 0);
+            liste = liste_items(13009, &restos, &livreurs, &menus, NULL, NULL, -1, NULL);
             
             // vector pour les paiements
             vector restaurants = make_vector(sizeof(Restaurant), 0, 2.);
@@ -299,7 +299,7 @@ int main()
             paiements = make_vector(sizeof(float), 0, 2.);
             liv = make_vector(sizeof(Livreur), 0, 2.);
 
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 0);
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, -1, NULL);
             
             TEST(commande(&liste, &restos, &livreurs, 0, NULL, &restaurants, &paiements, &liv) == 92);
             
@@ -314,7 +314,7 @@ int main()
             paiements = make_vector(sizeof(float), 0, 2.);
             liv = make_vector(sizeof(Livreur), 0, 2.);
 
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Chez Michel", 0);
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, "Chez Michel", -1, NULL);
             
             TEST(commande(&liste, &restos, &livreurs, 0, "Chez Michel", &restaurants, &paiements, &liv) == 50);
 
@@ -326,7 +326,7 @@ int main()
             destroy(&liv);
 
             // tests add_commande et del_commande
-            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, 0);
+            liste = liste_items(0, &restos, &livreurs, &menus, NULL, NULL, -1, NULL);
             vector items = make_vector(sizeof(Menu), 0, 2.);
 
             TEST(size(items) == 0);
