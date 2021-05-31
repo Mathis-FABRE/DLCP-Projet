@@ -185,7 +185,7 @@ void connexion_client(vector *clients, vector *restos, vector *menus, vector *li
             for (iterator b = begin(&select), e = end(&select); compare(b, e) != 0; increment(&b, 1))
             {
                 Client *client = (Client *)(b.element);
-                printf("%zu,%s,%d,%14s,%.2f\n", client->id, client->nom, client->code_postal, client->telephone, client->solde);
+                printf("%zu,%s,%s,%14s,%.2f\n", client->id, client->nom, client->code_postal, client->telephone, client->solde);
             }
 
             printf("Entrer votre id (<= 0 pour retour): ");
@@ -223,7 +223,7 @@ void menu_client(iterator client, vector *clients, vector *restos, vector *menus
         Client *compte = (Client *)client.element;
         printf("id: %ld\n", compte->id);
         printf("nom: %s\n", compte->nom);
-        printf("code postal: %d\n", compte->code_postal);
+        printf("code postal: %s\n", compte->code_postal);
         printf("numéro de téléphone: %s\n", compte->telephone);
 
         printf("\n");
@@ -390,11 +390,11 @@ int menu_modif_client_code(iterator client)
     printf("    Modification code postal client    \n");
     printf("#######################################\n");
     printf("\n");
-    printf("Votre code postal actuel est %d\n", ((Client *)(client.element))->code_postal);
+    printf("Votre code postal actuel est %s\n", ((Client *)(client.element))->code_postal);
     printf("\n");
     printf("Entrez votre nouveau code postal (r pour retour):\n");
 
-    char str[5];
+    char str[6];
     char choice;
     do
     {
@@ -457,13 +457,15 @@ int menu_afficher_restos(iterator client, vector *clients, vector *restos, vecto
 
     scanf(" %40[^\n]", type);
 
-    int code;
+    char * code = malloc(6);
     if (choice == 'n')
-        code = 0;
+        code = NULL;
     else
-        code = ((Client *)(client.element))->code_postal;
+        strcpy(code, ((Client *)(client.element))->code_postal);
 
     vector liste = liste_resto(code, restos, livreurs, type, NULL);
+
+    free(code);
 
     affichage_restos(client, restos, livreurs, menus, &liste);
 
@@ -488,7 +490,7 @@ int affichage_restos(iterator client, vector *restos, vector *livreurs, vector *
     for (iterator f = begin(liste), e = end(liste); compare(f, e) < 0; increment(&f, 1))
     {
         Restaurant *resto = (Restaurant *)(f.element);
-        printf("%d | %s | %d | %s : ", id++, resto->nom, resto->code_postal, resto->telephone);
+        printf("%d | %s | %s | %s : ", id++, resto->nom, resto->code_postal, resto->telephone);
         if (size(resto->menu) == 0)
             printf("(pas de menu), ");
         for (iterator first = begin(&resto->menu), last = end(&resto->menu); compare(first, last) < 0; increment(&first, 1))
@@ -546,7 +548,8 @@ int menu_commande(iterator client, vector *restos, vector *livreurs, vector *men
     printf("\n");
     printf("\n");
 
-    int code = 0;
+    char * code = malloc(6);
+    code = NULL;
     float solde = -1;
     char choice_code, choice_solde;
     Client *cl = (Client *)(client.element);
@@ -566,7 +569,7 @@ int menu_commande(iterator client, vector *restos, vector *livreurs, vector *men
         } while (choice_code != 'y' && choice_code != 'n');
         if (choice_code == 'y')
         {
-            code = cl->code_postal;
+            strcpy(code, cl->code_postal);
         }
         //  À un type de cuisine
 
@@ -604,6 +607,8 @@ int menu_commande(iterator client, vector *restos, vector *livreurs, vector *men
         vector new_liste = liste_resto(code, restos, livreurs, str_type, nom);
         items = liste_items_bis(menus, &new_liste, solde);
     }
+
+    free(code);
 
     menu_afficher_items(&items, client, restos, livreurs, menus, nom);
 
@@ -977,7 +982,7 @@ void connexion_resto(vector *restos, vector *menus, vector *livreurs)
             {
 
                 Restaurant *resto = (Restaurant *)(b.element);
-                printf("%zu,%s,%d,%14s,%s,", resto->id, resto->nom, resto->code_postal, resto->telephone, resto->type);
+                printf("%zu,%s,%s,%14s,%s,", resto->id, resto->nom, resto->code_postal, resto->telephone, resto->type);
               
                 affiche_liste(begin(&resto->menu), end(&resto->menu));
                 printf(",%.2f\n", resto->solde);
