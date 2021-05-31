@@ -606,7 +606,7 @@ int menu_commande(iterator client, vector *restos, vector *livreurs, vector *men
             strcpy(code, cl->code_postal);
         }
         if (choice_code == 'n')
-            code = NULL;
+            code[0] = 0;
         //  À un type de cuisine
 
         printf("A un type de cuisine particulier ? (n pour non) : ");
