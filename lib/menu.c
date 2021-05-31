@@ -689,7 +689,6 @@ int menu_afficher_items(vector *liste, iterator client, vector *restos, vector *
                     push_back(&new_liste, item);
                 }
             } while (choice_item != 's');
-            destroy(&new_liste);
             break;
 
         default:
