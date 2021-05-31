@@ -50,7 +50,7 @@ int main()
         printf("\n");
         printf("Votre choix (q pour quitter): ");
 
-        char * str = malloc(50);
+        char str[50];
         
         do{
             if(scanf(" %50[^\n]", str) == 1)
@@ -62,8 +62,6 @@ int main()
             else
                 printf("Choix invalide veuillez réessayer: ");
         }while(choice!='1' && choice!='2' && choice!='3' && choice!='q');
-
-        free(str);
         
         int co;
         switch (choice)
