@@ -14,6 +14,14 @@ void menu_client(iterator client, vector * clients, vector * restos, vector * me
 void menu_client_solde(iterator client);
 void menu_credit_client(iterator client);
 void menu_modifier_client(iterator client, vector * restos, vector * menus, vector * livreurs);
+int menu_modif_client_code(iterator client);
+int menu_modif_client_tel(iterator client);
+int menu_afficher_restos(iterator client, vector *clients, vector *restos, vector *menus, vector *livreurs);
+int affichage_restos(iterator client, vector *restos, vector *livreurs, vector *menus, vector *liste);
+int menu_commande(iterator client, vector *restos, vector *livreurs, vector *menus, vector *liste);
+int menu_afficher_items(vector *liste, iterator client, vector *restos, vector *livreurs, vector *menus, char *nom);
+int menu_recap_commande(iterator client, vector *liste, vector *restos, vector *livreurs, char *nom_resto);
+
 int menu_supprimer_client(iterator client, vector * clients);
 
 void creer_resto(vector * restos, vector * menus, vector * livreurs);
