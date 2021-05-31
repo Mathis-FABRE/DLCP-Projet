@@ -172,7 +172,7 @@ int main()
             vector menus = lecture_menu("test/db_menus.csv");
             vector restos = lecture_restaurant("test/db_restaurants.csv");
 
-            vector liste = liste_resto(0, &restos, &livreurs, NULL, NULL);
+            vector liste = liste_resto(NULL, &restos, &livreurs, NULL, NULL);
             
             TEST(size(liste) == 4);
             // tests "peut me livrer"
@@ -182,7 +182,7 @@ int main()
             Restaurant *restaurant = (Restaurant *)(begin(&liste).element);
             TEST(strcmp(restaurant->nom, "Chez Michel") == 0);
 
-            TEST(size(liste) == 1);
+            TEST(size(liste) == 3);
 
             TEST( ajout_resto("Reste Tôt", "13009", "06 51 12 69 57", "Fast Food", &restos) == 4);
 
@@ -200,7 +200,7 @@ int main()
             TEST(size(restaurant->menu) == 1);
 
             liste = liste_resto("13009", &restos, &livreurs, NULL, NULL);
-            TEST(size(liste) == 2);
+            TEST(size(liste) == 5);
 
             // tests "type de cuisine"
 
@@ -228,12 +228,12 @@ int main()
             TEST(strcmp(restaurant->nom, "Chez Michel") == 0);
             TEST(size(liste) == 1);
 
-            liste = liste_resto(0, &restos, &livreurs, NULL, "Chez Michel");
+            liste = liste_resto(NULL, &restos, &livreurs, NULL, "Chez Michel");
             restaurant = (Restaurant *)(begin(&liste).element);
             TEST(strcmp(restaurant->nom, "Chez Michel") == 0);
             TEST(size(liste) == 1);
 
-            liste = liste_resto(0, &restos, &livreurs, "Provencal", "Chez Michel");
+            liste = liste_resto(NULL, &restos, &livreurs, "Provencal", "Chez Michel");
             restaurant = (Restaurant *)(begin(&liste).element);
             TEST(strcmp(restaurant->nom, "Chez Michel") == 0);
             TEST(size(liste) == 1);
@@ -265,7 +265,7 @@ int main()
 
             // tous les menus disponibles en 13009
             liste = liste_items("13009", &restos, &livreurs, &menus, NULL, NULL, -1);
-            TEST(size(liste) == 3);
+            TEST(size(liste) == 8);
 
             // tous les menus disponibles en 13009 chez Reste Tôt
             liste = liste_items("13009", &restos, &livreurs, &menus, NULL, "Reste Tôt", -1);
@@ -287,10 +287,10 @@ int main()
             vector paiements = make_vector(sizeof(float), 0, 2.);
             vector liv = make_vector(sizeof(Livreur), 0, 2.);
 
-            TEST(commande(&liste, &restos, &livreurs, "13009", NULL, &restaurants, &paiements, &liv) == 28);
+            TEST(commande(&liste, &restos, &livreurs, "13009", NULL, &restaurants, &paiements, &liv) == 92);
 
-            TEST(size(liv) == 2);
-            TEST(size(restaurants) == 3);
+            TEST(size(liv) == 3);
+            TEST(size(restaurants) == 4);
 
             destroy(&restaurants);
             destroy(&paiements);
