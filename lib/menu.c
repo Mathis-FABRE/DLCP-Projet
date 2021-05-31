@@ -457,11 +457,16 @@ int menu_afficher_restos(iterator client, vector *clients, vector *restos, vecto
 
     scanf(" %40[^\n]", type);
 
-    vector liste;
+    char code[6];
     if (choice == 'n')
-        liste = liste_resto(NULL, restos, livreurs, type, NULL);
+        code[0] = 0;
     else
-        liste = liste_resto(((Client *)(client.element))->code_postal, restos, livreurs, type, NULL);
+    {
+        Client *cl = (Client *)(client.element);
+        strcpy(code, cl->code_postal);
+    }
+
+    vector liste = liste_resto(code, restos, livreurs, type, NULL);
 
     affichage_restos(client, restos, livreurs, menus, &liste);
 
@@ -544,7 +549,8 @@ int menu_commande(iterator client, vector *restos, vector *livreurs, vector *men
     printf("\n");
     printf("\n");
 
-    char * code = malloc(6);
+    char code[6];
+
     float solde = -1;
     char choice_code, choice_solde;
     Client *cl = (Client *)(client.element);
@@ -651,9 +657,9 @@ int menu_afficher_items(vector *liste, iterator client, vector *restos, vector *
         printf("Souahitez-vous\n");
         printf("1/ Continuer avec tous ces menus\n");
         printf("2/ Ajouter seulement certains menus (un à un)\n");
+        printf("Entrez une option : ");
         do
         {
-            printf("Entrez une option : ");
             scanf(" %10[^\n]", str);
             choice = str[0];
             if (choice != '1' && choice != '2')
@@ -764,7 +770,7 @@ int menu_recap_commande(iterator client, vector *liste, vector *restos, vector *
     switch (choice)
     {
     case '1':;
-        test = make_payment(client, &restaurants, &paiements, &liv, total);
+        test = make_payment(client, restos, livreurs, &restaurants, &paiements, &liv, total);
 
         if (test != 1)
         {

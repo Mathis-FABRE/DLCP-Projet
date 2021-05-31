@@ -31,7 +31,7 @@ int ajout_resto(char *nom, char *code, char *telephone, char *type, vector *rest
     else
         return -3;
 
-    if(iscode(code))
+    if (iscode(code))
         strcpy(new.code_postal, code);
     else
         return -4;
@@ -56,7 +56,7 @@ int ajout_ingredients(char *ingredients, vector *v)
     {
         if (isnom(ingredient))
         {
-            if(binary_search(begin(v), end(v), ingredient, lexicographical_compare))
+            if (binary_search(begin(v), end(v), ingredient, lexicographical_compare))
                 return 0;
             push_back(v, ingredient);
         }
@@ -67,7 +67,7 @@ int ajout_ingredients(char *ingredients, vector *v)
         {
             if (isnom(ingredient))
             {
-                if(binary_search(begin(v), end(v), ingredient, lexicographical_compare))
+                if (binary_search(begin(v), end(v), ingredient, lexicographical_compare))
                     return 0;
                 push_back(v, ingredient);
             }
@@ -77,7 +77,7 @@ int ajout_ingredients(char *ingredients, vector *v)
         sscanf(buffer, "%39[^;]", ingredient);
         if (isnom(ingredient))
         {
-            if(binary_search(begin(v), end(v), ingredient, lexicographical_compare))
+            if (binary_search(begin(v), end(v), ingredient, lexicographical_compare))
                 return 0;
             push_back(v, ingredient);
         }
@@ -89,7 +89,7 @@ int ajout_ingredients(char *ingredients, vector *v)
     {
         if (isnom(ingredient))
         {
-            if(binary_search(begin(v), end(v), ingredient, lexicographical_compare))
+            if (binary_search(begin(v), end(v), ingredient, lexicographical_compare))
                 return 0;
             push_back(v, ingredient);
         }
@@ -194,7 +194,7 @@ int ajout_code(char *deplacements, vector *v)
     {
         if (iscode(code))
         {
-            if(binary_search(begin(v), end(v), code, lexicographical_compare))
+            if (binary_search(begin(v), end(v), code, lexicographical_compare))
                 return 0;
             push_back(v, code);
         }
@@ -205,7 +205,7 @@ int ajout_code(char *deplacements, vector *v)
         {
             if (iscode(code))
             {
-                if(binary_search(begin(v), end(v), code, lexicographical_compare))
+                if (binary_search(begin(v), end(v), code, lexicographical_compare))
                     return 0;
                 push_back(v, code);
             }
@@ -217,7 +217,7 @@ int ajout_code(char *deplacements, vector *v)
         {
             if (iscode(code))
             {
-                if(binary_search(begin(v), end(v), code, lexicographical_compare))
+                if (binary_search(begin(v), end(v), code, lexicographical_compare))
                     return 0;
                 push_back(v, code);
             }
@@ -232,7 +232,7 @@ int ajout_code(char *deplacements, vector *v)
     {
         if (iscode(code))
         {
-            if(binary_search(begin(v), end(v), code, lexicographical_compare))
+            if (binary_search(begin(v), end(v), code, lexicographical_compare))
                 return 0;
             push_back(v, code);
         }
@@ -279,7 +279,7 @@ int ajout_livreur(char *nom, char *tel, char *deplacement, size_t resto, vector 
     if (resto != 0)
     {
         Restaurant const *comp = (Restaurant *)(at(&restos, presence - 1).element);
-        if(!binary_search(begin(&new.deplacements), end(&new.deplacements), &comp->code_postal, lexicographical_compare))
+        if (!binary_search(begin(&new.deplacements), end(&new.deplacements), &comp->code_postal, lexicographical_compare))
             return -5;
     }
 
@@ -345,7 +345,7 @@ int modif_livreur_resto(iterator livreur, size_t resto, vector restos)
             return -1;
 
         Restaurant const *compd = (Restaurant *)(at(&restos, posresto - 1).element);
-        if(!binary_search(begin(&modif->deplacements), end(&modif->deplacements), &compd->code_postal, lexicographical_compare))
+        if (!binary_search(begin(&modif->deplacements), end(&modif->deplacements), &compd->code_postal, lexicographical_compare))
             return -2;
     }
 
@@ -377,14 +377,14 @@ int modif_livreur_delcode(iterator livreur, size_t pos, vector restos)
     return 1;
 }
 
-int modif_livreur_addcode(iterator livreur, char * code)
+int modif_livreur_addcode(iterator livreur, char *code)
 {
     Livreur *modif = (Livreur *)(livreur.element);
 
     if (!iscode(code))
         return -1;
 
-    if(binary_search(begin(&modif->deplacements), end(&modif->deplacements), code, lexicographical_compare))
+    if (binary_search(begin(&modif->deplacements), end(&modif->deplacements), code, lexicographical_compare))
         return -2;
 
     push_back(&modif->deplacements, code);
@@ -404,7 +404,7 @@ int modif_livreur_tel(iterator livreur, char *tel)
     return 1;
 }
 
-vector liste_resto(char * code_postal, vector *restos, vector *livreurs, char *type_cuisine, char *nom_restaurant)
+vector liste_resto(char *code_postal, vector *restos, vector *livreurs, char *type_cuisine, char *nom_restaurant)
 {
     vector liste = make_vector(sizeof(Restaurant), 0, 2.);
     vector restaurants = make_vector(sizeof(Restaurant), size(*restos), 2.);
@@ -413,18 +413,18 @@ vector liste_resto(char * code_postal, vector *restos, vector *livreurs, char *t
     // Un restau peut livrer le client si son id est dans les livreurs qui ont le code postal du client
     // ou si son code postal est le même que celui du client et d'un livreur "libre"
 
-    if (code_postal)
+    if ((code_postal && strlen(code_postal) > 2))
     {
         for (iterator first = begin(livreurs), end_i = end(livreurs); compare(first, end_i) < 0; increment(&first, 1))
         {
 
             Livreur *livreur = (Livreur *)(first.element);
-            vector codes = livreur->deplacements;
+            
 
-            for (iterator f = begin(&codes), e = end(&codes); compare(f, e) < 0; increment(&f, 1))
+            for (iterator f = begin(&livreur->deplacements), e = end(&livreur->deplacements); compare(f, e) < 0; increment(&f, 1))
             {
-                char * code = (char *)(f.element);
-                if (strcmp(code, code_postal) ==0)
+                char *code = (char *)(f.element);
+                if (strcmp(code, code_postal) == 0)
                 {
                     if (livreur->restaurant != 0)
                     {
@@ -440,17 +440,22 @@ vector liste_resto(char * code_postal, vector *restos, vector *livreurs, char *t
                         for (iterator d = begin(&restaurants), fin = end(&restaurants); compare(d, fin) < 0; increment(&d, 1))
                         {
                             Restaurant *resto = (Restaurant *)d.element;
-                            if (strcmp(resto->code_postal, code_postal) == 0)
+                            for (iterator f_i = begin(&livreur->deplacements), e_i = end(&livreur->deplacements); compare(f_i, e_i) < 0; increment(&f_i, 1))
                             {
-                                push_back(&liste, resto);
-                                // on supprime le restaurant pour ne pas retomber dessus par la suite et accélérer les opérations
-                                erase(&restaurants, at(&restaurants, id_search(begin(&restaurants), end(&restaurants), resto, idresto_compare) - 1));
+                                char *code_l = (char *)(f_i.element);
+                                if (strcmp(resto->code_postal, code_l) == 0)
+                                {
+                                    push_back(&liste, resto);
+                                    // on supprime le restaurant pour ne pas retomber dessus par la suite et accélérer les opérations
+                                    erase(&restaurants, at(&restaurants, id_search(begin(&restaurants), end(&restaurants), resto, idresto_compare) - 1));
 
-                                // on décrémente pour ne pas sauter l'élément suivant celui supprimé
-                                decrement(&d, 1);
+                                    // on décrémente pour ne pas sauter l'élément suivant celui supprimé
+                                    decrement(&d, 1);
 
-                                // mise à jour de fin
-                                fin = end(&restaurants);
+                                    // mise à jour de fin
+                                    fin = end(&restaurants);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -460,9 +465,9 @@ vector liste_resto(char * code_postal, vector *restos, vector *livreurs, char *t
     }
 
     // Restriction à un type de cuisine
-    if (type_cuisine && strlen(type_cuisine) > 1)
+    if (type_cuisine && strlen(type_cuisine) > 2)
     {
-        if (code_postal)
+        if ((code_postal && strlen(code_postal) > 2))
         {
             for (iterator d = begin(&liste), fin = end(&liste); compare(d, fin) < 0; increment(&d, 1))
             {
@@ -501,7 +506,7 @@ vector liste_resto(char * code_postal, vector *restos, vector *livreurs, char *t
     }
     if (nom_restaurant && strlen(nom_restaurant) > 1)
     {
-        if (code_postal || type_cuisine)
+        if ((code_postal && strlen(code_postal) > 2) || (type_cuisine && strlen(type_cuisine) > 2))
         {
             for (iterator d = begin(&liste), fin = end(&liste); compare(d, fin) < 0; increment(&d, 1))
             {
@@ -538,7 +543,7 @@ vector liste_resto(char * code_postal, vector *restos, vector *livreurs, char *t
             }
         }
     }
-    if (!code_postal && (!type_cuisine || strlen(type_cuisine) <= 2) && (!nom_restaurant || strlen(nom_restaurant) <= 2))
+    if ((!code_postal || strlen(code_postal) <= 2) && (!type_cuisine || strlen(type_cuisine) <= 2) && (!nom_restaurant || strlen(nom_restaurant) <= 2))
     {
         return restaurants;
     }
@@ -548,7 +553,7 @@ vector liste_resto(char * code_postal, vector *restos, vector *livreurs, char *t
     return liste;
 }
 
-vector liste_items(char * code_postal, vector *restos, vector *livreurs, vector *liste_menus, char *type_cuisine, char *nom_restaurant, float solde)
+vector liste_items(char *code_postal, vector *restos, vector *livreurs, vector *liste_menus, char *type_cuisine, char *nom_restaurant, float solde)
 {
     // items à traiter
     vector menus = make_vector(sizeof(Menu), size(*liste_menus), 2.);
@@ -684,7 +689,7 @@ int client_credit_solde(iterator client, float amount)
     return 1;
 }
 
-float commande(vector *commande, vector *restos, vector *livreurs, char * code_client, char *nom_resto, vector *restaurants, vector *paiements, vector *liv)
+float commande(vector *commande, vector *restos, vector *livreurs, char *code_client, char *nom_resto, vector *restaurants, vector *paiements, vector *liv)
 {
 
     float prix_commande = 0;
@@ -819,7 +824,7 @@ float commande(vector *commande, vector *restos, vector *livreurs, char * code_c
                 int cclient = 0, cresto = 0;
                 for (iterator first = begin(&livreur->deplacements), e = end(&livreur->deplacements); compare(first, e) < 0; increment(&first, 1))
                 {
-                    char * code = (char *)(first.element);
+                    char *code = (char *)(first.element);
                     if (strcmp(code, resto->code_postal) == 0)
                         cresto = 1;
                     if (code_client)
@@ -859,7 +864,7 @@ float commande(vector *commande, vector *restos, vector *livreurs, char * code_c
                     int cclient = 0, cresto = 0;
                     for (iterator first = begin(&livreur->deplacements), e = end(&livreur->deplacements); compare(first, e) < 0; increment(&first, 1))
                     {
-                        char * code = (char *)(first.element);
+                        char *code = (char *)(first.element);
                         if (strcmp(code, resto->code_postal) == 0)
                             cresto = 1;
                         if (code_client)
@@ -915,7 +920,7 @@ int del_commande(vector *commande, size_t id)
     return 1;
 }
 
-int make_payment(iterator client, vector *restaurants, vector *paiements, vector *livreurs, float total)
+int make_payment(iterator client, vector *restos, vector *livreurs, vector *restaurants, vector *paiements, vector *livs, float total)
 {
     Client *cl = (Client *)(client.element);
     if (cl->solde >= total)
@@ -926,15 +931,15 @@ int make_payment(iterator client, vector *restaurants, vector *paiements, vector
     iterator f_payment = begin(paiements);
     for (iterator f = begin(restaurants), e = end(restaurants); compare(f, e) < 0; increment(&f, 1))
     {
-        Restaurant *resto = (Restaurant *)(f.element);
+        Restaurant *resto = (Restaurant *)(at(restos, id_search(begin(restos), end(restos), (f.element), idresto_compare) - 1).element);
         float paiement = *(float *)(f_payment.element);
         resto->solde += paiement;
         increment(&f_payment, 1);
     }
 
-    for (iterator f = begin(livreurs), e = end(livreurs); compare(f, e) < 0; increment(&f, 1))
+    for (iterator f = begin(livs), e = end(livs); compare(f, e) < 0; increment(&f, 1))
     {
-        Livreur *liv = (Livreur *)(f.element);
+        Livreur *liv = (Livreur *)(at(livreurs, id_search(begin(livreurs), end(livreurs), (f.element), idlivreur_compare) - 1).element);
         liv->solde += 2;
     }
 
