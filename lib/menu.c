@@ -644,7 +644,6 @@ int menu_commande(iterator client, vector *restos, vector *livreurs, vector *men
         items = liste_items_bis(menus, &new_liste, solde);
     }
 
-    free(code);
 
     menu_afficher_items(&items, client, restos, livreurs, menus, nom);
 
@@ -712,7 +711,6 @@ int menu_afficher_items(vector *liste, iterator client, vector *restos, vector *
                 size_t id;
                 do
                 {
-
                     scanf(" %10[^\n]", str);
                     choice_item = str[0];
                     sscanf(str, " %zu\n", &id);
