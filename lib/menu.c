@@ -809,7 +809,6 @@ int menu_recap_commande(iterator client, vector *liste, vector *restos, vector *
         menu_recap_commande(client, liste, restos, livreurs, nom_resto);
 
     default:
-        destroy(liste);
         destroy(&restaurants);
         destroy(&paiements);
         destroy(&liv);
