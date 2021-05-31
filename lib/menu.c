@@ -550,6 +550,7 @@ int menu_commande(iterator client, vector *restos, vector *livreurs, vector *men
     printf("\n");
 
     char code[6];
+
     float solde = -1;
     char choice_code, choice_solde;
     Client *cl = (Client *)(client.element);
@@ -571,6 +572,8 @@ int menu_commande(iterator client, vector *restos, vector *livreurs, vector *men
         {
             strcpy(code, cl->code_postal);
         }
+        if (choice_code == 'n')
+            code = NULL;
         //  À un type de cuisine
 
         printf("A un type de cuisine particulier ? (n pour non) : ");
@@ -607,6 +610,8 @@ int menu_commande(iterator client, vector *restos, vector *livreurs, vector *men
         vector new_liste = liste_resto(code, restos, livreurs, str_type, nom);
         items = liste_items_bis(menus, &new_liste, solde);
     }
+
+    free(code);
 
     menu_afficher_items(&items, client, restos, livreurs, menus, nom);
 
@@ -810,7 +815,6 @@ int menu_recap_commande(iterator client, vector *liste, vector *restos, vector *
         menu_recap_commande(client, liste, restos, livreurs, nom_resto);
 
     default:
-        destroy(liste);
         destroy(&restaurants);
         destroy(&paiements);
         destroy(&liv);
