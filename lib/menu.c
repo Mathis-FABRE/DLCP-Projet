@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
 #define NB_INPUT 50
 
@@ -129,6 +130,10 @@ void creer_client(vector *clients, vector *restos, vector *menus, vector *livreu
     char c;
     scanf(" %c", &c);
 
+    FILE * log = fopen("log.txt", "a");
+    fprintf(log, "Création client id : %d\n", test);
+    fclose(log);
+
     Client comp;
     comp.id = test;
     menu_client(at(clients, id_search(begin(clients), end(clients), &comp, idclient_compare) - 1), clients, restos, menus, livreurs);
@@ -154,7 +159,12 @@ void connexion_client(vector *clients, vector *restos, vector *menus, vector *li
             comp.id = id;
             search = id_search(begin(clients), end(clients), &comp, idclient_compare);
             if (search)
+            {
+                FILE * log = fopen("log.txt", "a");
+                fprintf(log, "Connexion client id : %d\n", id);
+                fclose(log);
                 menu_client(at(clients, search - 1), clients, restos, menus, livreurs);
+            }
             else
                 printf("id n'existe pas veuillez réessayer: ");
         }
@@ -198,7 +208,12 @@ void connexion_client(vector *clients, vector *restos, vector *menus, vector *li
                     comp.id = id;
                     search = id_search(begin(clients), end(clients), &comp, idclient_compare);
                     if (search)
+                    {
+                        FILE * log = fopen("log.txt", "a");
+                        fprintf(log, "Connexion client id : %d\n", id);
+                        fclose(log);
                         menu_client(at(clients, search - 1), clients, restos, menus, livreurs);
+                    }
                     else
                         printf("id n'existe pas veuillez réessayer: ");
                 }
@@ -335,6 +350,10 @@ void menu_credit_client(iterator client)
             printf("somme invalide veuillez réessayer: ");
     } while (choice < 0);
 
+    FILE * log = fopen("log.txt", "a");
+    fprintf(log, "%.2f créditer à client id : %ld\n", choice, ((Client*)client.element)->id);
+    fclose(log);
+
     client_credit_solde(client, choice);
 }
 
@@ -404,6 +423,13 @@ int menu_modif_client_code(iterator client)
             printf("Choix invalide, veuillez réessayer: ");
     } while (choice != 'r' && modif_client_code(client, str) != 1);
 
+    if(choice != 'r')
+    {
+        FILE * log = fopen("log.txt", "a");
+        fprintf(log, "Client id %ld : change code postal -> %s\n", ((Client*)client.element)->id, str);
+        fclose(log);
+    }
+
     return 1;
 }
 
@@ -428,6 +454,13 @@ int menu_modif_client_tel(iterator client)
         if (choice != 'r' && modif_client_tel(client, str) != 1)
             printf("Choix invalide, veuillez réessayer: ");
     } while (choice != 'r' && modif_client_tel(client, str) != 1);
+
+    if(choice != 'r')
+    {
+        FILE * log = fopen("log.txt", "a");
+        fprintf(log, "Client id %ld : change téléphone -> %s\n", ((Client*)client.element)->id, str);
+        fclose(log);
+    }
 
     return 1;
 }
@@ -793,6 +826,10 @@ int menu_recap_commande(iterator client, vector *liste, vector *restos, vector *
 
             menu_recap_commande(client, liste, restos, livreurs, nom_resto);
         }
+
+        FILE * log = fopen("log.txt", "a");
+        fprintf(log, "Client id %ld : passe commande prix : %.2f\n", ((Client*)client.element)->id, total);
+        fclose(log);
         break;
 
     case '2':;
@@ -849,6 +886,9 @@ int menu_supprimer_client(iterator client, vector *clients)
     {
     case 'y':
         del_client(clients, client);
+        FILE * log = fopen("log.txt", "a");
+        fprintf(log, "Client id %ld : supprimer\n", ((Client*)client.element)->id);
+        fclose(log);
         return 1;
         break;
 
@@ -927,6 +967,10 @@ void creer_resto(vector *restos, vector *menus, vector *livreurs)
     char c;
     scanf(" %c", &c);
 
+    FILE * log = fopen("log.txt", "a");
+    fprintf(log, "Création resto id : %d\n", test);
+    fclose(log);
+
     Restaurant comp;
     comp.id = test;
     menu_resto(at(restos, id_search(begin(restos), end(restos), &comp, idresto_compare) - 1), restos, menus, livreurs);
@@ -952,7 +996,12 @@ void connexion_resto(vector *restos, vector *menus, vector *livreurs)
             comp.id = id;
             search = id_search(begin(restos), end(restos), &comp, idresto_compare);
             if (search)
+            {
+                FILE * log = fopen("log.txt", "a");
+                fprintf(log, "Connexion resto id : %d\n", id);
+                fclose(log);
                 menu_resto(at(restos, search - 1), restos, menus, livreurs);
+            }
             else
                 printf("id n'existe pas veuillez réessayer: ");
         }
@@ -1000,7 +1049,12 @@ void connexion_resto(vector *restos, vector *menus, vector *livreurs)
                     comp.id = id;
                     search = id_search(begin(restos), end(restos), &comp, idresto_compare);
                     if (search)
+                    {
+                        FILE * log = fopen("log.txt", "a");
+                        fprintf(log, "Connexion resto id : %d\n", id);
+                        fclose(log);
                         menu_resto(at(restos, search - 1), restos, menus, livreurs);
+                    }
                     else
                         printf("id n'existe pas veuillez réessayer: ");
                 }
@@ -1196,7 +1250,16 @@ void modif_additem(iterator resto, vector *menus)
                 test = -1;
             }
 
+            choice = test;
+
         } while (test < 0);
+    }
+
+    if(choice != 'r')
+    {
+        FILE * log = fopen("log.txt", "a");
+        fprintf(log, "Resto id %ld : ajoute item %c\n", ((Restaurant*)resto.element)->id, choice);
+        fclose(log);
     }
 }
 
@@ -1228,6 +1291,13 @@ void modif_suppritem(iterator resto, vector *menus)
         if (choice == 0)
             printf("id invalide veuillez réessayer: ");
     } while (choice == 0);
+
+    if(choice != 'r')
+    {
+        FILE * log = fopen("log.txt", "a");
+        fprintf(log, "Resto id %ld : retire item %c\n", ((Restaurant*)resto.element)->id, choice);
+        fclose(log);
+    }
 }
 
 int menu_supprimer_resto(iterator resto, vector *restos, vector *livreurs)
@@ -1256,6 +1326,9 @@ int menu_supprimer_resto(iterator resto, vector *restos, vector *livreurs)
     {
     case 'y':
         del_resto(restos, resto, livreurs);
+        FILE * log = fopen("log.txt", "a");
+        fprintf(log, "Resto id %ld : supprimer\n", ((Restaurant*)resto.element)->id);
+        fclose(log);
         return 1;
         break;
 
@@ -1336,6 +1409,10 @@ void creer_livreur(vector *livreurs, vector *restos)
     char c;
     scanf(" %c", &c);
 
+    FILE * log = fopen("log.txt", "a");
+    fprintf(log, "Création client id : %d\n", test);
+    fclose(log);
+
     Livreur comp;
     comp.id = test;
     menu_livreur(at(livreurs, id_search(begin(livreurs), end(livreurs), &comp, idresto_compare) - 1), livreurs, restos);
@@ -1361,7 +1438,12 @@ void connexion_livreur(vector *livreurs, vector *restos)
             comp.id = id;
             search = id_search(begin(livreurs), end(livreurs), &comp, idlivreur_compare);
             if (search)
+            {
+                FILE * log = fopen("log.txt", "a");
+                fprintf(log, "Connexion livreur id : %d\n", id);
+                fclose(log);
                 menu_livreur(at(livreurs, search - 1), livreurs, restos);
+            }
             else
                 printf("id n'existe pas veuillez réessayer: ");
         }
@@ -1406,7 +1488,12 @@ void connexion_livreur(vector *livreurs, vector *restos)
                     comp.id = id;
                     search = id_search(begin(livreurs), end(livreurs), &comp, idlivreur_compare);
                     if (search)
+                    {
+                        FILE * log = fopen("log.txt", "a");
+                        fprintf(log, "Connexion livreur id : %d\n", id);
+                        fclose(log);
                         menu_livreur(at(livreurs, search - 1), livreurs, restos);
+                    }
                     else
                         printf("id n'existe pas veuillez réessayer: ");
                 }
@@ -1589,9 +1676,9 @@ void modif_addcode(iterator livreur)
     printf("Entrez le nouveau code postale: ");
 
     int test;
+    char code[10];
     do
     {
-        char code[10];
         scanf(" %10[^\n]", code);
         test = modif_livreur_addcode(livreur, code);
         if (test < 0)
@@ -1604,6 +1691,10 @@ void modif_addcode(iterator livreur)
             printf("Veuillez réessayer: ");
         }
     } while (test < 0);
+
+    FILE * log = fopen("log.txt", "a");
+    fprintf(log, "Livreur id %ld : ajoute déplacement -> %s\n", ((Livreur*)livreur.element)->id, code);
+    fclose(log);
 }
 
 void modif_delcode(iterator livreur, vector *restos)
@@ -1627,9 +1718,9 @@ void modif_delcode(iterator livreur, vector *restos)
     printf("Entrez le numéro du déplacement à retirer: ");
 
     int test;
+    int choice;
     do
     {
-        int choice;
         scanf(" %d", &choice);
         test = modif_livreur_delcode(livreur, choice, *restos);
         if (test < 0)
@@ -1642,6 +1733,10 @@ void modif_delcode(iterator livreur, vector *restos)
             printf("Veuillez réessayer: ");
         }
     } while (test < 0);
+
+    FILE * log = fopen("log.txt", "a");
+    fprintf(log, "Livreur id %ld : retire deplacement -> %d\n", ((Livreur*)livreur.element)->id, choice);
+    fclose(log);
 }
 
 void modif_tellivreur(iterator livreur)
@@ -1655,9 +1750,9 @@ void modif_tellivreur(iterator livreur)
     printf("Entrez votre nouveaux téléphone (XX XX XX XX XX): ");
 
     int test;
+    char *tel = malloc(20);
     do
     {
-        char *tel = malloc(20);
         scanf(" %20[^\n]", tel);
         test = modif_livreur_tel(livreur, tel);
         if (test < 0)
@@ -1667,6 +1762,11 @@ void modif_tellivreur(iterator livreur)
         }
         free(tel);
     } while (test < 0);
+    free(tel);
+
+    FILE * log = fopen("log.txt", "a");
+    fprintf(log, "Livreur id %ld : modifier téléphone -> %s\n", ((Livreur*)livreur.element)->id, tel);
+    fclose(log);
 }
 
 void modif_restolivreur(iterator livreur, vector *restos)
@@ -1679,9 +1779,9 @@ void modif_restolivreur(iterator livreur, vector *restos)
     printf("\n");
     printf("Entrez votre nouveaux restaurant exclusif (0 si aucun): ");
     int test;
+    int choice;
     do
     {
-        int choice;
         scanf(" %d", &choice);
         test = modif_livreur_resto(livreur, choice, *restos);
         if (test < 0)
@@ -1694,6 +1794,10 @@ void modif_restolivreur(iterator livreur, vector *restos)
             printf("Veuillez réessayer: ");
         }
     } while (test < 0);
+
+    FILE * log = fopen("log.txt", "a");
+    fprintf(log, "Livreur id %ld : modifier resto exclusif -> %d\n", ((Livreur*)livreur.element)->id, choice);
+    fclose(log);
 }
 
 int menu_supprimer_livreur(iterator livreur, vector *livreurs)
@@ -1721,6 +1825,9 @@ int menu_supprimer_livreur(iterator livreur, vector *livreurs)
     {
     case 'y':
         del_livreur(livreurs, livreur);
+        FILE * log = fopen("log.txt", "a");
+        fprintf(log, "Livreur id %ld : supprimer\n", ((Livreur*)livreur.element)->id);
+        fclose(log);
         return 1;
         break;
 
