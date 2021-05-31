@@ -19,7 +19,8 @@ int menu_modif_client_tel(iterator client);
 int menu_afficher_restos(iterator client, vector *clients, vector *restos, vector *menus, vector *livreurs);
 int affichage_restos(iterator client, vector *restos, vector *livreurs, vector *menus, vector *liste);
 int menu_commande(iterator client, vector *restos, vector *livreurs, vector *menus, vector *liste);
-int menu_afficher_items(vector *liste, iterator client, vector *restos, vector *livreurs, vector *menus);
+int menu_afficher_items(vector *liste, iterator client, vector *restos, vector *livreurs, vector *menus, char *nom);
+int menu_recap_commande(iterator client, vector *liste, vector *restos, vector *livreurs, char *nom_resto);
 
 int menu_supprimer_client(iterator client, vector * clients);
 
