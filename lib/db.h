@@ -229,4 +229,4 @@ int del_commande(vector *commande, size_t id);
 // Fonction qui retire l'argent du client et paye les restaurants et livreurs pour la commande concernée
 // renvoie 1 si le client a assez d'argent pour payer
 // renvoie -1 sinon
-int make_payment(iterator client, vector *restaurants, vector *paiements, vector *livreurs, float total);
+int make_payment(iterator client, vector *restos, vector *livreurs, vector *restaurants, vector *paiements, vector *livs, float total);
