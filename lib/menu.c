@@ -457,15 +457,11 @@ int menu_afficher_restos(iterator client, vector *clients, vector *restos, vecto
 
     scanf(" %40[^\n]", type);
 
-    char * code = malloc(6);
+    vector liste;
     if (choice == 'n')
-        code = NULL;
+        liste = liste_resto(NULL, restos, livreurs, type, NULL);
     else
-        strcpy(code, ((Client *)(client.element))->code_postal);
-
-    vector liste = liste_resto(code, restos, livreurs, type, NULL);
-
-    free(code);
+        liste = liste_resto(((Client *)(client.element))->code_postal, restos, livreurs, type, NULL);
 
     affichage_restos(client, restos, livreurs, menus, &liste);
 
@@ -549,7 +545,6 @@ int menu_commande(iterator client, vector *restos, vector *livreurs, vector *men
     printf("\n");
 
     char * code = malloc(6);
-    code = NULL;
     float solde = -1;
     char choice_code, choice_solde;
     Client *cl = (Client *)(client.element);
@@ -571,6 +566,8 @@ int menu_commande(iterator client, vector *restos, vector *livreurs, vector *men
         {
             strcpy(code, cl->code_postal);
         }
+        if (choice_code == 'n')
+            code = NULL;
         //  À un type de cuisine
 
         printf("A un type de cuisine particulier ? (n pour non) : ");
