@@ -57,7 +57,7 @@ Vous pouvez également revenir en arrière en entrant 'r'
 Vous pourrez :
 
 > - Ajouter un item (en entrant 1)
-> - Retirer un utem (en entrant 2)
+> - Retirer un item (en entrant 2)
 
 Vous pouvez également revenir en arrière en entrant 'r'
 
