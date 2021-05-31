@@ -454,6 +454,7 @@ vector liste_resto(char *code_postal, vector *restos, vector *livreurs, char *ty
 
                                     // mise à jour de fin
                                     fin = end(&restaurants);
+                                    break;
                                 }
                             }
                         }
